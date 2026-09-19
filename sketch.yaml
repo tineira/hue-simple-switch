@@ -2,5 +2,7 @@ profiles:
   xiao-c6:
     fqbn: esp32:esp32:XIAO_ESP32C6
     platforms:
+      # El índice oficial de Arduino no lista esp32; sin esta URL el perfil no resuelve 3.3.12.
       - platform: esp32:esp32 (3.3.12)
+        platform_index_url: https://espressif.github.io/arduino-esp32/package_esp32_index.json
 default_profile: xiao-c6

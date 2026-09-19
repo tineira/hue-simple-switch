@@ -15,7 +15,8 @@ This sketch lives in the Arduino IDE sketchbook (`directories.user` = `C:\Users\
 
 ## Secrets
 
-- Real Wi-Fi / Hue values go in `config.h` (gitignored).
+- Real Wi-Fi values go in `config.h` (gitignored): SSID, password, `HUE_LIGHT_ID`.
+- `HUE_BRIDGE_IP` and `HUE_APP_KEY` in `config.h` are optional seeds. The sketch discovers the Bridge (mDNS `_hue._tcp`, cached IP, config, then discovery.meethue.com) and can pair a key (press the Bridge link button). IP and key are stored in NVS.
 - `config.example.h` is the template that is committed.
 - Never put SSID, passwords, or Hue keys in the `.ino` or in git.
 
@@ -38,7 +39,7 @@ Replace `COMx` with the XIAO port (`arduino-cli board list`).
 - File → Open this folder (`hue-simple-switch.ino`)
 - Board: `XIAO_ESP32C6` (esp32)
 - Do not use the Zigbee partition scheme
-- Libraries: none beyond the ESP32 core (`WiFi`, `HTTPClient`)
+- Libraries: ESP32 core only (`WiFi`, `HTTPClient`, `ESPmDNS`, `Preferences`)
 
 ## Code conventions
 

@@ -1,6 +1,9 @@
 # Local secrets — copy from config.example.h
 config.h
 
+# House light inventory (names + UUIDs). Refresh from the Bridge; do not commit.
+hue-lights.md
+
 # Arduino / arduino-cli build output
 build/
 .cache/

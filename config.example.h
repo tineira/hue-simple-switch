@@ -6,9 +6,12 @@
 #define WIFI_SSID "your-ssid"
 #define WIFI_PASSWORD "your-password"
 
-// Hue Bridge local IP (Settings → Hue Bridge in the Hue app).
+// Optional fallbacks. Leave these placeholders to discover / pair on device.
+// The sketch finds the Bridge via mDNS (_hue._tcp), then last-saved IP, then
+// this value, then discovery.meethue.com. IP and key are stored in flash (NVS).
 #define HUE_BRIDGE_IP "192.168.1.x"
-
-// Hue Clip v2 application key. Create one via the local API
-// (POST /api with the bridge link button pressed).
 #define HUE_APP_KEY "your-hue-application-key"
+
+// Clip v2 light resource id (UUID). List lights with:
+// curl -k -H "hue-application-key: KEY" https://BRIDGE_IP/clip/v2/resource/light
+#define HUE_LIGHT_ID "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
