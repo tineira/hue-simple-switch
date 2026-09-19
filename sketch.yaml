@@ -1,0 +1,6 @@
+profiles:
+  xiao-c6:
+    fqbn: esp32:esp32:XIAO_ESP32C6
+    platforms:
+      - platform: esp32:esp32 (3.3.12)
+default_profile: xiao-c6
