@@ -6,12 +6,13 @@
 #define WIFI_SSID "your-ssid"
 #define WIFI_PASSWORD "your-password"
 
-// Optional fallbacks. Leave these placeholders to discover / pair on device.
-// The sketch finds the Bridge via mDNS (_hue._tcp), then last-saved IP, then
-// this value, then discovery.meethue.com. IP and key are stored in flash (NVS).
-#define HUE_BRIDGE_IP "192.168.1.x"
-#define HUE_APP_KEY "your-hue-application-key"
+// Device console (not the Hue Bridge). Token is minted in the console UI.
+// CONSOLE_URL    public host, e.g. https://hue.tineira.com
+//                (local dev: http://localhost:3000 — no TLS)
+// CONSOLE_TOKEN  device API key (hsw_…), sent as Authorization: Bearer
+// Do not put SSID, passwords, Hue keys, or this token in git.
+#define CONSOLE_URL "https://hue.tineira.com"
+#define CONSOLE_TOKEN "your-console-token"
 
-// Clip v2 light resource id (UUID). List lights with:
-// curl -k -H "hue-application-key: KEY" https://BRIDGE_IP/clip/v2/resource/light
-#define HUE_LIGHT_ID "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+// Bridge IP, Hue application key, and recipes are not stored here
+// (mDNS / pair / NVS / poll).

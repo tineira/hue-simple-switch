@@ -6,17 +6,34 @@ String gHueAppKey;
 
 #include "hue.h"
 #include "hue_discover.h"
+#include "recipes.h"
+#include "channels.h"
+#include "console.h"
 
-// BOOT del XIAO ESP32-C6: GPIO9, activo en LOW.
-// Corta = toggle. Mantener 3 s = volver a emparejar la key del Bridge.
-static const int kButtonPin = 9;
-static const unsigned long kDebounceMs = 50;
+static bool gWifiWasUp = false;
+static bool gHueReady = false;
+static unsigned long gWifiLastTryMs = 0;
 
-static int lastReading = HIGH;
-static int stableState = HIGH;
-static unsigned long lastChangeMs = 0;
-static unsigned long pressStartMs = 0;
-static bool longPressHandled = false;
+static void afterWifiUp() {
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
+  Serial.printf("mac %s\n", deviceMacHex().c_str());
+  digitalWrite(LED_BUILTIN, HIGH);
+  if (!hueEnsureReady()) {
+    Serial.println("Hue setup failed — press Bridge button if pairing, check Wi-Fi LAN");
+    gHueReady = false;
+    return;
+  }
+  gHueReady = true;
+  Serial.printf("Using Bridge %s id=%s\n", gHueBridgeIp.c_str(), gHueBridgeId.c_str());
+  if (recipesBindBridge(gHueBridgeId)) {
+    gConsoleRegistered = false;
+  }
+  if (!consoleConfigured()) {
+    Serial.println("console: CONSOLE_URL / CONSOLE_TOKEN not set");
+  }
+  gNeedConsoleSync = true;
+}
 
 void setup() {
   Serial.begin(115200);
@@ -27,16 +44,18 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
 
-  pinMode(kButtonPin, INPUT_PULLUP);
-  lastReading = digitalRead(kButtonPin);
-  stableState = lastReading;
-
   Serial.println("hue-simple-switch");
-  Serial.printf("SSID: %s\n", WIFI_SSID);
+  Serial.printf("firmware %s  SSID: %s\n", FIRMWARE_VERSION, WIFI_SSID);
+
+  // Recetas en NVS antes de leer GPIO. La primera muestra no dispara on/off.
+  recipesLoad();
+  channelsBegin();
+  consoleWorkerBegin();
 
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(false);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  gWifiLastTryMs = millis();
 
   Serial.print("WiFi");
   uint8_t attempts = 0;
@@ -47,78 +66,41 @@ void setup() {
   }
   Serial.println();
 
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.printf("WiFi failed, status=%d\n", (int)WiFi.status());
-    return;
-  }
-
-  Serial.print("IP: ");
-  Serial.println(WiFi.localIP());
-  digitalWrite(LED_BUILTIN, HIGH);
-
-  if (!hueEnsureReady()) {
-    Serial.println("Hue setup failed — press Bridge button if pairing, check Wi-Fi LAN");
-    return;
-  }
-  Serial.printf("Using Bridge %s\n", gHueBridgeIp.c_str());
-  Serial.println("BOOT short: toggle. Hold 3s: re-pair.");
-
-  bool on = false;
-  if (hueGetOn(&on)) {
-    Serial.printf("Light is %s\n", on ? "on" : "off");
-    digitalWrite(LED_BUILTIN, on ? HIGH : LOW);
+  if (WiFi.status() == WL_CONNECTED) {
+    gWifiWasUp = true;
+    afterWifiUp();
   } else {
-    Serial.println("Hue GET failed — check HUE_LIGHT_ID in config.h");
+    Serial.printf("WiFi failed, status=%d — will retry\n", (int)WiFi.status());
   }
+  channelsPrime();
+  Serial.println("GPIO: boot short=recipe, hold 3s=re-pair. d0/d1/d2 maintained.");
 }
 
 void loop() {
-  const int reading = digitalRead(kButtonPin);
   const unsigned long now = millis();
+  channelsPoll(now);
 
-  if (reading != lastReading) {
-    lastChangeMs = now;
-    lastReading = reading;
-  }
-
-  if ((now - lastChangeMs) < kDebounceMs) {
-    return;
-  }
-  if (reading == stableState) {
-    if (stableState == LOW && !longPressHandled && pressStartMs &&
-        (now - pressStartMs) >= kLongPressMs) {
-      longPressHandled = true;
-      if (WiFi.status() != WL_CONNECTED) {
-        Serial.println("Re-pair skipped: WiFi down");
-      } else if (hueRePair()) {
-        Serial.printf("Using Bridge %s\n", gHueBridgeIp.c_str());
-      }
+  if (WiFi.status() != WL_CONNECTED) {
+    if (gWifiWasUp) {
+      gWifiWasUp = false;
+      digitalWrite(LED_BUILTIN, LOW);
+    }
+    if (now - gWifiLastTryMs >= 10000UL) {
+      gWifiLastTryMs = now;
+      Serial.println("WiFi retry");
+      WiFi.disconnect();
+      WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     }
     return;
   }
-  stableState = reading;
 
-  if (reading == LOW) {
-    pressStartMs = now;
-    longPressHandled = false;
-    return;
-  }
-
-  // Flanco de subida: pulsación corta si no hubo long-press.
-  if (longPressHandled) {
-    return;
-  }
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("Toggle skipped: WiFi down");
-    return;
-  }
-
-  Serial.println("BOOT: toggle");
-  bool nowOn = false;
-  if (hueToggle(&nowOn)) {
-    digitalWrite(LED_BUILTIN, nowOn ? HIGH : LOW);
-    Serial.printf("Light is now %s\n", nowOn ? "on" : "off");
-  } else {
-    Serial.println("Toggle failed");
+  if (!gWifiWasUp) {
+    gWifiWasUp = true;
+    if (!gHueReady) {
+      afterWifiUp();
+    } else {
+      digitalWrite(LED_BUILTIN, HIGH);
+      gNeedConsoleSync = true;
+    }
   }
 }

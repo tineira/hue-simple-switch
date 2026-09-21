@@ -3,6 +3,7 @@
 #include <ESPmDNS.h>
 #include <Preferences.h>
 #include "hue.h"
+#include "json_util.h"
 
 // Descubrir el Bridge (mDNS _hue._tcp) y emparejar la application key.
 // IP y key se guardan en NVS para que un cambio de DHCP no pida recompilar.
@@ -32,53 +33,9 @@ inline bool hueLooksLikeKey(const String &s) {
   return s.length() >= 20 && s.indexOf("your-") < 0;
 }
 
-inline bool jsonStringField(const String &body, const char *key, String *out) {
-  const String needle = String("\"") + key + "\":\"";
-  const int idx = body.indexOf(needle);
-  if (idx < 0) {
-    return false;
-  }
-  const int start = idx + needle.length();
-  const int end = body.indexOf('"', start);
-  if (end <= start) {
-    return false;
-  }
-  *out = body.substring(start, end);
-  return out->length() > 0;
-}
-
-inline int hueRaw(const String &url, const char *method, const char *body, String *response, bool withKey) {
-  NetworkClientSecure client;
-  client.setInsecure();
-  HTTPClient http;
-  if (!http.begin(client, url)) {
-    return -1;
-  }
-  http.setTimeout(8000);
-  if (withKey && gHueAppKey.length()) {
-    http.addHeader("hue-application-key", gHueAppKey);
-  }
-  if (body) {
-    http.addHeader("Content-Type", "application/json");
-  }
-  int code = -1;
-  if (strcmp(method, "GET") == 0) {
-    code = http.GET();
-  } else if (strcmp(method, "POST") == 0) {
-    code = http.POST(body ? String(body) : String());
-  } else {
-    code = http.PUT(body ? String(body) : String());
-  }
-  if (response) {
-    *response = http.getString();
-  }
-  http.end();
-  return code;
-}
-
 inline bool hueProbeBridge(const String &ip, String *bridgeId) {
   String body;
-  const int code = hueRaw("https://" + ip + "/api/config", "GET", nullptr, &body, false);
+  const int code = hueHttp("https://" + ip + "/api/config", "GET", nullptr, &body, false, true);
   if (code != HTTP_CODE_OK) {
     return false;
   }
@@ -154,7 +111,7 @@ inline bool hueDiscoverMdns() {
 
 inline bool hueDiscoverCloud() {
   String body;
-  const int code = hueRaw("https://discovery.meethue.com/", "GET", nullptr, &body, false);
+  const int code = hueHttp("https://discovery.meethue.com/", "GET", nullptr, &body, false, false);
   Serial.printf("discovery.meethue.com %d\n", code);
   if (code != HTTP_CODE_OK) {
     return false;
@@ -217,8 +174,8 @@ inline bool huePairAppKey() {
   while (millis() - start < kPairTimeoutMs) {
     hueBlink(millis() - start);
     String body;
-    const int code = hueRaw("https://" + gHueBridgeIp + "/api", "POST",
-                            "{\"devicetype\":\"hue-simple-switch#xiao\"}", &body, false);
+    const int code = hueHttp("https://" + gHueBridgeIp + "/api", "POST",
+                             "{\"devicetype\":\"hue-simple-switch#xiao\"}", &body, false, true);
     String user;
     if (jsonStringField(body, "username", &user) && hueLooksLikeKey(user)) {
       gHueAppKey = user;
@@ -241,7 +198,7 @@ inline bool hueKeyWorks() {
     return false;
   }
   String body;
-  const int code = hueRaw("https://" + gHueBridgeIp + "/clip/v2/resource/bridge", "GET", nullptr, &body, true);
+  const int code = hueHttp("https://" + gHueBridgeIp + "/clip/v2/resource/bridge", "GET", nullptr, &body, true, true);
   Serial.printf("Hue auth GET %d\n", code);
   return code == HTTP_CODE_OK;
 }

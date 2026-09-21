@@ -1,6 +1,7 @@
 profiles:
   xiao-c6:
     fqbn: esp32:esp32:XIAO_ESP32C6
+    # App partition via sketch partitions.csv (min_spiffs: ~1.9MB APP, OTA kept).
     platforms:
       # El índice oficial de Arduino no lista esp32; sin esta URL el perfil no resuelve 3.3.12.
       - platform: esp32:esp32 (3.3.12)

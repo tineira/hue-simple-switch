@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540">
+  <rect width="900" height="540" fill="#f4f1ea"/>
+  <text x="450" y="32" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#1a1a1a">3 interruptores → XIAO ESP32-C6</text>
+  <text x="450" y="54" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#555">Solo 3,3 V. Ampolletas Hue aparte, siempre con 220 V (sin pasar por estos palos).</text>
+
+  <!-- Board -->
+  <rect x="40" y="88" width="210" height="360" rx="14" fill="#24302a"/>
+  <text x="145" y="118" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#eef6f0">XIAO ESP32-C6</text>
+  <text x="145" y="138" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#9db5a6">headers laterales</text>
+
+  <g font-family="ui-monospace, Consolas, monospace" font-size="13">
+    <circle cx="240" cy="180" r="7" fill="#c45c26"/>
+    <text x="228" y="185" text-anchor="end" fill="#f0d9cc">3V3</text>
+    <circle cx="240" cy="250" r="7" fill="#3d8bfd"/>
+    <text x="228" y="255" text-anchor="end" fill="#cfe0ff">D0</text>
+    <circle cx="240" cy="320" r="7" fill="#2a9d8f"/>
+    <text x="228" y="325" text-anchor="end" fill="#c8efe8">D1</text>
+    <circle cx="240" cy="390" r="7" fill="#8b5cf6"/>
+    <text x="228" y="395" text-anchor="end" fill="#e4d7ff">D2</text>
+    <circle cx="240" cy="460" r="7" fill="#111"/>
+    <text x="228" y="465" text-anchor="end" fill="#ddd">GND</text>
+  </g>
+
+  <!-- buses -->
+  <path d="M247 180 H300 V92 H780" fill="none" stroke="#c45c26" stroke-width="3"/>
+  <text x="420" y="84" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#c45c26" font-weight="600">+3,3 V — solo alimenta las resistencias (no va al muro)</text>
+  <path d="M247 460 H820" fill="none" stroke="#111" stroke-width="3"/>
+  <text x="420" y="520" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#111" font-weight="600">GND — el otro borne de los tres interruptores</text>
+
+  <!-- GPIO runs -->
+  <path d="M247 250 H640" fill="none" stroke="#3d8bfd" stroke-width="3"/>
+  <path d="M247 320 H640" fill="none" stroke="#2a9d8f" stroke-width="3"/>
+  <path d="M247 390 H640" fill="none" stroke="#8b5cf6" stroke-width="3"/>
+
+  <!-- pull-up 10k -->
+  <g font-family="ui-monospace, Consolas, monospace" font-size="11" fill="#7a3a16">
+    <path d="M360 92 V218" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <rect x="348" y="218" width="24" height="22" rx="2" fill="#f4f1ea" stroke="#c45c26" stroke-width="2"/>
+    <path d="M360 240 V250" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <text x="376" y="234">10k</text>
+
+    <path d="M420 92 V288" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <rect x="408" y="288" width="24" height="22" rx="2" fill="#f4f1ea" stroke="#c45c26" stroke-width="2"/>
+    <path d="M420 310 V320" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <text x="436" y="304">10k</text>
+
+    <path d="M480 92 V358" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <rect x="468" y="358" width="24" height="22" rx="2" fill="#f4f1ea" stroke="#c45c26" stroke-width="2"/>
+    <path d="M480 380 V390" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <text x="496" y="374">10k</text>
+  </g>
+
+  <!-- SW1 -->
+  <g>
+    <text x="710" y="228" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#3d8bfd">SW1 · D0</text>
+    <circle cx="640" cy="250" r="6" fill="#3d8bfd"/>
+    <line x1="640" y1="250" x2="700" y2="228" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="710" cy="250" r="6" fill="#111"/>
+    <line x1="710" y1="250" x2="710" y2="460" stroke="#111" stroke-width="3"/>
+    <text x="640" y="272" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#3d8bfd">señal</text>
+    <text x="742" y="255" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="10" fill="#333">GND</text>
+  </g>
+  <!-- SW2 -->
+  <g>
+    <text x="750" y="298" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#2a9d8f">SW2 · D1</text>
+    <circle cx="640" cy="320" r="6" fill="#2a9d8f"/>
+    <line x1="640" y1="320" x2="740" y2="298" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="750" cy="320" r="6" fill="#111"/>
+    <line x1="750" y1="320" x2="750" y2="460" stroke="#111" stroke-width="3"/>
+  </g>
+  <!-- SW3 -->
+  <g>
+    <text x="790" y="368" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#8b5cf6">SW3 · D2</text>
+    <circle cx="640" cy="390" r="6" fill="#8b5cf6"/>
+    <line x1="640" y1="390" x2="780" y2="368" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="790" cy="390" r="6" fill="#111"/>
+    <line x1="790" y1="390" x2="790" y2="460" stroke="#111" stroke-width="3"/>
+  </g>
+
+  <text x="40" y="478" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#444">Cada palo: 2 hilos. Borne A = GPIO (D0/D1/D2). Borne B = GND. Cerrado = ON.</text>
+</svg>
