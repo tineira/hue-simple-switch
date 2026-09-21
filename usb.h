@@ -62,6 +62,7 @@ inline bool gImprovScanPending = false;
 inline bool gImprovScanStarted = false;
 inline bool gImprovScanDefer = false;
 inline unsigned long gImprovScanAt = 0;
+inline unsigned long gImprovScanKickAt = 0;
 
 inline bool wifiConfigSsidOk() {
   const char *s = WIFI_SSID;
@@ -253,16 +254,24 @@ inline void usbStartScan() {
   usbSendState();
 }
 
+// Lanza el scan async. STA puede estar en WiFi.begin() desde el boot: hay que
+// cortar el intento (sin borrar NVS) o scanNetworks falla todo el rato.
+inline void usbKickScan() {
+  WiFi.mode(WIFI_STA);
+  WiFi.setSleep(false);
+  WiFi.disconnect();
+  WiFi.scanDelete();
+  WiFi.scanNetworks(true, true);
+  gImprovScanKickAt = millis();
+}
+
 inline void usbBeginScan() {
   if (!gImprovScanPending || gImprovScanStarted) {
     return;
   }
-  WiFi.mode(WIFI_STA);
-  WiFi.setSleep(false);
-  WiFi.scanDelete();
-  WiFi.scanNetworks(true, true);
   gImprovScanStarted = true;
   gImprovScanAt = millis();
+  usbKickScan();
 }
 
 inline void usbFlushScan() {
@@ -271,14 +280,14 @@ inline void usbFlushScan() {
   }
   const int16_t n = WiFi.scanComplete();
   const unsigned long elapsed = millis() - gImprovScanAt;
-  // Arduino puede devolver FAILED/0 antes de WIFI_SCANNING_BIT.
   if (n == WIFI_SCAN_RUNNING) {
     return;
   }
-  if (n == WIFI_SCAN_FAILED && elapsed < 15000UL) {
-    return;
-  }
-  if (n == 0 && elapsed < 3000UL) {
+  // FAILED (o 0 muy pronto): reintentar cada ~400 ms hasta 15 s, sin quedarse quieto.
+  if ((n == WIFI_SCAN_FAILED || (n == 0 && elapsed < 3000UL)) && elapsed < 15000UL) {
+    if (millis() - gImprovScanKickAt >= 400UL) {
+      usbKickScan();
+    }
     return;
   }
   gImprovScanPending = false;
