@@ -37,6 +37,7 @@ static const uint8_t kImprovReqInfo = 0x03;
 static const uint8_t kImprovReqScan = 0x04;
 
 static const unsigned long kImprovConnectMs = 20000UL;
+static const unsigned long kImprovByteMs = 500;
 static const size_t kUsbImprovMax = 280;
 static const size_t kUsbAsciiMax = 192;
 
@@ -51,6 +52,7 @@ enum UsbParse {
 inline UsbParse gUsbParse = USB_IDLE;
 inline uint8_t gUsbImprov[kUsbImprovMax];
 inline size_t gUsbImprovLen = 0;
+inline unsigned long gUsbImprovMs = 0;
 inline char gUsbAscii[kUsbAsciiMax];
 inline size_t gUsbAsciiLen = 0;
 
@@ -249,7 +251,6 @@ inline void usbStartScan() {
   gImprovScanDefer = true;
   gImprovScanAt = millis();
   usbSendState();
-  Serial.flush();
 }
 
 inline void usbBeginScan() {
@@ -441,6 +442,7 @@ inline void usbFeed(uint8_t b) {
     if (b == 'I') {
       gUsbParse = USB_IMPROV;
       gUsbImprovLen = 0;
+      gUsbImprovMs = millis();
       gUsbImprov[gUsbImprovLen++] = b;
       return;
     }
@@ -459,6 +461,7 @@ inline void usbFeed(uint8_t b) {
       return;
     }
     gUsbImprov[gUsbImprovLen++] = b;
+    gUsbImprovMs = millis();
     if (gUsbImprovLen == 6 && memcmp(gUsbImprov, "IMPROV", 6) != 0) {
       gUsbParse = USB_IDLE;
       gUsbImprovLen = 0;
@@ -501,6 +504,10 @@ inline void usbFeed(uint8_t b) {
 }
 
 inline void usbPoll() {
+  if (gUsbParse == USB_IMPROV && gUsbImprovLen > 0 && (millis() - gUsbImprovMs) > kImprovByteMs) {
+    gUsbParse = USB_IDLE;
+    gUsbImprovLen = 0;
+  }
   while (Serial.available() > 0) {
     usbFeed((uint8_t)Serial.read());
   }

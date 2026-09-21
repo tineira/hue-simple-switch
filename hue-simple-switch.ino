@@ -18,7 +18,17 @@ String gHueAppKey;
 
 static bool gWifiWasUp = false;
 static bool gHueReady = false;
+static bool gWifiBootTried = false;
 static unsigned long gWifiLastTryMs = 0;
+
+static void usbPump(unsigned long ms) {
+  const unsigned long start = millis();
+  usbPoll();
+  while (millis() - start < ms) {
+    delay(10);
+    usbPoll();
+  }
+}
 
 static void afterWifiUp() {
   LOG("IP: ");
@@ -45,8 +55,8 @@ void setup() {
   Serial.begin(115200);
   // USB CDC: sin PC el write() espera al host. 0 = no bloquear el boot.
   Serial.setTxTimeoutMs(0);
-  delay(200);
   usbPoll();
+  usbPump(200);
 
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
@@ -54,20 +64,22 @@ void setup() {
   LOG("hue-simple-switch\n");
   LOG("firmware %s\n", FIRMWARE_VERSION);
 
+  gOnHueWait = []() { usbPoll(); };
+
   consoleLoadNvs();
   recipesLoad();
   channelsBegin();
   consoleWorkerBegin();
-
-  wifiBootConnect();
-  gWifiLastTryMs = millis();
   usbPoll();
 
-  if (WiFi.status() == WL_CONNECTED) {
-    gWifiWasUp = true;
-    afterWifiUp();
-  } else if (!gWifiHaveCreds) {
-    LOGLN("WiFi failed — USB Improv + HUESET ready");
+  // Web Serial DTR-resets the C6; Scan/ping can arrive during boot.
+  // Do not WiFi.begin over an Improv scan, and keep usbPoll alive if STA fails.
+  usbPump(1000);
+  if (!usbWifiBusy()) {
+    wifiBootConnect();
+    gWifiBootTried = true;
+    gWifiLastTryMs = millis();
+    usbPoll();
   }
 
   channelsPrime();
@@ -76,19 +88,28 @@ void setup() {
 
 void loop() {
   const unsigned long now = millis();
-  channelsPoll(now);
   usbPoll();
+  channelsPoll(now);
 
   if (WiFi.status() != WL_CONNECTED) {
     if (gWifiWasUp) {
       gWifiWasUp = false;
       digitalWrite(LED_BUILTIN, LOW);
     }
+    if (!gWifiBootTried && !usbWifiBusy()) {
+      wifiBootConnect();
+      gWifiBootTried = true;
+      gWifiLastTryMs = now;
+    }
     if (gWifiHaveCreds && !usbWifiBusy() && (now - gWifiLastTryMs >= 10000UL)) {
       gWifiLastTryMs = now;
       LOGLN("WiFi retry");
       wifiRetryStored();
     }
+    return;
+  }
+
+  if (usbWifiBusy()) {
     return;
   }
 

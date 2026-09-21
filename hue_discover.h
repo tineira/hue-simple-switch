@@ -12,6 +12,7 @@ static const unsigned long kPairTimeoutMs = 90000;
 static const unsigned long kLongPressMs = 3000;
 
 inline String gHueBridgeId;
+inline void (*gOnHueWait)() = nullptr;
 
 inline bool hueLooksLikeIp(const String &s) {
   if (s.length() < 7 || s.indexOf('x') >= 0) {
@@ -185,6 +186,9 @@ inline bool huePairAppKey() {
     }
     if (body.indexOf("link button not pressed") < 0 && code > 0) {
       Serial.printf("Pair POST %d %s\n", code, body.c_str());
+    }
+    if (gOnHueWait) {
+      gOnHueWait();
     }
     delay(400);
   }

@@ -19,7 +19,7 @@
 #define CONSOLE_TOKEN ""
 #endif
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.2.3"
+#define FIRMWARE_VERSION "0.2.4"
 #endif
 
 static const unsigned long kPollEmptyMs = 60UL * 1000UL;
