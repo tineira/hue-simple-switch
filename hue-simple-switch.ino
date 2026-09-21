@@ -1,5 +1,10 @@
-#include <WiFi.h>
+#if defined(__has_include)
+#if __has_include("config.h")
 #include "config.h"
+#endif
+#endif
+#include "log.h"
+#include <WiFi.h>
 
 String gHueBridgeIp;
 String gHueAppKey;
@@ -9,28 +14,29 @@ String gHueAppKey;
 #include "recipes.h"
 #include "channels.h"
 #include "console.h"
+#include "usb.h"
 
 static bool gWifiWasUp = false;
 static bool gHueReady = false;
 static unsigned long gWifiLastTryMs = 0;
 
 static void afterWifiUp() {
-  Serial.print("IP: ");
-  Serial.println(WiFi.localIP());
-  Serial.printf("mac %s\n", deviceMacHex().c_str());
+  LOG("IP: ");
+  LOGLN(WiFi.localIP());
+  LOG("mac %s\n", deviceMacHex().c_str());
   digitalWrite(LED_BUILTIN, HIGH);
   if (!hueEnsureReady()) {
-    Serial.println("Hue setup failed — press Bridge button if pairing, check Wi-Fi LAN");
+    LOGLN("Hue setup failed — press Bridge button if pairing, check Wi-Fi LAN");
     gHueReady = false;
     return;
   }
   gHueReady = true;
-  Serial.printf("Using Bridge %s id=%s\n", gHueBridgeIp.c_str(), gHueBridgeId.c_str());
+  LOG("Using Bridge %s id=%s\n", gHueBridgeIp.c_str(), gHueBridgeId.c_str());
   if (recipesBindBridge(gHueBridgeId)) {
     gConsoleRegistered = false;
   }
   if (!consoleConfigured()) {
-    Serial.println("console: CONSOLE_URL / CONSOLE_TOKEN not set");
+    LOGLN("console: CONSOLE_URL / CONSOLE_TOKEN not set");
   }
   gNeedConsoleSync = true;
 }
@@ -44,52 +50,42 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
 
-  Serial.println("hue-simple-switch");
-  Serial.printf("firmware %s  SSID: %s\n", FIRMWARE_VERSION, WIFI_SSID);
+  LOG("hue-simple-switch\n");
+  LOG("firmware %s\n", FIRMWARE_VERSION);
 
-  // Recetas en NVS antes de leer GPIO. La primera muestra no dispara on/off.
+  consoleLoadNvs();
   recipesLoad();
   channelsBegin();
   consoleWorkerBegin();
 
-  WiFi.mode(WIFI_STA);
-  WiFi.setSleep(false);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  wifiBootConnect();
   gWifiLastTryMs = millis();
-
-  Serial.print("WiFi");
-  uint8_t attempts = 0;
-  while (WiFi.status() != WL_CONNECTED && attempts < 60) {
-    delay(250);
-    Serial.print(".");
-    attempts++;
-  }
-  Serial.println();
 
   if (WiFi.status() == WL_CONNECTED) {
     gWifiWasUp = true;
     afterWifiUp();
-  } else {
-    Serial.printf("WiFi failed, status=%d — will retry\n", (int)WiFi.status());
+  } else if (!gWifiHaveCreds) {
+    LOGLN("WiFi failed — USB Improv + HUESET ready");
   }
+
   channelsPrime();
-  Serial.println("GPIO: boot short=recipe, hold 3s=re-pair. d0/d1/d2 maintained.");
+  LOGLN("GPIO: boot short=recipe, hold 3s=re-pair. d0/d1/d2 maintained.");
 }
 
 void loop() {
   const unsigned long now = millis();
   channelsPoll(now);
+  usbPoll();
 
   if (WiFi.status() != WL_CONNECTED) {
     if (gWifiWasUp) {
       gWifiWasUp = false;
       digitalWrite(LED_BUILTIN, LOW);
     }
-    if (now - gWifiLastTryMs >= 10000UL) {
+    if (gWifiHaveCreds && !usbWifiBusy() && (now - gWifiLastTryMs >= 10000UL)) {
       gWifiLastTryMs = now;
-      Serial.println("WiFi retry");
-      WiFi.disconnect();
-      WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+      LOGLN("WiFi retry");
+      wifiRetryStored();
     }
     return;
   }

@@ -6,6 +6,7 @@ hue-lights.md
 
 # Arduino / arduino-cli build output
 build/
+dist/
 .cache/
 *.elf
 *.map

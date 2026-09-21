@@ -1,0 +1,83 @@
+name: USB installer
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  usb-installer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Product config.h
+        run: cp config.product.h config.h
+
+      - name: Compile
+        run: arduino-cli compile --profile xiao-c6 --export-binaries --build-property upload.maximum_size=1966080 .
+
+      - name: Stage dist/installer
+        run: |
+          set -euo pipefail
+          mkdir -p dist/installer
+          EXP=build/esp32.esp32.XIAO_ESP32C6
+          cp "$EXP/hue-simple-switch.ino.bootloader.bin" dist/installer/bootloader.bin
+          cp "$EXP/hue-simple-switch.ino.partitions.bin" dist/installer/partitions.bin
+          cp "$EXP/boot_app0.bin" dist/installer/boot_app0.bin
+          cp "$EXP/hue-simple-switch.ino.bin" dist/installer/firmware.bin
+          ls -l dist/installer
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: usb-installer-simple
+          path: |
+            dist/installer/bootloader.bin
+            dist/installer/partitions.bin
+            dist/installer/boot_app0.bin
+            dist/installer/firmware.bin
+          if-no-files-found: error
+
+      - name: Rolling GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=usb-installer
+          TITLE="USB installer 0.2.0"
+          NOTES="Product USB installer (empty WIFI_* / CONSOLE_*). Firmware 0.2.0, XIAO ESP32-C6."
+          FILES=(
+            dist/installer/bootloader.bin
+            dist/installer/partitions.bin
+            dist/installer/boot_app0.bin
+            dist/installer/firmware.bin
+          )
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "${FILES[@]}" --clobber
+            gh release edit "$TAG" --title "$TITLE" --notes "$NOTES"
+          else
+            gh release create "$TAG" "${FILES[@]}" --title "$TITLE" --notes "$NOTES"
+          fi
+
+      - name: Notify console
+        env:
+          CONSOLE_REPO_TOKEN: ${{ secrets.CONSOLE_REPO_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CONSOLE_REPO_TOKEN}" ]; then
+            echo "CONSOLE_REPO_TOKEN not set; skip repository_dispatch"
+            exit 0
+          fi
+          curl -fsS -X POST \
+            -H "Authorization: Bearer ${CONSOLE_REPO_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/tineira/hue-switch-console/dispatches \
+            -d '{"event_type":"firmware-bins","client_payload":{"product":"simple","version":"0.2.0"}}'
