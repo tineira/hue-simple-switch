@@ -66,7 +66,7 @@ inline void recipeFire(const char *channelId, const char *event) {
   recipesLock();
   const HueRecipe *r = recipesFind(channelId, event);
   if (!r && strcmp(event, "double_click") == 0) {
-    Serial.printf("%s double_click: no recipe, fallback on\n", channelId);
+    LOG("%s double_click: no recipe, fallback on\n", channelId);
     r = recipesFind(channelId, "on");
   }
   if (!r) {
@@ -78,12 +78,12 @@ inline void recipeFire(const char *channelId, const char *event) {
   recipeCopyField(rid, sizeof(rid), r->rid);
   recipesUnlock();
   if (WiFi.status() != WL_CONNECTED) {
-    Serial.printf("%s %s skipped: WiFi down\n", channelId, event);
+    LOG("%s %s skipped: WiFi down\n", channelId, event);
     return;
   }
-  Serial.printf("%s %s -> %s %s/%s\n", channelId, event, action, rtype, rid);
+  LOG("%s %s -> %s %s/%s\n", channelId, event, action, rtype, rid);
   if (!hueExecute(action, rtype, rid)) {
-    Serial.println("Hue action failed");
+    LOGLN("Hue action failed");
   }
 }
 
@@ -165,9 +165,9 @@ inline void channelMomentary(size_t i, unsigned long now) {
       st.longPressHandled = true;
       if (strcmp(ch.id, "boot") == 0) {
         if (WiFi.status() != WL_CONNECTED) {
-          Serial.println("Re-pair skipped: WiFi down");
+          LOGLN("Re-pair skipped: WiFi down");
         } else if (hueRePair()) {
-          Serial.printf("Using Bridge %s\n", gHueBridgeIp.c_str());
+          LOG("Using Bridge %s\n", gHueBridgeIp.c_str());
           recipesBindBridge(gHueBridgeId);
           gNeedConsoleSync = true;
         }
@@ -182,9 +182,9 @@ inline void channelMomentary(size_t i, unsigned long now) {
       st.longPressHandled = true;
       if (strcmp(ch.id, "boot") == 0) {
         if (WiFi.status() != WL_CONNECTED) {
-          Serial.println("Re-pair skipped: WiFi down");
+          LOGLN("Re-pair skipped: WiFi down");
         } else if (hueRePair()) {
-          Serial.printf("Using Bridge %s\n", gHueBridgeIp.c_str());
+          LOG("Using Bridge %s\n", gHueBridgeIp.c_str());
           recipesBindBridge(gHueBridgeId);
           gNeedConsoleSync = true;
         }

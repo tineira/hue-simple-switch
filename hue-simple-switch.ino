@@ -53,8 +53,8 @@ static void afterWifiUp() {
 
 void setup() {
   Serial.begin(115200);
-  // USB CDC: sin PC el write() espera al host. 0 = no bloquear el boot.
-  Serial.setTxTimeoutMs(0);
+  // USB CDC: sin PC el write() espera al host. 100 ms: 0 descartaba escrituras si tx_lock estaba ocupado.
+  Serial.setTxTimeoutMs(100);
   usbPoll();
   usbPump(200);
 

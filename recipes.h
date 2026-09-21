@@ -258,7 +258,7 @@ inline void recipesLoad() {
   uint8_t n = 0;
   recipesParseArray(json.c_str(), &n);
   gRecipeCount = n;
-  Serial.printf("NVS recipes rev=%u count=%u\n", gRecipeRev, gRecipeCount);
+  LOG("NVS recipes rev=%u count=%u\n", gRecipeRev, gRecipeCount);
 }
 
 // true si cambió el bridgeid y se tiraron recetas/rev (llamar ANTES del poll).
@@ -269,7 +269,7 @@ inline bool recipesBindBridge(const String &bid) {
   recipesLock();
   bool dropped = false;
   if (gRecipeBridgeId.length() && !gRecipeBridgeId.equalsIgnoreCase(bid)) {
-    Serial.println("Bridge id changed — dropping recipes");
+    LOGLN("Bridge id changed — dropping recipes");
     gRecipeBridgeId = bid;
     recipesClear();
     dropped = true;

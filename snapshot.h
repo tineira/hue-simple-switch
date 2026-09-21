@@ -201,13 +201,13 @@ inline bool hueStreamResource(const char *resource, JsonObjFn fn, void *ctx, int
     *countOut = sink.objects;
   }
   if (code != HTTP_CODE_OK) {
-    Serial.printf("Hue stream %s %d\n", resource, code);
+    LOG("Hue stream %s %d\n", resource, code);
     return false;
   }
   if (sink.overflow) {
-    Serial.printf("Hue stream %s: object overflow\n", resource);
+    LOG("Hue stream %s: object overflow\n", resource);
   }
-  Serial.printf("Hue stream %s ok objects=%d\n", resource, sink.objects);
+  LOG("Hue stream %s ok objects=%d\n", resource, sink.objects);
   return true;
 }
 
@@ -222,31 +222,31 @@ inline bool hueBuildSnapshot(String *lights, String *rooms, String *scenes) {
 
   SnapBuild lightCtx{lights, nullptr, 0};
   if (!hueStreamResource("light", snapshotOnLight, &lightCtx, nullptr)) {
-    Serial.println("snapshot aborted: light stream failed");
+    LOGLN("snapshot aborted: light stream failed");
     return false;
   }
 
   SnapBuild roomCtx{rooms, "room", 0};
   if (!hueStreamResource("room", snapshotOnGroup, &roomCtx, nullptr)) {
-    Serial.println("snapshot aborted: room stream failed");
+    LOGLN("snapshot aborted: room stream failed");
     return false;
   }
   SnapBuild zoneCtx{rooms, "zone", 0};
   if (!hueStreamResource("zone", snapshotOnGroup, &zoneCtx, nullptr)) {
-    Serial.println("snapshot aborted: zone stream failed");
+    LOGLN("snapshot aborted: zone stream failed");
     return false;
   }
 
   SnapBuild sceneCtx{scenes, nullptr, 0};
   if (!hueStreamResource("scene", snapshotOnScene, &sceneCtx, nullptr)) {
-    Serial.println("snapshot aborted: scene stream failed");
+    LOGLN("snapshot aborted: scene stream failed");
     return false;
   }
 
   *lights += ']';
   *rooms += ']';
   *scenes += ']';
-  Serial.printf("Snapshot lights=%d rooms+zones=%d scenes=%d\n", lightCtx.count, roomCtx.count + zoneCtx.count,
+  LOG("Snapshot lights=%d rooms+zones=%d scenes=%d\n", lightCtx.count, roomCtx.count + zoneCtx.count,
                 sceneCtx.count);
   return true;
 }

@@ -19,7 +19,7 @@
 #define CONSOLE_TOKEN ""
 #endif
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.2.4"
+#define FIRMWARE_VERSION "0.2.5"
 #endif
 
 static const unsigned long kPollEmptyMs = 60UL * 1000UL;
@@ -151,13 +151,13 @@ inline bool consoleRegister() {
     return false;
   }
   if (!gHueBridgeId.length() || !gHueBridgeIp.length()) {
-    Serial.println("console register skipped: no Bridge");
+    LOGLN("console register skipped: no Bridge");
     return false;
   }
 
   String lights, rooms, scenes;
   if (!hueBuildSnapshot(&lights, &rooms, &scenes)) {
-    Serial.println("console register skipped: snapshot failed (keep last good)");
+    LOGLN("console register skipped: snapshot failed (keep last good)");
     return false;
   }
 
@@ -183,13 +183,13 @@ inline bool consoleRegister() {
 
   String body;
   const int code = consoleHttp("POST", "/api/device/register", payload.c_str(), &body);
-  Serial.printf("console POST register %d\n", code);
+  LOG("console POST register %d\n", code);
   if (code != HTTP_CODE_OK) {
-    Serial.println(body);
+    LOGLN(body);
     return false;
   }
   gConsoleRegistered = true;
-  Serial.printf("console registered mac=%s\n", deviceMacHex().c_str());
+  LOG("console registered mac=%s\n", deviceMacHex().c_str());
   return true;
 }
 
@@ -201,13 +201,13 @@ inline void consoleFetchConfig() {
   path += deviceMacHex();
   String body;
   const int code = consoleHttp("GET", path, nullptr, &body);
-  Serial.printf("console GET config %d\n", code);
+  LOG("console GET config %d\n", code);
   if (code != HTTP_CODE_OK) {
     if (code == HTTP_CODE_UNAUTHORIZED) {
-      Serial.println("console unauthorized — NVS recipes kept");
+      LOGLN("console unauthorized — NVS recipes kept");
     }
     if (body.length()) {
-      Serial.println(body);
+      LOGLN(body);
     }
     return;
   }
@@ -223,20 +223,20 @@ inline void consoleFetchConfig() {
     memcpy(gRecipes, backup, sizeof(backup));
     gRecipeCount = localCount;
     recipesUnlock();
-    Serial.println("console config parse failed");
+    LOGLN("console config parse failed");
     return;
   }
   if (localRev >= rev) {
     memcpy(gRecipes, backup, sizeof(backup));
     gRecipeCount = localCount;
     recipesUnlock();
-    Serial.printf("console rev %u local %u — keep NVS\n", rev, localRev);
+    LOG("console rev %u local %u — keep NVS\n", rev, localRev);
     return;
   }
   gRecipeRev = rev;
   recipesSave();
   recipesUnlock();
-  Serial.printf("console rev %u — replaced %u recipes\n", gRecipeRev, gRecipeCount);
+  LOG("console rev %u — replaced %u recipes\n", gRecipeRev, gRecipeCount);
 }
 
 inline void consoleDoSync() {
@@ -294,6 +294,6 @@ inline void consoleWorkerBegin() {
   const BaseType_t ok = xTaskCreate(consoleWorkerTask, "console", 16384, nullptr, 1, &gConsoleTask);
   if (ok != pdPASS) {
     gConsoleTask = nullptr;
-    Serial.println("console task failed");
+    LOGLN("console task failed");
   }
 }

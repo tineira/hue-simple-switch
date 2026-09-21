@@ -79,12 +79,12 @@ inline bool hueDiscoverMdns() {
   String host = "hue-sw-";
   host += String((uint16_t)(ESP.getEfuseMac() & 0xFFFF), HEX);
   if (!MDNS.begin(host.c_str())) {
-    Serial.println("mDNS begin failed");
+    LOGLN("mDNS begin failed");
     return false;
   }
 
   const int n = MDNS.queryService("hue", "tcp");
-  Serial.printf("mDNS _hue._tcp: %d\n", n);
+  LOG("mDNS _hue._tcp: %d\n", n);
   String chosen;
   for (int i = 0; i < n; i++) {
     const IPAddress ip = MDNS.address(i);
@@ -93,7 +93,7 @@ inline bool hueDiscoverMdns() {
     }
     const String ipStr = ip.toString();
     const String bid = MDNS.hasTxt(i, "bridgeid") ? MDNS.txt(i, "bridgeid") : String();
-    Serial.printf("  %s  %s  bridgeid=%s\n", MDNS.instanceName(i).c_str(), ipStr.c_str(), bid.c_str());
+    LOG("  %s  %s  bridgeid=%s\n", MDNS.instanceName(i).c_str(), ipStr.c_str(), bid.c_str());
     if (gHueBridgeId.length() && bid.length() && bid.equalsIgnoreCase(gHueBridgeId)) {
       chosen = ipStr;
       break;
@@ -113,7 +113,7 @@ inline bool hueDiscoverMdns() {
 inline bool hueDiscoverCloud() {
   String body;
   const int code = hueHttp("https://discovery.meethue.com/", "GET", nullptr, &body, false, false);
-  Serial.printf("discovery.meethue.com %d\n", code);
+  LOG("discovery.meethue.com %d\n", code);
   if (code != HTTP_CODE_OK) {
     return false;
   }
@@ -121,7 +121,7 @@ inline bool hueDiscoverCloud() {
   if (!jsonStringField(body, "internalipaddress", &ip) || !hueLooksLikeIp(ip)) {
     return false;
   }
-  Serial.printf("  cloud IP %s\n", ip.c_str());
+  LOG("  cloud IP %s\n", ip.c_str());
   gHueBridgeIp = ip;
   return true;
 }
@@ -133,29 +133,29 @@ inline bool hueFindBridge() {
     String id;
     if (hueProbeBridge(gHueBridgeIp, &id)) {
       gHueBridgeId = id;
-      Serial.printf("Bridge via mDNS %s id=%s\n", gHueBridgeIp.c_str(), gHueBridgeId.c_str());
+      LOG("Bridge via mDNS %s id=%s\n", gHueBridgeIp.c_str(), gHueBridgeId.c_str());
       return true;
     }
   }
 
   if (hueLooksLikeIp(cached) && hueProbeBridge(cached, &gHueBridgeId)) {
     gHueBridgeIp = cached;
-    Serial.printf("Bridge via cache %s\n", gHueBridgeIp.c_str());
+    LOG("Bridge via cache %s\n", gHueBridgeIp.c_str());
     return true;
   }
 
   if (hueLooksLikeIp(HUE_BRIDGE_IP) && hueProbeBridge(HUE_BRIDGE_IP, &gHueBridgeId)) {
     gHueBridgeIp = HUE_BRIDGE_IP;
-    Serial.printf("Bridge via config.h %s\n", gHueBridgeIp.c_str());
+    LOG("Bridge via config.h %s\n", gHueBridgeIp.c_str());
     return true;
   }
 
   if (hueDiscoverCloud() && hueProbeBridge(gHueBridgeIp, &gHueBridgeId)) {
-    Serial.printf("Bridge via cloud %s\n", gHueBridgeIp.c_str());
+    LOG("Bridge via cloud %s\n", gHueBridgeIp.c_str());
     return true;
   }
 
-  Serial.println("Bridge not found");
+  LOGLN("Bridge not found");
   return false;
 }
 
@@ -170,7 +170,7 @@ inline bool huePairAppKey() {
     return false;
   }
 
-  Serial.println("Pairing: press the Bridge link button");
+  LOGLN("Pairing: press the Bridge link button");
   const unsigned long start = millis();
   while (millis() - start < kPairTimeoutMs) {
     hueBlink(millis() - start);
@@ -181,11 +181,11 @@ inline bool huePairAppKey() {
     if (jsonStringField(body, "username", &user) && hueLooksLikeKey(user)) {
       gHueAppKey = user;
       digitalWrite(LED_BUILTIN, HIGH);
-      Serial.println("Paired (key stored in flash)");
+      LOGLN("Paired (key stored in flash)");
       return true;
     }
     if (body.indexOf("link button not pressed") < 0 && code > 0) {
-      Serial.printf("Pair POST %d %s\n", code, body.c_str());
+      LOG("Pair POST %d %s\n", code, body.c_str());
     }
     if (gOnHueWait) {
       gOnHueWait();
@@ -193,7 +193,7 @@ inline bool huePairAppKey() {
     delay(400);
   }
   digitalWrite(LED_BUILTIN, LOW);
-  Serial.println("Pairing timeout");
+  LOGLN("Pairing timeout");
   return false;
 }
 
@@ -203,7 +203,7 @@ inline bool hueKeyWorks() {
   }
   String body;
   const int code = hueHttp("https://" + gHueBridgeIp + "/clip/v2/resource/bridge", "GET", nullptr, &body, true, true);
-  Serial.printf("Hue auth GET %d\n", code);
+  LOG("Hue auth GET %d\n", code);
   return code == HTTP_CODE_OK;
 }
 
@@ -222,7 +222,7 @@ inline bool hueEnsureReady() {
 }
 
 inline bool hueRePair() {
-  Serial.println("Re-pair requested");
+  LOGLN("Re-pair requested");
   gHueAppKey = "";
   if (!hueFindBridge()) {
     return false;
