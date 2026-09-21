@@ -243,6 +243,7 @@ inline void usbStartScan() {
   WiFi.scanNetworks(true, true);
   gImprovScanPending = true;
   gImprovScanAt = millis();
+  usbSendState();
 }
 
 inline void usbFlushScan() {
