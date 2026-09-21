@@ -4,6 +4,7 @@
 #include <HTTPClient.h>
 #include <NetworkClient.h>
 #include <NetworkClientSecure.h>
+#include <Preferences.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include "config.h"
@@ -18,7 +19,7 @@
 #define CONSOLE_TOKEN ""
 #endif
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.1.1"
+#define FIRMWARE_VERSION "0.2.0"
 #endif
 
 static const unsigned long kPollEmptyMs = 60UL * 1000UL;
@@ -27,14 +28,69 @@ static const unsigned long kPollArmedMs = 60UL * 60UL * 1000UL;
 inline bool gConsoleRegistered = false;
 inline unsigned long gConsoleLastPollMs = 0;
 inline bool gConsolePolledBoot = false;
+inline String gConsoleUrlNvs;
+inline String gConsoleTokenNvs;
 
-inline bool consoleConfigured() {
-  const char *url = CONSOLE_URL;
-  const char *tok = CONSOLE_TOKEN;
-  if (!url || !url[0] || !tok || !tok[0]) {
+inline String consoleUrl() {
+  if (gConsoleUrlNvs.length()) {
+    return gConsoleUrlNvs;
+  }
+  return String(CONSOLE_URL);
+}
+
+inline String consoleToken() {
+  if (gConsoleTokenNvs.length()) {
+    return gConsoleTokenNvs;
+  }
+  return String(CONSOLE_TOKEN);
+}
+
+inline void consoleLoadNvs() {
+  Preferences p;
+  if (!p.begin("console", true)) {
+    return;
+  }
+  gConsoleUrlNvs = p.getString("url", "");
+  gConsoleTokenNvs = p.getString("token", "");
+  p.end();
+}
+
+inline bool consoleSaveNvs(const char *key, const char *val) {
+  if (!key || !val || !val[0]) {
     return false;
   }
-  if (strstr(tok, "your-")) {
+  Preferences p;
+  if (!p.begin("console", false)) {
+    return false;
+  }
+  const size_t n = p.putString(key, val);
+  p.end();
+  return n > 0;
+}
+
+inline bool consoleSetUrl(const char *url) {
+  if (!consoleSaveNvs("url", url)) {
+    return false;
+  }
+  gConsoleUrlNvs = url;
+  return true;
+}
+
+inline bool consoleSetToken(const char *tok) {
+  if (!consoleSaveNvs("token", tok)) {
+    return false;
+  }
+  gConsoleTokenNvs = tok;
+  return true;
+}
+
+inline bool consoleConfigured() {
+  const String url = consoleUrl();
+  const String tok = consoleToken();
+  if (!url.length() || !tok.length()) {
+    return false;
+  }
+  if (tok.indexOf("your-") >= 0) {
     return false;
   }
   return true;
@@ -49,7 +105,7 @@ inline String deviceMacHex() {
 }
 
 inline String consoleBaseUrl() {
-  String url = CONSOLE_URL;
+  String url = consoleUrl();
   while (url.endsWith("/")) {
     url.remove(url.length() - 1);
   }
@@ -74,7 +130,7 @@ inline int consoleHttp(const char *method, const String &path, const char *body,
     return -1;
   }
 
-  http.addHeader("Authorization", String("Bearer ") + CONSOLE_TOKEN);
+  http.addHeader("Authorization", String("Bearer ") + consoleToken());
   http.addHeader("Content-Type", "application/json");
 
   int code = -1;
