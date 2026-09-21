@@ -57,6 +57,7 @@ inline size_t gUsbAsciiLen = 0;
 inline bool gImprovConnecting = false;
 inline unsigned long gImprovConnectAt = 0;
 inline bool gImprovScanPending = false;
+inline unsigned long gImprovScanAt = 0;
 
 inline bool wifiConfigSsidOk() {
   const char *s = WIFI_SSID;
@@ -236,35 +237,39 @@ inline void usbStartScan() {
     usbSendRpcEmpty(kImprovReqScan);
     return;
   }
+  WiFi.mode(WIFI_STA);
+  WiFi.setSleep(false);
   WiFi.scanDelete();
-  const int16_t rc = WiFi.scanNetworks(true, true);
-  if (rc == WIFI_SCAN_FAILED) {
-    usbSendRpcEmpty(kImprovReqScan);
-    return;
-  }
+  WiFi.scanNetworks(true, true);
   gImprovScanPending = true;
+  gImprovScanAt = millis();
 }
 
 inline void usbFlushScan() {
   const int16_t n = WiFi.scanComplete();
-  if (n < 0) {
-    if (n == WIFI_SCAN_FAILED) {
-      gImprovScanPending = false;
-      usbSendRpcEmpty(kImprovReqScan);
-    }
+  const unsigned long elapsed = millis() - gImprovScanAt;
+  if (n == WIFI_SCAN_RUNNING) {
+    return;
+  }
+  if (n == WIFI_SCAN_FAILED && elapsed < 15000UL) {
+    return;
+  }
+  if (n == 0 && elapsed < 3000UL) {
     return;
   }
   gImprovScanPending = false;
-  for (int i = 0; i < n; i++) {
-    const String ssid = WiFi.SSID(i);
-    if (!ssid.length()) {
-      continue;
+  if (n > 0) {
+    for (int i = 0; i < n; i++) {
+      const String ssid = WiFi.SSID(i);
+      if (!ssid.length()) {
+        continue;
+      }
+      char rssi[8];
+      snprintf(rssi, sizeof(rssi), "%d", WiFi.RSSI(i));
+      const char *auth = (WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? "NO" : "YES";
+      const char *row[3] = {ssid.c_str(), rssi, auth};
+      usbSendRpcResult(kImprovReqScan, row, 3);
     }
-    char rssi[8];
-    snprintf(rssi, sizeof(rssi), "%d", WiFi.RSSI(i));
-    const char *auth = (WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? "NO" : "YES";
-    const char *row[3] = {ssid.c_str(), rssi, auth};
-    usbSendRpcResult(kImprovReqScan, row, 3);
   }
   usbSendRpcEmpty(kImprovReqScan);
   WiFi.scanDelete();
