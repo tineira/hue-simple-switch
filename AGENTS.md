@@ -56,3 +56,4 @@ Replace `COMx` with the XIAO port (`arduino-cli board list`).
 - Digital input channels: each channel has its own recipe; see hue-switch-console `docs/definiciones.md` and `docs/device-api.md`
 - Hue API: local HTTPS Clip v2, not the cloud
 - Do not impersonate Hue accessories or use Zigbee on this sketch
+- Scratch notes (`docs/_audit-*.md`, `docs/_review-*.md`) are not spec. Delete them once used. Do not commit them.

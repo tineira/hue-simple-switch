@@ -20,6 +20,10 @@ dist/
 .grok/
 .playwright-mcp/
 
+# Scratch working notes (delete after use; never commit)
+docs/_audit-*.md
+docs/_review-*.md
+
 # OS
 Thumbs.db
 desktop.ini
