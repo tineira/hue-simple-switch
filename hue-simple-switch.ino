@@ -46,6 +46,7 @@ void setup() {
   // USB CDC: sin PC el write() espera al host. 0 = no bloquear el boot.
   Serial.setTxTimeoutMs(0);
   delay(200);
+  usbPoll();
 
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
@@ -60,6 +61,7 @@ void setup() {
 
   wifiBootConnect();
   gWifiLastTryMs = millis();
+  usbPoll();
 
   if (WiFi.status() == WL_CONNECTED) {
     gWifiWasUp = true;

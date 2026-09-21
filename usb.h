@@ -57,6 +57,8 @@ inline size_t gUsbAsciiLen = 0;
 inline bool gImprovConnecting = false;
 inline unsigned long gImprovConnectAt = 0;
 inline bool gImprovScanPending = false;
+inline bool gImprovScanStarted = false;
+inline bool gImprovScanDefer = false;
 inline unsigned long gImprovScanAt = 0;
 
 inline bool wifiConfigSsidOk() {
@@ -215,6 +217,8 @@ inline void usbHandleWifiSettings(const uint8_t *data, uint8_t dataLen) {
   pass[passLen] = 0;
 
   gImprovScanPending = false;
+  gImprovScanStarted = false;
+  gImprovScanDefer = false;
   WiFi.scanDelete();
   gImprovConnecting = true;
   gImprovConnectAt = millis();
@@ -234,21 +238,39 @@ inline void usbHandleInfo() {
 
 inline void usbStartScan() {
   if (gImprovConnecting) {
+    usbSendState();
     usbSendRpcEmpty(kImprovReqScan);
+    return;
+  }
+  // ACK de estado ya: scanNetworks/mode pueden bloquear el CDC y el wizard
+  // ve 4s de silencio. El scan arranca en el siguiente usbPoll.
+  gImprovScanPending = true;
+  gImprovScanStarted = false;
+  gImprovScanDefer = true;
+  gImprovScanAt = millis();
+  usbSendState();
+  Serial.flush();
+}
+
+inline void usbBeginScan() {
+  if (!gImprovScanPending || gImprovScanStarted) {
     return;
   }
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(false);
   WiFi.scanDelete();
   WiFi.scanNetworks(true, true);
-  gImprovScanPending = true;
+  gImprovScanStarted = true;
   gImprovScanAt = millis();
-  usbSendState();
 }
 
 inline void usbFlushScan() {
+  if (!gImprovScanStarted) {
+    return;
+  }
   const int16_t n = WiFi.scanComplete();
   const unsigned long elapsed = millis() - gImprovScanAt;
+  // Arduino puede devolver FAILED/0 antes de WIFI_SCANNING_BIT.
   if (n == WIFI_SCAN_RUNNING) {
     return;
   }
@@ -259,6 +281,8 @@ inline void usbFlushScan() {
     return;
   }
   gImprovScanPending = false;
+  gImprovScanStarted = false;
+  gImprovScanDefer = false;
   if (n > 0) {
     for (int i = 0; i < n; i++) {
       const String ssid = WiFi.SSID(i);
@@ -495,6 +519,11 @@ inline void usbPoll() {
   }
 
   if (gImprovScanPending) {
-    usbFlushScan();
+    if (gImprovScanDefer) {
+      gImprovScanDefer = false;
+    } else {
+      usbBeginScan();
+      usbFlushScan();
+    }
   }
 }
