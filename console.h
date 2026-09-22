@@ -19,7 +19,7 @@
 #define CONSOLE_TOKEN ""
 #endif
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.2.8"
+#define FIRMWARE_VERSION "0.2.9"
 #endif
 
 static const unsigned long kPollEmptyMs = 60UL * 1000UL;
@@ -96,13 +96,29 @@ inline bool consoleSetToken(const char *tok) {
   return true;
 }
 
+// Minted keys are hsw_ plus base64url. Anything else is not a console token.
+inline bool consoleLooksLikeToken(const String &tok) {
+  if (!tok.startsWith("hsw_")) {
+    return false;
+  }
+  if (tok.length() < 20 || tok.length() > 80) {
+    return false;
+  }
+  for (unsigned i = 4; i < tok.length(); i++) {
+    const char c = tok[i];
+    const bool ok = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') ||
+                    c == '-' || c == '_';
+    if (!ok) {
+      return false;
+    }
+  }
+  return true;
+}
+
 inline bool consoleConfigured() {
   const String url = consoleUrl();
   const String tok = consoleToken();
-  if (!url.length() || !tok.length()) {
-    return false;
-  }
-  if (tok.indexOf("your-") >= 0) {
+  if (!url.length() || !consoleLooksLikeToken(tok)) {
     return false;
   }
   return true;

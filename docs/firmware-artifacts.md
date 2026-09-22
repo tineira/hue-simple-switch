@@ -22,9 +22,9 @@ Stage stable names in `dist/installer/` (gitignored; do not commit bins here):
 | `boot_app0.bin` | `boot_app0.bin` |
 | `hue-simple-switch.ino.bin` | `firmware.bin` |
 
-CI (`.github/workflows/firmware.yml`) copies `config.product.h` → `config.h`, compiles on push to `main` / `workflow_dispatch`, uploads those four files, and refreshes GitHub Release tag `usb-installer` (version `0.2.8`).
+CI (`.github/workflows/firmware.yml`) copies `config.product.h` → `config.h`, compiles on push to `main` / `workflow_dispatch`, uploads those four files, and refreshes GitHub Release tag `usb-installer` (version `0.2.9`).
 
-`FIRMWARE_VERSION` is `0.2.8` (see `console.h`).
+`FIRMWARE_VERSION` is `0.2.9` (see `console.h`).
 
 ## Manifest parts
 

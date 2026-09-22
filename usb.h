@@ -542,7 +542,7 @@ inline void usbHandleHueget() {
   {
     const String token = usbNvsString("console", "token");
     const String key = usbNvsString("hue", "key");
-    tokenOk = token.length() > 0 && token.indexOf("your-") < 0;
+    tokenOk = consoleLooksLikeToken(token);
     keyOk = hueLooksLikeKey(key);
   }
 
