@@ -15,7 +15,7 @@ Cada canal tiene recetas por evento (`on` / `off` / `double_click` en maintained
 
 **BOOT** (GPIO9) y **RST** (CHIP_PU) son **botones**, no LEDs. En la placa hay dos luces:
 
-Alfabeto del naranja, **implementado** en firmware 0.2.7: `docs/led-status.md`.
+Alfabeto del naranja, **implementado** en firmware 0.2.7: `docs/specs/finished/led-status.md`.
 
 | Luz | Dónde | Quién la mueve |
 | --- | --- | --- |

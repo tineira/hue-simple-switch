@@ -6,7 +6,8 @@
 #include "usb.h"
 
 // LED naranja (GPIO15), activo en bajo: cátodo en el pin, ánodo a 3.3 V.
-// LOW = encendido, HIGH = apagado. El timer de 50 ms llama ledTick mientras hueHttp bloquea el loop.
+// LOW = encendido, HIGH = apagado. Spec: docs/specs/finished/led-status.md.
+// El timer de 50 ms llama ledTick mientras hueHttp bloquea el loop.
 
 static const unsigned long PULSE_ON = 100;
 static const unsigned long PULSE_GAP = 200;

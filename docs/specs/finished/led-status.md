@@ -1,10 +1,10 @@
 # Simple switch — LED naranja (status)
 
-Documento de **requisitos**. **Implementado en firmware 0.2.7.** Cubre solo `hue-simple-switch` (XIAO ESP32-C6, GPIO15 `LED_BUILTIN`, naranja). Round usa el disco, no este alfabeto.
+Documento de **requisitos**. Cubre solo `hue-simple-switch` (XIAO ESP32-C6, GPIO15 `LED_BUILTIN`, naranja). Round usa el disco, no este alfabeto.
 
 El LED rojo de carga y los botones BOOT/RST no forman parte de este spec.
 
-**Estado (2026-09-21):** implementado en firmware 0.2.7.
+**Estado:** implementado (firmware 0.2.7). Spec archivado. No es un hueco de implementación.
 
 **Cerrado el 2026-09-21 (grilling):** tick durante el POST, key rechazada vs PUT, #6 solo 401/task, ráfaga desde cero. No reabrir.
 
@@ -56,7 +56,7 @@ Ráfaga de *n* destellos: `n × PULSE_ON + (n − 1) × PULSE_GAP`, luego `BURST
 
 Ejemplo #3: on 100 — off 200 — on 100 — off 200 — on 100 — off 1400 — repetir. Se cuentan **tres**.
 
-#6: `digitalWrite` LOW, sin tick de parpadeo.
+#6: pin en `LOW` (encendido), sin tick de parpadeo.
 
 No usar 5 Hz vs 10 Hz vs 1 Hz. Un humano no los distingue en 3 mm.
 
@@ -84,7 +84,7 @@ El 401 queda **pegado** hasta una respuesta real de la consola con código **> 0
 
 Para #3 vs #4/#5: hay key en NVS que `hueLooksLikeKey` acepta **y** hay IP de Bridge. **No** hacer GET Clip en cada tick del LED.
 
-Eso se pierde, y se pasa a **#3**, solo si un HTTP Hue dice que la key no sirve: **401 o 403**, y el cuerpo no es “link button not pressed”. Un PUT fallido, un timeout o el Bridge apagado **no** bajan el peldaño. No #6.
+Eso se pierde, y se pasa a **#3**, solo si un HTTP Hue **que envió la key** dice que no sirve: **401 o 403**, y el cuerpo no es “link button not pressed”. Un 401/403 de un pedido sin key (`/api/config`, discovery) no cuenta. Un PUT que sí llevó la key y vuelve 401/403 sí baja a #3. Un timeout, un 5xx o el Bridge apagado **no** bajan el peldaño. No #6.
 
 ---
 
@@ -102,14 +102,13 @@ USB Improv / `HUESET` no añaden patrón: sin STA → #1; STA sin token/url (aú
 
 ---
 
-## 8. Implementación (cuando se haga)
+## 8. Hecho en 0.2.7
 
-- Un tick de LED en el `loop` (o timer), **sin `delay()`**, al menos cada **~50 ms**. El GPIO no espera al LED (`channelsPoll` primero).
-- El pairing Hue **no congela** ese tick. Hoy `huePairAppKey` hace `delay(400)` y `hueBlink` en el mismo hilo; al implementar, el POST no puede dejar el naranja quieto a mitad de ráfaga. El blink de pairing es el patrón #3 del clasificador, no un loop propio. Llamar al tick mientras se espera el HTTP.
+- Tick de LED por timer, **sin `delay()`**, cada **~50 ms**, también durante el POST de pairing. El GPIO no espera al LED (`channelsPoll` primero).
+- El patrón #3 lo pone el clasificador, no `hueBlink`.
 - Polaridad: `LOW` = encendido (GPIO15, activo en bajo). `HIGH` apaga.
-- No tocar el LED rojo de carga.
-- Subir `FIRMWARE_VERSION` parche.
-- Actualizar la tabla del README (la de “qué ves”) para que coincida. Borrar la semántica vieja (on = Wi-Fi).
+- No se toca el LED rojo de carga.
+- `FIRMWARE_VERSION` 0.2.7. La tabla del README coincide.
 
 Fuera de este recorte: Round (disco), Improv copy, consola.
 
