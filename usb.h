@@ -58,7 +58,7 @@ inline size_t gUsbAsciiLen = 0;
 
 inline bool gImprovConnecting = false;
 inline unsigned long gImprovConnectAt = 0;
-inline bool gImprovScanPending = false;
+inline volatile bool gImprovScanPending = false;
 inline bool gImprovScanStarted = false;
 inline bool gImprovScanDefer = false;
 inline unsigned long gImprovScanAt = 0;
@@ -173,8 +173,11 @@ inline void wifiBootConnect() {
 
   if (wifiArduinoCreds()) {
     gWifiHaveCreds = true;
+    wifi_config_t cfg;
+    memset(&cfg, 0, sizeof(cfg));
+    esp_wifi_get_config(WIFI_IF_STA, &cfg);
     WiFi.begin();
-    LOG("WiFi: Arduino STA\n");
+    LOG("WiFi: STA ssid=%s\n", (const char *)cfg.sta.ssid);
     return;
   }
   if (wifiConfigSsidOk()) {

@@ -19,7 +19,7 @@
 #define CONSOLE_TOKEN ""
 #endif
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.2.6"
+#define FIRMWARE_VERSION "0.2.7"
 #endif
 
 static const unsigned long kPollEmptyMs = 60UL * 1000UL;
@@ -30,6 +30,14 @@ inline unsigned long gConsoleLastPollMs = 0;
 inline bool gConsolePolledBoot = false;
 inline String gConsoleUrlNvs;
 inline String gConsoleTokenNvs;
+
+// 401 de consola, pegado en RAM (no NVS). Se limpia al boot.
+inline volatile bool gConsoleAuthRejected = false;
+inline volatile bool gConsoleConfiguredOk = false;
+inline volatile bool gConsoleTaskFailed = false;
+
+inline void consoleRefreshConfigured();
+inline void consoleNoteHttp(int code);
 
 inline String consoleUrl() {
   if (gConsoleUrlNvs.length()) {
@@ -47,12 +55,12 @@ inline String consoleToken() {
 
 inline void consoleLoadNvs() {
   Preferences p;
-  if (!p.begin("console", true)) {
-    return;
+  if (p.begin("console", true)) {
+    gConsoleUrlNvs = p.getString("url", "");
+    gConsoleTokenNvs = p.getString("token", "");
+    p.end();
   }
-  gConsoleUrlNvs = p.getString("url", "");
-  gConsoleTokenNvs = p.getString("token", "");
-  p.end();
+  consoleRefreshConfigured();
 }
 
 inline bool consoleSaveNvs(const char *key, const char *val) {
@@ -73,6 +81,7 @@ inline bool consoleSetUrl(const char *url) {
     return false;
   }
   gConsoleUrlNvs = url;
+  consoleRefreshConfigured();
   return true;
 }
 
@@ -81,6 +90,9 @@ inline bool consoleSetToken(const char *tok) {
     return false;
   }
   gConsoleTokenNvs = tok;
+  // HUESET token nuevo despega el 401 aunque la próxima respuesta aún no llegue.
+  gConsoleAuthRejected = false;
+  consoleRefreshConfigured();
   return true;
 }
 
@@ -94,6 +106,21 @@ inline bool consoleConfigured() {
     return false;
   }
   return true;
+}
+
+inline void consoleRefreshConfigured() {
+  gConsoleConfiguredOk = consoleConfigured();
+}
+
+inline void consoleNoteHttp(int code) {
+  if (code == HTTP_CODE_UNAUTHORIZED) {
+    gConsoleAuthRejected = true;
+    return;
+  }
+  // code <= 0 (timeout, -1, sin Wi-Fi) no despega.
+  if (code > 0) {
+    gConsoleAuthRejected = false;
+  }
 }
 
 inline String deviceMacHex() {
@@ -143,6 +170,7 @@ inline int consoleHttp(const char *method, const String &path, const char *body,
     *response = http.getString();
   }
   http.end();
+  consoleNoteHttp(code);
   return code;
 }
 
@@ -294,6 +322,9 @@ inline void consoleWorkerBegin() {
   const BaseType_t ok = xTaskCreate(consoleWorkerTask, "console", 16384, nullptr, 1, &gConsoleTask);
   if (ok != pdPASS) {
     gConsoleTask = nullptr;
+    gConsoleTaskFailed = true;
     LOGLN("console task failed");
+    return;
   }
+  gConsoleTaskFailed = false;
 }

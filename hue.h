@@ -16,6 +16,35 @@
 extern String gHueBridgeIp;
 extern String gHueAppKey;
 
+// Estado de pareo para el LED. RAM: se pierde al boot. No hay GET extra.
+inline volatile bool gHueKeyUsable = false;
+inline volatile bool gHueIpUsable = false;
+inline volatile bool gHueAuthRejected = false;
+inline volatile bool gHuePairing = false;
+inline volatile bool gHuePairTimeout = false;
+inline volatile bool gHueBridgeMissing = false;
+
+// 401/403 con key (salvo "link button not pressed") bajan a #3, también un PUT GPIO.
+// Sin key (/api/config, discovery) no prueba que la key guardada esté mala.
+// Un 200 con key recupera. Timeout, 5xx o Bridge caído no entran aquí.
+inline void hueNoteAuth(int code, const String *body, bool withKey) {
+  if (code == HTTP_CODE_UNAUTHORIZED || code == HTTP_CODE_FORBIDDEN) {
+    if (!withKey) {
+      return;
+    }
+    if (body && body->indexOf("link button not pressed") >= 0) {
+      return;
+    }
+    gHueAuthRejected = true;
+    return;
+  }
+  if (withKey && code == HTTP_CODE_OK) {
+    gHueAuthRejected = false;
+    gHuePairTimeout = false;
+    gHueBridgeMissing = false;
+  }
+}
+
 // El Bridge usa un certificado propio; Clip v2 exige HTTPS local.
 // setInsecure() evita validar esa CA (solo LAN, no cloud).
 
@@ -46,10 +75,17 @@ inline int hueHttp(const String &url, const char *method, const char *body, Stri
   } else {
     code = http.PUT(body ? String(body) : String());
   }
+  String denied;
+  const String *noted = nullptr;
   if (response) {
     *response = http.getString();
+    noted = response;
+  } else if (code == HTTP_CODE_UNAUTHORIZED || code == HTTP_CODE_FORBIDDEN) {
+    denied = http.getString();
+    noted = &denied;
   }
   http.end();
+  hueNoteAuth(code, noted, withKey);
   return code;
 }
 
@@ -70,10 +106,16 @@ inline int hueClipStream(const char *resource, JsonDataSink &sink) {
   http.setTimeout(20000);
   http.addHeader("hue-application-key", gHueAppKey);
   const int code = http.GET();
+  String denied;
+  const String *noted = nullptr;
   if (code == HTTP_CODE_OK) {
     http.writeToStream(&sink);
+  } else if (code == HTTP_CODE_UNAUTHORIZED || code == HTTP_CODE_FORBIDDEN) {
+    denied = http.getString();
+    noted = &denied;
   }
   http.end();
+  hueNoteAuth(code, noted, true);
   return code;
 }
 

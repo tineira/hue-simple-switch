@@ -15,6 +15,7 @@ String gHueAppKey;
 #include "channels.h"
 #include "console.h"
 #include "usb.h"
+#include "led.h"
 
 static bool gWifiWasUp = false;
 static bool gHueReady = false;
@@ -34,7 +35,6 @@ static void afterWifiUp() {
   LOG("IP: ");
   LOGLN(WiFi.localIP());
   LOG("mac %s\n", deviceMacHex().c_str());
-  digitalWrite(LED_BUILTIN, HIGH);
   if (!hueEnsureReady()) {
     LOGLN("Hue setup failed — press Bridge button if pairing, check Wi-Fi LAN");
     gHueReady = false;
@@ -59,7 +59,8 @@ void setup() {
   usbPump(200);
 
   pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(LED_BUILTIN, HIGH);
+  ledBegin();
 
   LOG("hue-simple-switch\n");
   LOG("firmware %s\n", FIRMWARE_VERSION);
@@ -68,6 +69,7 @@ void setup() {
 
   consoleLoadNvs();
   recipesLoad();
+  hueLoadStore();
   channelsBegin();
   consoleWorkerBegin();
   usbPoll();
@@ -90,11 +92,11 @@ void loop() {
   const unsigned long now = millis();
   usbPoll();
   channelsPoll(now);
+  const bool sta = ledPoll(now);
 
-  if (WiFi.status() != WL_CONNECTED) {
+  if (!sta) {
     if (gWifiWasUp) {
       gWifiWasUp = false;
-      digitalWrite(LED_BUILTIN, LOW);
     }
     if (!gWifiBootTried && !usbWifiBusy()) {
       wifiBootConnect();
@@ -118,7 +120,6 @@ void loop() {
     if (!gHueReady) {
       afterWifiUp();
     } else {
-      digitalWrite(LED_BUILTIN, HIGH);
       gNeedConsoleSync = true;
     }
   }
