@@ -283,7 +283,7 @@ inline bool huePairPostOnce() {
   if (jsonStringField(body, "username", &user) && hueLooksLikeKey(user)) {
     gHueAppKey = user;
     hueRefreshIdentity();
-    gHueAuthRejected = false;
+    hueAuthGraceArm(20000);
     gHuePairTimeout = false;
     gHueBridgeMissing = false;
     LOGLN("Paired (key stored in flash)");
@@ -541,13 +541,15 @@ inline void huePairPoll() {
       return;
     }
     case HUE_PAIR_CONFIRM: {
-      const bool works = hueKeyWorks();
+      hueKeyWorks();
       gHuePairStep = HUE_PAIR_IDLE;
       gHuePairing = false;
       if (gHuePairCancel) {
         return;
       }
-      if (works) {
+      // El POST ya entregó la key. Si el GET de comprobación falla, no dejar el LED en #3.
+      if (hueLooksLikeKey(gHueAppKey)) {
+        gHueAuthRejected = false;
         LOG("Using Bridge %s\n", gHueBridgeIp.c_str());
         gHuePairSync = true;
         gHueReady = true;

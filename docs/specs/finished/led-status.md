@@ -86,6 +86,8 @@ Para #3 vs #4/#5: hay key en NVS que `hueLooksLikeKey` acepta **y** hay IP de Br
 
 Eso se pierde, y se pasa a **#3**, solo si un HTTP Hue **que envió la key** dice que no sirve: **401 o 403**, y el cuerpo no es “link button not pressed”. Un 401/403 de un pedido sin key (`/api/config`, discovery) no cuenta. Un PUT que sí llevó la key y vuelve 401/403 sí baja a #3. Un timeout, un 5xx o el Bridge apagado **no** bajan el peldaño. No #6.
 
+Los **20 s** después de que el POST de pairing acaba de entregar la key, un 401 o 403 **no** baja a #3. La key acaba de salir del Bridge. Una llamada posterior, ya fuera de esos 20 s, sí baja.
+
 ---
 
 ## 6. Recetas vacías

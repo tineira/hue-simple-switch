@@ -20,6 +20,8 @@ extern String gHueAppKey;
 inline volatile bool gHueKeyUsable = false;
 inline volatile bool gHueIpUsable = false;
 inline volatile bool gHueAuthRejected = false;
+// Tras recibir la key del botón del Bridge, un 401 inmediato no se queda pegado.
+inline unsigned long gHueAuthGraceUntil = 0;
 inline volatile bool gHuePairing = false;
 inline volatile bool gHuePairTimeout = false;
 inline volatile bool gHueBridgeMissing = false;
@@ -27,9 +29,18 @@ inline volatile bool gHueBridgeMissing = false;
 // 401/403 con key (salvo "link button not pressed") bajan a #3, también un PUT GPIO.
 // Sin key (/api/config, discovery) no prueba que la key guardada esté mala.
 // Un 200 con key recupera. Timeout, 5xx o Bridge caído no entran aquí.
+inline void hueAuthGraceArm(unsigned long ms) {
+  gHueAuthGraceUntil = millis() + ms;
+  gHueAuthRejected = false;
+}
+
+inline bool hueAuthGraceOpen() {
+  return (long)(gHueAuthGraceUntil - millis()) > 0;
+}
+
 inline void hueNoteAuth(int code, const String *body, bool withKey) {
   if (code == HTTP_CODE_UNAUTHORIZED || code == HTTP_CODE_FORBIDDEN) {
-    if (!withKey) {
+    if (!withKey || hueAuthGraceOpen()) {
       return;
     }
     if (body && body->indexOf("link button not pressed") >= 0) {
