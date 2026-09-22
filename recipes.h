@@ -23,6 +23,7 @@ inline uint8_t gRecipeCount = 0;
 inline uint32_t gRecipeRev = 0;
 inline String gRecipeBridgeId;
 inline volatile bool gNeedConsoleSync = false;
+inline volatile uint32_t gNvsEpoch = 0;
 inline SemaphoreHandle_t gRecipesMux = nullptr;
 
 inline void recipesMuxEnsure() {
@@ -244,6 +245,22 @@ inline void recipesClear() {
   gRecipeRev = 0;
   memset(gRecipes, 0, sizeof(gRecipes));
   recipesSave();
+}
+
+// HUECLR: borra el namespace recipes, no el flash entero.
+inline void recipesWipe() {
+  recipesLock();
+  gNvsEpoch++;
+  gRecipeCount = 0;
+  gRecipeRev = 0;
+  gRecipeBridgeId = "";
+  memset(gRecipes, 0, sizeof(gRecipes));
+  Preferences prefs;
+  if (prefs.begin("recipes", false)) {
+    prefs.clear();
+    prefs.end();
+  }
+  recipesUnlock();
 }
 
 inline void recipesLoad() {

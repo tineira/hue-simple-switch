@@ -18,7 +18,6 @@ String gHueAppKey;
 #include "led.h"
 
 static bool gWifiWasUp = false;
-static bool gHueReady = false;
 static bool gWifiBootTried = false;
 static unsigned long gWifiLastTryMs = 0;
 
@@ -88,9 +87,21 @@ void setup() {
   LOGLN("GPIO: boot short=recipe, hold 3s=re-pair. d0/d1/d2 maintained.");
 }
 
+static void huePairApplySync() {
+  if (!gHuePairSync) {
+    return;
+  }
+  gHuePairSync = false;
+  if (recipesBindBridge(gHueBridgeId)) {
+    gConsoleRegistered = false;
+  }
+  gNeedConsoleSync = true;
+}
+
 void loop() {
   const unsigned long now = millis();
   usbPoll();
+  huePairApplySync();
   channelsPoll(now);
   const bool sta = ledPoll(now);
 
@@ -117,10 +128,10 @@ void loop() {
 
   if (!gWifiWasUp) {
     gWifiWasUp = true;
-    if (!gHueReady) {
-      afterWifiUp();
-    } else {
+    if (gHueReady) {
       gNeedConsoleSync = true;
+    } else if (!huePairBusy()) {
+      afterWifiUp();
     }
   }
 }

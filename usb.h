@@ -13,7 +13,7 @@
 #define WIFI_PASSWORD ""
 #endif
 
-// Improv Serial (https://www.improv-wifi.com/serial) + ASCII HUESET on the same CDC.
+// Improv Serial (https://www.improv-wifi.com/serial) + ASCII HUESET/HUEGET/HUEPAIR/HUECLR.
 // No WebServer / SoftAP. Arduino remembers STA; NVS namespace console holds token/url.
 
 static const uint8_t kImprovVer = 1;
@@ -42,6 +42,7 @@ static const size_t kUsbImprovMax = 280;
 static const size_t kUsbAsciiMax = 192;
 
 inline bool gWifiHaveCreds = false;
+inline bool gWifiForgotten = false;
 
 enum UsbParse {
   USB_IDLE = 0,
@@ -167,6 +168,10 @@ inline void usbReplyLine(const char *s) {
 }
 
 inline void wifiBootConnect() {
+  if (gWifiForgotten) {
+    gWifiHaveCreds = false;
+    return;
+  }
   WiFi.persistent(true);
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(false);
@@ -193,6 +198,33 @@ inline void wifiBootConnect() {
 inline void wifiRetryStored() {
   WiFi.disconnect();
   WiFi.begin();
+}
+
+// Borra la STA de Arduino. disconnect(erase) no escribe si no hay asociación.
+inline void wifiForgetSta() {
+  gWifiForgotten = true;
+  gWifiHaveCreds = false;
+  gImprovConnecting = false;
+  gImprovScanPending = false;
+  gImprovScanStarted = false;
+  gImprovScanDefer = false;
+
+  WiFi.persistent(true);
+  WiFi.mode(WIFI_STA);
+  WiFi.setSleep(false);
+
+  wifi_config_t blank;
+  memset(&blank, 0, sizeof(blank));
+  esp_wifi_set_config(WIFI_IF_STA, &blank);
+  if (WiFi.status() == WL_CONNECTED) {
+    esp_wifi_disconnect();
+    const unsigned long start = millis();
+    while (WiFi.status() == WL_CONNECTED && (millis() - start) < 300UL) {
+      delay(10);
+    }
+  }
+  memset(&blank, 0, sizeof(blank));
+  esp_wifi_set_config(WIFI_IF_STA, &blank);
 }
 
 inline void usbHandleWifiSettings(const uint8_t *data, uint8_t dataLen) {
@@ -446,6 +478,146 @@ inline void usbHandleHueset(char *line) {
   usbReplyLine("HUEERR unknown");
 }
 
+inline bool usbUnreserved(uint8_t c) {
+  return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '-' || c == '.' ||
+         c == '_' || c == '~';
+}
+
+inline void usbAppendPct(String &out, const char *val) {
+  static const char hex[] = "0123456789ABCDEF";
+  if (!val) {
+    return;
+  }
+  for (const uint8_t *p = (const uint8_t *)val; *p; p++) {
+    const uint8_t c = *p;
+    if (usbUnreserved(c)) {
+      out += (char)c;
+    } else {
+      out += '%';
+      out += hex[c >> 4];
+      out += hex[c & 0x0F];
+    }
+  }
+}
+
+inline void usbAppendField(String &out, const char *key, const char *val) {
+  out += ' ';
+  out += key;
+  out += '=';
+  usbAppendPct(out, val);
+}
+
+inline String usbNvsString(const char *ns, const char *key) {
+  Preferences prefs;
+  if (!prefs.begin(ns, true)) {
+    return String();
+  }
+  const String v = prefs.getString(key, "");
+  prefs.end();
+  return v;
+}
+
+inline String usbStaSsid() {
+  wifi_config_t cfg;
+  memset(&cfg, 0, sizeof(cfg));
+  if (esp_wifi_get_config(WIFI_IF_STA, &cfg) != ESP_OK) {
+    return String();
+  }
+  char ssid[33];
+  memset(ssid, 0, sizeof(ssid));
+  memcpy(ssid, cfg.sta.ssid, 32);
+  memset(&cfg, 0, sizeof(cfg));
+  return String(ssid);
+}
+
+inline void usbHandleHueget() {
+  const bool up = WiFi.status() == WL_CONNECTED;
+  const String ssid = usbStaSsid();
+  const String ip = up ? WiFi.localIP().toString() : String();
+  const String bid = usbNvsString("hue", "bid");
+  const String bip = usbNvsString("hue", "ip");
+  const String url = usbNvsString("console", "url");
+  bool tokenOk = false;
+  bool keyOk = false;
+  {
+    const String token = usbNvsString("console", "token");
+    const String key = usbNvsString("hue", "key");
+    tokenOk = token.length() > 0 && token.indexOf("your-") < 0;
+    keyOk = hueLooksLikeKey(key);
+  }
+
+  String line;
+  line.reserve(384);
+  line = "HUESTA";
+  usbAppendField(line, "mac", deviceMacHex().c_str());
+  usbAppendField(line, "product", "simple");
+  usbAppendField(line, "ver", FIRMWARE_VERSION);
+#if defined(CONFIG_IDF_TARGET_ESP32S3)
+  usbAppendField(line, "chip", "s3");
+#else
+  usbAppendField(line, "chip", "c6");
+#endif
+  usbAppendField(line, "ssid", ssid.c_str());
+  usbAppendField(line, "wifi", up ? "up" : "down");
+  usbAppendField(line, "ip", up ? ip.c_str() : "");
+  usbAppendField(line, "bid", bid.c_str());
+  usbAppendField(line, "bip", bip.c_str());
+  usbAppendField(line, "url", url.c_str());
+  usbAppendField(line, "token", tokenOk ? "1" : "0");
+  usbAppendField(line, "key", keyOk ? "1" : "0");
+  usbReplyLine(line.c_str());
+}
+
+inline void usbHandleHuepair() {
+  if (WiFi.status() != WL_CONNECTED) {
+    usbReplyLine("HUEERR no-wifi");
+    return;
+  }
+  if (!huePairBusy()) {
+    huePairSessionBegin();
+  }
+  usbReplyLine("HUEOK pair");
+}
+
+inline void usbHandleHueclr() {
+  gNvsEpoch++;
+  gNeedConsoleSync = false;
+  huePairStop();
+  wifiForgetSta();
+  consoleForgetSaved();
+  hueForgetSaved();
+  recipesWipe();
+  usbReplyLine("HUEOK clear");
+}
+
+inline void usbTrimAscii(char *line) {
+  size_t n = strlen(line);
+  while (n && (line[n - 1] == ' ' || line[n - 1] == '\r' || line[n - 1] == '\t')) {
+    line[--n] = 0;
+  }
+}
+
+inline void usbHandleAscii(char *line) {
+  usbTrimAscii(line);
+  if (strcmp(line, "HUEGET") == 0) {
+    usbHandleHueget();
+    return;
+  }
+  if (strcmp(line, "HUEPAIR") == 0) {
+    usbHandleHuepair();
+    return;
+  }
+  if (strcmp(line, "HUECLR") == 0) {
+    usbHandleHueclr();
+    return;
+  }
+  if (strncmp(line, "HUESET", 6) == 0 && (line[6] == 0 || line[6] == ' ')) {
+    usbHandleHueset(line);
+    return;
+  }
+  usbReplyLine("HUEERR unknown");
+}
+
 inline void usbFeed(uint8_t b) {
   if (gUsbParse == USB_IDLE) {
     if (b == '\n' || b == '\r') {
@@ -502,7 +674,7 @@ inline void usbFeed(uint8_t b) {
       gUsbAsciiLen--;
     }
     gUsbAscii[gUsbAsciiLen] = 0;
-    usbHandleHueset(gUsbAscii);
+    usbHandleAscii(gUsbAscii);
     gUsbParse = USB_IDLE;
     gUsbAsciiLen = 0;
     return;
@@ -545,4 +717,5 @@ inline void usbPoll() {
       usbFlushScan();
     }
   }
+  huePairPoll();
 }

@@ -149,6 +149,17 @@ inline void channelMaintained(size_t i, unsigned long now) {
   recipeFire(ch.id, "on");
 }
 
+inline void channelBootRePair() {
+  if (WiFi.status() != WL_CONNECTED) {
+    LOGLN("Re-pair skipped: WiFi down");
+    return;
+  }
+  if (huePairBusy()) {
+    return;
+  }
+  huePairSessionBegin();
+}
+
 inline void channelMomentary(size_t i, unsigned long now) {
   ChannelRuntime &st = gCh[i];
   const ChannelDef &ch = kChannels[i];
@@ -164,13 +175,7 @@ inline void channelMomentary(size_t i, unsigned long now) {
         (now - st.pressStartMs) >= kLongPressMs) {
       st.longPressHandled = true;
       if (strcmp(ch.id, "boot") == 0) {
-        if (WiFi.status() != WL_CONNECTED) {
-          LOGLN("Re-pair skipped: WiFi down");
-        } else if (hueRePair()) {
-          LOG("Using Bridge %s\n", gHueBridgeIp.c_str());
-          recipesBindBridge(gHueBridgeId);
-          gNeedConsoleSync = true;
-        }
+        channelBootRePair();
       }
     }
     return;
@@ -181,13 +186,7 @@ inline void channelMomentary(size_t i, unsigned long now) {
         (now - st.pressStartMs) >= kLongPressMs) {
       st.longPressHandled = true;
       if (strcmp(ch.id, "boot") == 0) {
-        if (WiFi.status() != WL_CONNECTED) {
-          LOGLN("Re-pair skipped: WiFi down");
-        } else if (hueRePair()) {
-          LOG("Using Bridge %s\n", gHueBridgeIp.c_str());
-          recipesBindBridge(gHueBridgeId);
-          gNeedConsoleSync = true;
-        }
+        channelBootRePair();
       }
     }
     return;

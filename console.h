@@ -19,7 +19,7 @@
 #define CONSOLE_TOKEN ""
 #endif
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.2.7"
+#define FIRMWARE_VERSION "0.2.8"
 #endif
 
 static const unsigned long kPollEmptyMs = 60UL * 1000UL;
@@ -110,6 +110,19 @@ inline bool consoleConfigured() {
 
 inline void consoleRefreshConfigured() {
   gConsoleConfiguredOk = consoleConfigured();
+}
+
+inline void consoleForgetSaved() {
+  Preferences p;
+  if (p.begin("console", false)) {
+    p.clear();
+    p.end();
+  }
+  gConsoleUrlNvs = "";
+  gConsoleTokenNvs = "";
+  gConsoleRegistered = false;
+  gConsoleAuthRejected = false;
+  consoleRefreshConfigured();
 }
 
 inline void consoleNoteHttp(int code) {
@@ -222,6 +235,7 @@ inline bool consoleRegister() {
 }
 
 inline void consoleFetchConfig() {
+  const uint32_t epoch = gNvsEpoch;
   if (!consoleConfigured()) {
     return;
   }
@@ -240,7 +254,14 @@ inline void consoleFetchConfig() {
     return;
   }
 
+  if (gNvsEpoch != epoch) {
+    return;
+  }
   recipesLock();
+  if (gNvsEpoch != epoch) {
+    recipesUnlock();
+    return;
+  }
   const uint32_t localRev = gRecipeRev;
   const uint8_t localCount = gRecipeCount;
   HueRecipe backup[kMaxRecipes];
@@ -261,6 +282,12 @@ inline void consoleFetchConfig() {
     LOG("console rev %u local %u — keep NVS\n", rev, localRev);
     return;
   }
+  if (gNvsEpoch != epoch) {
+    memcpy(gRecipes, backup, sizeof(backup));
+    gRecipeCount = localCount;
+    recipesUnlock();
+    return;
+  }
   gRecipeRev = rev;
   recipesSave();
   recipesUnlock();
@@ -268,20 +295,30 @@ inline void consoleFetchConfig() {
 }
 
 inline void consoleDoSync() {
+  const uint32_t epoch = gNvsEpoch;
   if (!consoleConfigured() || WiFi.status() != WL_CONNECTED) {
     return;
   }
-  if (!gHueBridgeId.length() || !hueLooksLikeKey(gHueAppKey)) {
+  if (gNvsEpoch != epoch || !gHueBridgeId.length() || !hueLooksLikeKey(gHueAppKey)) {
     return;
   }
   if (recipesBindBridge(gHueBridgeId)) {
     gConsoleRegistered = false;
   }
+  if (gNvsEpoch != epoch) {
+    return;
+  }
   recipesLock();
   const uint8_t count = gRecipeCount;
   recipesUnlock();
+  if (gNvsEpoch != epoch) {
+    return;
+  }
   if (!gConsoleRegistered || count > 0) {
     consoleRegister();
+  }
+  if (gNvsEpoch != epoch) {
+    return;
   }
   consoleFetchConfig();
 }
