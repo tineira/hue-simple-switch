@@ -15,12 +15,12 @@ This sketch lives in the Arduino IDE sketchbook (`directories.user` = `C:\Users\
 
 ## Secrets
 
-- `config.h` (gitignored) holds `WIFI_SSID`, `WIFI_PASSWORD`, `CONSOLE_URL`, and `CONSOLE_TOKEN`.
+- `config.h` (gitignored) holds only `SERIAL_DEBUG`. No Wi-Fi, console URL, or token is compiled in, in dev or product. Wi-Fi is Arduino STA (Improv), token/url are NVS `console` (`HUESET`), both written by the console over USB. Uploads do not erase NVS, so a board provisioned once keeps them across dev flashes.
 - Bridge IP, Hue application key, and recipes are not in `config.h`. Discover / pair / NVS / console poll.
 - `config.example.h` is the template that is committed.
 - Never put SSID, passwords, or Hue keys in the `.ino` or in git.
 
-If `config.h` is missing: `copy config.example.h config.h` and edit it.
+If `config.h` is missing: `copy config.example.h config.h`.
 
 ## Build (arduino-cli)
 
@@ -34,7 +34,7 @@ arduino-cli monitor -p COMx -c baudrate=115200
 
 Replace `COMx` with the XIAO port (`arduino-cli board list`).
 
-USB installer images: compile with empty `WIFI_*` / `CONSOLE_*`, copy the four parts into the **console** tree `public/firmware/simple/` and set `manifest.json` `version` to `FIRMWARE_VERSION`. Console agents must not revert that folder; tell them in the same recorte. The wizard shows that version, not this sketch until those files are in the console repo (and deployed).
+USB installer images: compile with `SERIAL_DEBUG` 0 (`config.product.h`), copy the four parts into the **console** tree `public/firmware/simple/` and set `manifest.json` `version` to `FIRMWARE_VERSION`. Console agents must not revert that folder; tell them in the same recorte. The wizard shows that version, not this sketch until those files are in the console repo (and deployed).
 
 Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` heading under `## Simple` in the **console** tree `docs/changelog.md`, with the `<!-- commit -->` marker above it, in the same recorte. Write each bullet as what changed for the person using the switch (what they see or can now do), not how the code changed: no function names, macros, USB command names, NVS keys, or GPIO numbers. Example: "The switch remembers the Wi-Fi network you saved during setup after it restarts." Not: "Reconnect stored Wi-Fi through the Arduino STA API."
 
@@ -49,7 +49,7 @@ Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` hea
 
 - `product`: always `"simple"` on `POST /api/device/register` (plus GPIO `channels[]`, `source: xiao`)
 - Channels v1: `boot` GPIO9 momentary (short = recipe, hold 3 s = Hue re-pair); `d0`/`d1`/`d2` GPIO 0/1/2 maintained (`on` / `off` / `double_click`)
-- Console: `CONSOLE_URL` + `CONSOLE_TOKEN` in `config.h`. Register + `GET /api/device/config`. Poll ~1 min if no recipes; at boot and every 1 h if any. GPIO loop never waits on that HTTP (console FreeRTOS task)
+- Console: URL + token from NVS `console` (`HUESET` over USB). Register + `GET /api/device/config`. Poll ~1 min if no recipes; at boot and every 1 h if any. GPIO loop never waits on that HTTP (console FreeRTOS task)
 - Last **good** Hue snapshot wins: do not POST empty `[]` if a Clip stream is not 200
 - On `bridgeid` change: clear NVS recipes/`rev` **before** the next poll
 

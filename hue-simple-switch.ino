@@ -45,7 +45,7 @@ static void afterWifiUp() {
     gConsoleRegistered = false;
   }
   if (!consoleConfigured()) {
-    LOGLN("console: CONSOLE_URL / CONSOLE_TOKEN not set");
+    LOGLN("console: no token/url in NVS — HUESET on USB");
   }
   gNeedConsoleSync = true;
 }

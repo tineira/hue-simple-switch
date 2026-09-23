@@ -6,13 +6,6 @@
 #include "log.h"
 #include "console.h"
 
-#ifndef WIFI_SSID
-#define WIFI_SSID ""
-#endif
-#ifndef WIFI_PASSWORD
-#define WIFI_PASSWORD ""
-#endif
-
 // Improv Serial (https://www.improv-wifi.com/serial) + ASCII HUESET/HUEGET/HUEPAIR/HUECLR.
 // No WebServer / SoftAP. Arduino remembers STA; NVS namespace console holds token/url.
 
@@ -64,11 +57,6 @@ inline bool gImprovScanStarted = false;
 inline bool gImprovScanDefer = false;
 inline unsigned long gImprovScanAt = 0;
 inline unsigned long gImprovScanKickAt = 0;
-
-inline bool wifiConfigSsidOk() {
-  const char *s = WIFI_SSID;
-  return s && s[0] && strncmp(s, "your-", 5) != 0;
-}
 
 inline bool wifiArduinoCreds() {
   wifi_config_t cfg;
@@ -183,12 +171,6 @@ inline void wifiBootConnect() {
     esp_wifi_get_config(WIFI_IF_STA, &cfg);
     WiFi.begin();
     LOG("WiFi: STA ssid=%s\n", (const char *)cfg.sta.ssid);
-    return;
-  }
-  if (wifiConfigSsidOk()) {
-    gWifiHaveCreds = true;
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    LOG("WiFi: config.h SSID\n");
     return;
   }
   gWifiHaveCreds = false;

@@ -26,7 +26,7 @@ Se evalúa **de arriba abajo**. El primero que cumpla gana. Un solo patrón a la
 | --- | --- | --- |
 | 6 | Error de **sistema** (abajo) | Encendido fijo |
 | 1 | Sin Wi-Fi STA (`WL_CONNECTED` falso) | Rápido continuo ~2 Hz |
-| 2 | Wi-Fi ok, sin `CONSOLE_URL` o sin `CONSOLE_TOKEN` (config.h ni NVS) | **2** destellos, pausa |
+| 2 | Wi-Fi ok, sin URL o sin token de consola en NVS `console` | **2** destellos, pausa |
 | 3 | Wi-Fi + consola, sin Bridge pareado (no hay key Hue usable en NVS, o pairing en curso / timeout) | **3** destellos, pausa |
 | 4 | Wi-Fi + consola + Hue, **cero** recetas en NVS | **4** destellos, pausa |
 | 5 | Armado: Wi-Fi + consola + Hue + ≥1 receta | Un destello corto cada ~3 s |
@@ -35,7 +35,7 @@ Hold 3 s en BOOT (re-pair) entra en **#3** mientras dura el pairing, no un patr�
 
 Al **cambiar de peldaño**, el patrón empieza de cero (primer destello, o el primer semiciclo de #1/#5). No se muestra el resto de una ráfaga anterior.
 
-Scan Improv o asociación (`WL_CONNECTED` falso, aunque la NVS tenga SSID) es **#1**. Un token o URL que `consoleConfigured()` rechaza (vacío, o el placeholder `your-…` de `config.h`) es “sin consola” → **#2** si hay Wi-Fi.
+Scan Improv o asociación (`WL_CONNECTED` falso, aunque la NVS tenga SSID) es **#1**. Un token o URL que `consoleConfigured()` rechaza (vacío o mal formado) es “sin consola” → **#2** si hay Wi-Fi.
 
 ---
 

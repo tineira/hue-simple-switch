@@ -1,6 +1,6 @@
 # Firmware artifacts (simple / ESP32-C6)
 
-Product installer binary for hue.tineira.com. Empty `WIFI_SSID` / `WIFI_PASSWORD` / `CONSOLE_URL` / `CONSOLE_TOKEN`, `SERIAL_DEBUG=0`. Wi-Fi is Arduino STA (Improv). Token and URL go in NVS namespace `console`.
+Product installer binary for hue.tineira.com. `SERIAL_DEBUG=0`. Wi-Fi, console URL and token are never compiled in: Wi-Fi is Arduino STA (Improv), token and URL go in NVS namespace `console` (`HUESET`). A dev `config.h` differs only in `SERIAL_DEBUG`.
 
 ## Compile
 

@@ -49,7 +49,7 @@ Contrato: `hue-switch-console/docs/definiciones.md` y `docs/device-api.md`.
 
 ## Setup
 
-1. Copia `config.example.h` a `config.h` y rellena `WIFI_SSID`, `WIFI_PASSWORD` (red **2.4 GHz**), `CONSOLE_URL` y `CONSOLE_TOKEN` (API key de aparato `hsw_…` creada en la consola).
+1. Flashea y provisiona desde Chrome en [hue.tineira.com](https://hue.tineira.com) (USB). Improv guarda la red **2.4 GHz** y `HUESET` deja token (`hsw_…`) y url en NVS `console`. Nada de eso va compilado. Para desarrollo, copia `config.example.h` a `config.h` (solo `SERIAL_DEBUG`); `arduino-cli upload` no borra la NVS, así que la red y el token siguen tras cada flasheo.
 2. El XIAO descubre el Bridge (mDNS `_hue._tcp`, NVS, `discovery.meethue.com`) y empareja la key Hue (tres destellos en el naranja → botón del Bridge). IP y key quedan en NVS, no en `config.h`.
 3. Register: `POST /api/device/register` con `product: "simple"`, MAC, `channels[]` y snapshot (lights/rooms/scenes). Poll: `GET /api/device/config?mac=` (~1 min sin recetas; al boot y cada 1 h si hay).
 4. Arduino IDE 2.3.10: abre `hue-simple-switch.ino`, placa **XIAO_ESP32C6**.
@@ -61,4 +61,4 @@ Listar lámparas (diagnóstico):
 curl -k -H "hue-application-key: KEY" https://BRIDGE_IP/clip/v2/resource/light
 ```
 
-`config.h` no se sube a git. Alta de producto = Arduino + `config.h` (no hay instalador web en este v1).
+`config.h` no se sube a git. Alta de producto = instalador USB en hue.tineira.com.

@@ -12,12 +12,6 @@
 #include "recipes.h"
 #include "snapshot.h"
 
-#ifndef CONSOLE_URL
-#define CONSOLE_URL ""
-#endif
-#ifndef CONSOLE_TOKEN
-#define CONSOLE_TOKEN ""
-#endif
 #ifndef FIRMWARE_VERSION
 #define FIRMWARE_VERSION "0.2.10"
 #endif
@@ -39,19 +33,10 @@ inline volatile bool gConsoleTaskFailed = false;
 inline void consoleRefreshConfigured();
 inline void consoleNoteHttp(int code);
 
-inline String consoleUrl() {
-  if (gConsoleUrlNvs.length()) {
-    return gConsoleUrlNvs;
-  }
-  return String(CONSOLE_URL);
-}
+// Token y URL solo vienen de NVS console (HUESET desde la consola web).
+inline String consoleUrl() { return gConsoleUrlNvs; }
 
-inline String consoleToken() {
-  if (gConsoleTokenNvs.length()) {
-    return gConsoleTokenNvs;
-  }
-  return String(CONSOLE_TOKEN);
-}
+inline String consoleToken() { return gConsoleTokenNvs; }
 
 inline void consoleLoadNvs() {
   Preferences p;
