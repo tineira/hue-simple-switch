@@ -36,6 +36,8 @@ Replace `COMx` with the XIAO port (`arduino-cli board list`).
 
 USB installer images: compile with empty `WIFI_*` / `CONSOLE_*`, copy the four parts into the **console** tree `public/firmware/simple/` and set `manifest.json` `version` to `FIRMWARE_VERSION`. Console agents must not revert that folder; tell them in the same recorte. The wizard shows that version, not this sketch until those files are in the console repo (and deployed).
 
+Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` heading under `## Simple` in the **console** tree `docs/changelog.md`, with the `<!-- commit -->` marker above it, in the same recorte. Write each bullet as what changed for the person using the switch (what they see or can now do), not how the code changed: no function names, macros, USB command names, NVS keys, or GPIO numbers. Example: "The switch remembers the Wi-Fi network you saved during setup after it restarts." Not: "Reconnect stored Wi-Fi through the Arduino STA API."
+
 ## Arduino IDE 2.3.10
 
 - File → Open this folder (`hue-simple-switch.ino`)
