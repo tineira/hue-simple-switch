@@ -2,6 +2,22 @@
 
 Wi-Fi wall switch firmware for Seeed XIAO ESP32-C6. Calls the Philips Hue local API. Not Zigbee.
 
+## Contract
+
+This firmware is one of several switches for one console. The console repo `C:\Users\tinei\hue-switch-console` owns the contract:
+
+- `docs/device-api.md`: endpoints, auth, payloads, error codes. Authoritative.
+- `docs/definiciones.md`: product model (recipes, channels, pages).
+- `docs/changelog.md`: user-facing release notes (this product's section).
+- `docs/specs/`: cross-repo specs, each with a checklist per repo.
+
+Rules:
+
+- Do not change what this firmware sends to or expects from the console (endpoints, JSON fields, error handling, NVS keys the console writes over USB) unless `docs/device-api.md` or an approved spec in `docs/specs/` says so. If the work needs a protocol change, stop and propose it for the console repo; do not invent it here.
+- When working from a cross-repo spec, do only this repo's checklist section and tick it. The console ships first and stays backward compatible, so boards already on the wall keep working.
+- Read the console docs from that path; do not copy them into this tree.
+- The other switch firmwares (`C:\Users\tinei\Arduino\hue-round-switch`, `hue-simple-switch`, and any later ones) implement the same contract. Do not edit them from this repo. If behavior both should share differs, say so.
+
 ## Hardware
 
 - Board: Seeed Studio XIAO ESP32-C6
@@ -34,7 +50,7 @@ arduino-cli monitor -p COMx -c baudrate=115200
 
 Replace `COMx` with the XIAO port (`arduino-cli board list`).
 
-USB installer images: compile with `SERIAL_DEBUG` 0 (`config.product.h`), copy the four parts into the **console** tree `public/firmware/simple/` and set `manifest.json` `version` to `FIRMWARE_VERSION`. Console agents must not revert that folder; tell them in the same recorte. The wizard shows that version, not this sketch until those files are in the console repo (and deployed).
+USB installer images: a push to `main` runs `.github/workflows/firmware.yml` (builds with `SERIAL_DEBUG` 0, publishes the `usb-installer` release, and, if `CONSOLE_REPO_TOKEN` is set, triggers the console's `sync-firmware-bins.yml`, which copies the four parts into `public/firmware/simple/` and sets `manifest.json` `version`). Fallback without the secret: run **Sync USB installer bins** in the console by hand, or copy the four parts yourself and set `version` to `FIRMWARE_VERSION`. Console agents must not revert that folder; tell them in the same recorte. The wizard shows that version, not this sketch until those files are in the console repo (and deployed).
 
 Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` heading under `## Simple` in the **console** tree `docs/changelog.md`, with the `<!-- commit -->` marker above it, in the same recorte. Write each bullet as what changed for the person using the switch (what they see or can now do), not how the code changed: no function names, macros, USB command names, NVS keys, or GPIO numbers. Example: "The switch remembers the Wi-Fi network you saved during setup after it restarts." Not: "Reconnect stored Wi-Fi through the Arduino STA API."
 
