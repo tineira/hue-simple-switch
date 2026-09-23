@@ -6,8 +6,8 @@
 #include "hue.h"
 #include "json_util.h"
 
-// Descubrir el Bridge (mDNS _hue._tcp) y emparejar la application key.
-// IP y key se guardan en NVS para que un cambio de DHCP no pida recompilar.
+// Discover the Bridge (mDNS _hue._tcp) and pair the application key.
+// IP and key are saved in NVS so a DHCP change does not require a rebuild.
 
 static const unsigned long kPairTimeoutMs = 90000;
 static const unsigned long kLongPressMs = 3000;
@@ -15,7 +15,7 @@ static const unsigned long kLongPressMs = 3000;
 inline String gHueBridgeId;
 inline void (*gOnHueWait)() = nullptr;
 
-// Definido en led.h. El .ino lo incluye después; el linker resuelve la llamada.
+// Defined in led.h. The .ino includes it later; the linker resolves the call.
 bool ledPoll(unsigned long now);
 
 inline bool hueLooksLikeIp(const String &s) {
@@ -173,8 +173,8 @@ inline bool hueFindBridge() {
   return ok;
 }
 
-// HUEPAIR no bloquea el parser USB: un mDNS o un HTTP por usbPoll.
-// gHuePairHold cubre el pair bloqueante del boot para que el paso no reentre.
+// HUEPAIR does not block the USB parser: one mDNS or one HTTP per usbPoll.
+// gHuePairHold covers the blocking pair at boot so the step does not re-enter.
 
 enum HuePairStep : uint8_t {
   HUE_PAIR_IDLE = 0,
@@ -245,7 +245,7 @@ inline void huePairStop() {
   ledPoll(millis());
 }
 
-// Pausa entre POST de pairing. Sale si HUECLR pidió cancelar.
+// Pause between pairing POSTs. Returns early if HUECLR asked to cancel.
 inline void hueWaitMs(unsigned long ms) {
   const unsigned long start = millis();
   while (!gHuePairCancel && (millis() - start) < ms) {
@@ -268,7 +268,7 @@ inline void hueWaitMs(unsigned long ms) {
   }
 }
 
-// Un POST de pairing. No loguea el body si trae username (la key).
+// One pairing POST. Does not log the body if it carries username (the key).
 inline bool huePairPostOnce() {
   if (gHuePairCancel || !hueLooksLikeIp(gHueBridgeIp)) {
     return false;
@@ -295,9 +295,9 @@ inline bool huePairPostOnce() {
   return false;
 }
 
-// POST /api hasta que pulsen el botón del Bridge (o timeout).
-// El naranja es el patrón #3 del clasificador (gHuePairing), no un blink propio.
-// Solo lo usa el boot (hueEnsureReady), nunca el parser USB.
+// POST /api until the Bridge button is pressed (or timeout).
+// The orange LED is the classifier's pattern #3 (gHuePairing), not a blink of its own.
+// Only used at boot (hueEnsureReady), never by the USB parser.
 inline bool huePairAppKey() {
   if (gHuePairCancel || !hueLooksLikeIp(gHueBridgeIp)) {
     return false;
@@ -547,7 +547,7 @@ inline void huePairPoll() {
       if (gHuePairCancel) {
         return;
       }
-      // El POST ya entregó la key. Si el GET de comprobación falla, no dejar el LED en #3.
+      // The POST already delivered the key. If the check GET fails, do not leave the LED on #3.
       if (hueLooksLikeKey(gHueAppKey)) {
         gHueAuthRejected = false;
         LOG("Using Bridge %s\n", gHueBridgeIp.c_str());

@@ -6,7 +6,7 @@
 #include <freertos/semphr.h>
 #include "json_util.h"
 
-// Recetas en NVS: el GPIO solo mira esto, nunca Vercel.
+// Recipes in NVS: the GPIO only reads this, never Vercel.
 
 static const uint8_t kMaxRecipes = 16;
 
@@ -151,7 +151,7 @@ inline bool recipesParseArray(const char *json, uint8_t *countOut) {
     return false;
   }
   jsonEachArrayObject(json, "recipes", recipesParseOne, &n);
-  // NVS guarda el array suelto, sin clave "recipes".
+  // NVS stores the bare array, without a "recipes" key.
   if (n == 0 && json[0] == '[') {
     const char *p = json;
     const char *start = nullptr;
@@ -247,7 +247,7 @@ inline void recipesClear() {
   recipesSave();
 }
 
-// HUECLR: borra el namespace recipes, no el flash entero.
+// HUECLR: erases the recipes namespace, not the whole flash.
 inline void recipesWipe() {
   recipesLock();
   gNvsEpoch++;
@@ -278,7 +278,7 @@ inline void recipesLoad() {
   LOG("NVS recipes rev=%u count=%u\n", gRecipeRev, gRecipeCount);
 }
 
-// true si cambió el bridgeid y se tiraron recetas/rev (llamar ANTES del poll).
+// true if the bridgeid changed and recipes/rev were dropped (call BEFORE the poll).
 inline bool recipesBindBridge(const String &bid) {
   if (!bid.length()) {
     return false;

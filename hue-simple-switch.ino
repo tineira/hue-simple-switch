@@ -52,7 +52,7 @@ static void afterWifiUp() {
 
 void setup() {
   Serial.begin(115200);
-  // USB CDC: sin PC el write() espera al host. 100 ms: 0 descartaba escrituras si tx_lock estaba ocupado.
+  // USB CDC: without a PC, write() waits for the host. 100 ms: 0 dropped writes when tx_lock was busy.
   Serial.setTxTimeoutMs(100);
   usbPoll();
   usbPump(200);

@@ -5,7 +5,7 @@
 #include "hue_discover.h"
 #include "recipes.h"
 
-// Canales v1: cerrado = GPIO a GND (INPUT_PULLUP).
+// Channels v1: closed = GPIO to GND (INPUT_PULLUP).
 
 enum ChannelKind { CH_MAINTAINED, CH_MOMENTARY };
 
@@ -29,7 +29,7 @@ static const unsigned long kDoubleClickMs = 400;
 
 struct ChannelRuntime {
   int lastReading;
-  int stable;  // HIGH = abierto, LOW = cerrado
+  int stable;  // HIGH = open, LOW = closed
   unsigned long lastChangeMs;
   bool primed;
   bool waitOff;
@@ -135,7 +135,7 @@ inline void channelMaintained(size_t i, unsigned long now) {
   const bool closed = (reading == LOW);
 
   if (!closed) {
-    // Cerrado → abierto: no dispares off aún; arranca ventana de doble click.
+    // Closed → open: don't fire off yet; start the double-click window.
     st.waitOff = true;
     st.waitStartMs = now;
     return;

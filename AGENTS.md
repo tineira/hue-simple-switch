@@ -7,7 +7,7 @@ Wi-Fi wall switch firmware for Seeed XIAO ESP32-C6. Calls the Philips Hue local 
 This firmware is one of several switches for one console. The console repo `C:\Users\tinei\hue-switch-console` owns the contract:
 
 - `docs/device-api.md`: endpoints, auth, payloads, error codes. Authoritative.
-- `docs/definiciones.md`: product model (recipes, channels, pages).
+- `docs/definitions.md`: product model (recipes, channels, pages).
 - `docs/changelog.md`: user-facing release notes (this product's section).
 - `docs/specs/`: cross-repo specs, each with a checklist per repo.
 
@@ -72,8 +72,8 @@ Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` hea
 ## Code conventions
 
 - Arduino `.ino` + small `.h` files; no PlatformIO for this project
-- English identifiers; comments in Spanish if they explain intent
-- Digital input channels: each channel has its own recipe; see hue-switch-console `docs/definiciones.md` and `docs/device-api.md`
+- English everywhere: identifiers, comments, docs, specs, README, commit messages. Translate Spanish you touch
+- Digital input channels: each channel has its own recipe; see hue-switch-console `docs/definitions.md` and `docs/device-api.md`
 - Hue API: local HTTPS Clip v2, not the cloud
 - Do not impersonate Hue accessories or use Zigbee on this sketch
 - Scratch notes (`docs/_audit-*.md`, `docs/_review-*.md`) are not spec. Delete them once used. Do not commit them.

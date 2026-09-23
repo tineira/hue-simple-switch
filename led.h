@@ -5,9 +5,9 @@
 #include <esp_timer.h>
 #include "usb.h"
 
-// LED naranja (GPIO15), activo en bajo: cátodo en el pin, ánodo a 3.3 V.
-// LOW = encendido, HIGH = apagado. Spec: docs/specs/finished/led-status.md.
-// El timer de 50 ms llama ledTick mientras hueHttp bloquea el loop.
+// Orange LED (GPIO15), active low: cathode on the pin, anode to 3.3 V.
+// LOW = on, HIGH = off. Spec: docs/specs/finished/led-status.md.
+// The 50 ms timer calls ledTick while hueHttp blocks the loop.
 
 static const unsigned long PULSE_ON = 100;
 static const unsigned long PULSE_GAP = 200;
@@ -32,7 +32,7 @@ static void ledRelease() {
   __atomic_store_n(&gLedBusy, 0u, __ATOMIC_RELEASE);
 }
 
-// De arriba abajo. El primero que cumple gana.
+// Top to bottom. The first that matches wins.
 static uint8_t ledComputeRung() {
   if (gConsoleTaskFailed || gConsoleAuthRejected) {
     return 6;
@@ -89,7 +89,7 @@ static bool ledLevel(uint8_t rung, unsigned long now) {
   return ledBurstOn(rung, elapsed % cycle);
 }
 
-// Sin delay(). Se puede llamar desde el loop y desde el timer.
+// No delay(). Can be called from the loop and from the timer.
 static void ledTick(unsigned long now) {
   if (!ledClaim()) {
     return;

@@ -1,129 +1,129 @@
-# Simple switch — LED naranja (status)
+# Simple switch — orange LED (status)
 
-Documento de **requisitos**. Cubre solo `hue-simple-switch` (XIAO ESP32-C6, GPIO15 `LED_BUILTIN`, naranja). Round usa el disco, no este alfabeto.
+**Requirements** document. Covers only `hue-simple-switch` (XIAO ESP32-C6, GPIO15 `LED_BUILTIN`, orange). Round uses the disc, not this alphabet.
 
-El LED rojo de carga y los botones BOOT/RST no forman parte de este spec.
+The red charging LED and the BOOT/RST buttons are not part of this spec.
 
-**Estado:** implementado (firmware 0.2.7). Spec archivado. No es un hueco de implementación.
+**Status:** implemented (firmware 0.2.7). Spec archived. Not an implementation gap.
 
-**Cerrado el 2026-09-21 (grilling):** tick durante el POST, key rechazada vs PUT, #6 solo 401/task, ráfaga desde cero. No reabrir.
-
----
-
-## 1. Para quién
-
-Checklist de **alta en el banco** (se ve el XIAO). En la caja de la pared el LED casi no se mira; no es UI de uso diario.
-
-No enseña *cómo* configurar. Solo *en qué peldaño estás* o *hay un fallo de sistema*.
+**Closed on 2026-09-21 (grilling):** tick during the POST, rejected key vs PUT, #6 only 401/task, burst restarts from zero. Do not reopen.
 
 ---
 
-## 2. Peldaños (prioridad)
+## 1. Who it's for
 
-Se evalúa **de arriba abajo**. El primero que cumpla gana. Un solo patrón a la vez.
+A **bench setup** checklist (the XIAO is visible). Inside the wall box the LED is hardly ever looked at; it's not everyday UI.
 
-| # | Condición | Patrón |
+It doesn't teach *how* to configure. Only *which step you're on* or *there's a system fault*.
+
+---
+
+## 2. Steps (priority)
+
+Evaluated **top to bottom**. The first that matches wins. One pattern at a time.
+
+| # | Condition | Pattern |
 | --- | --- | --- |
-| 6 | Error de **sistema** (abajo) | Encendido fijo |
-| 1 | Sin Wi-Fi STA (`WL_CONNECTED` falso) | Rápido continuo ~2 Hz |
-| 2 | Wi-Fi ok, sin URL o sin token de consola en NVS `console` | **2** destellos, pausa |
-| 3 | Wi-Fi + consola, sin Bridge pareado (no hay key Hue usable en NVS, o pairing en curso / timeout) | **3** destellos, pausa |
-| 4 | Wi-Fi + consola + Hue, **cero** recetas en NVS | **4** destellos, pausa |
-| 5 | Armado: Wi-Fi + consola + Hue + ≥1 receta | Un destello corto cada ~3 s |
+| 6 | **System** error (below) | Solid on |
+| 1 | No Wi‑Fi STA (`WL_CONNECTED` false) | Continuous fast ~2 Hz |
+| 2 | Wi‑Fi ok, no console URL or token in NVS `console` | **2** flashes, pause |
+| 3 | Wi‑Fi + console, no paired Bridge (no usable Hue key in NVS, or pairing in progress / timed out) | **3** flashes, pause |
+| 4 | Wi‑Fi + console + Hue, **zero** recipes in NVS | **4** flashes, pause |
+| 5 | Armed: Wi‑Fi + console + Hue + ≥1 recipe | One short flash every ~3 s |
 
-Hold 3 s en BOOT (re-pair) entra en **#3** mientras dura el pairing, no un patrón extra.
+A 3 s BOOT hold (re-pair) shows **#3** while pairing lasts, not an extra pattern.
 
-Al **cambiar de peldaño**, el patrón empieza de cero (primer destello, o el primer semiciclo de #1/#5). No se muestra el resto de una ráfaga anterior.
+When the **step changes**, the pattern starts from zero (first flash, or the first half-cycle of #1/#5). The rest of a previous burst is not shown.
 
-Scan Improv o asociación (`WL_CONNECTED` falso, aunque la NVS tenga SSID) es **#1**. Un token o URL que `consoleConfigured()` rechaza (vacío o mal formado) es “sin consola” → **#2** si hay Wi-Fi.
+Improv scan or association (`WL_CONNECTED` false, even if NVS has an SSID) is **#1**. A token or URL that `consoleConfigured()` rejects (empty or malformed) is "no console" → **#2** if there is Wi‑Fi.
 
 ---
 
-## 3. Timing (contable, no Hertz distintos)
+## 3. Timing (countable, not different frequencies)
 
-Constantes (ms), una sola tabla en código:
+Constants (ms), one table in code:
 
-| Símbolo | ms | Uso |
+| Symbol | ms | Use |
 | --- | --- | --- |
-| `PULSE_ON` | 100 | Destello de ráfaga (#2–4) |
-| `PULSE_GAP` | 200 | Apagado entre destellos de la misma ráfaga |
-| `BURST_PAUSE` | 1400 | Apagado después del último destello, antes de repetir |
-| `FAST_ON` / `FAST_OFF` | 250 / 250 | #1 (~2 Hz). No se cuenta. |
+| `PULSE_ON` | 100 | Burst flash (#2–4) |
+| `PULSE_GAP` | 200 | Off between flashes of the same burst |
+| `BURST_PAUSE` | 1400 | Off after the last flash, before repeating |
+| `FAST_ON` / `FAST_OFF` | 250 / 250 | #1 (~2 Hz). Not counted. |
 | `HEART_ON` | 80 | #5 |
-| `HEART_OFF` | 2920 | #5 → periodo 3 s |
+| `HEART_OFF` | 2920 | #5 → 3 s period |
 
-Ráfaga de *n* destellos: `n × PULSE_ON + (n − 1) × PULSE_GAP`, luego `BURST_PAUSE`.
+Burst of *n* flashes: `n × PULSE_ON + (n − 1) × PULSE_GAP`, then `BURST_PAUSE`.
 
-Ejemplo #3: on 100 — off 200 — on 100 — off 200 — on 100 — off 1400 — repetir. Se cuentan **tres**.
+Example #3: on 100 — off 200 — on 100 — off 200 — on 100 — off 1400 — repeat. You count **three**.
 
-#6: pin en `LOW` (encendido), sin tick de parpadeo.
+#6: pin `LOW` (on), no blink tick.
 
-No usar 5 Hz vs 10 Hz vs 1 Hz. Un humano no los distingue en 3 mm.
-
----
-
-## 4. Qué es error de sistema (#6)
-
-Lista cerrada. Nada más enciende el fijo:
-
-- La task de consola no se creó.
-- La consola respondió **401** (token rechazado). Las recetas en NVS se conservan.
-
-El 401 queda **pegado** hasta una respuesta real de la consola con código **> 0 y distinto de 401**, o hasta un `HUESET token` nuevo. Un intento que no llega (timeout, `code == -1`, Wi-Fi caído) **no** despega el fijo. Mientras siga pegado, el fijo gana aunque no haya Wi-Fi (no se ve #1).
-
-**No** son #6:
-
-- Timeout de pairing o Bridge no encontrado → **#3**.
-- Wi-Fi caído, sin 401 pegado → **#1**.
-- PUT Hue fallido en un toque GPIO (on/off/double/short), o Bridge inalcanzable → **el LED no cambia**.
-- Poll de consola, `rev`, snapshot, debounce, un `LOG` cualquiera.
+Don't use 5 Hz vs 10 Hz vs 1 Hz. A human can't tell them apart on a 3 mm LED.
 
 ---
 
-## 5. Hue “pareado”
+## 4. What a system error is (#6)
 
-Para #3 vs #4/#5: hay key en NVS que `hueLooksLikeKey` acepta **y** hay IP de Bridge. **No** hacer GET Clip en cada tick del LED.
+Closed list. Nothing else turns on the solid light:
 
-Eso se pierde, y se pasa a **#3**, solo si un HTTP Hue **que envió la key** dice que no sirve: **401 o 403**, y el cuerpo no es “link button not pressed”. Un 401/403 de un pedido sin key (`/api/config`, discovery) no cuenta. Un PUT que sí llevó la key y vuelve 401/403 sí baja a #3. Un timeout, un 5xx o el Bridge apagado **no** bajan el peldaño. No #6.
+- The console task was not created.
+- The console answered **401** (token rejected). Recipes in NVS are kept.
 
-Los **20 s** después de que el POST de pairing acaba de entregar la key, un 401 o 403 **no** baja a #3. La key acaba de salir del Bridge. Una llamada posterior, ya fuera de esos 20 s, sí baja.
+The 401 **sticks** until a real console response with a code **> 0 and other than 401**, or until a new `HUESET token`. An attempt that doesn't arrive (timeout, `code == -1`, Wi‑Fi down) does **not** clear it. While it sticks, the solid light wins even without Wi‑Fi (#1 is not shown).
 
----
+**Not** #6:
 
-## 6. Recetas vacías
-
-#4 = `gRecipeCount == 0` (ningún canal). Una receta en un solo canal ya es armado (#5). No distinguir “faltan los otros tres”.
-
----
-
-## 7. Arranque
-
-Tras `pinMode(LED_BUILTIN, OUTPUT)` corre el mismo clasificador. Los primeros cientos de ms pueden verse como #1 (aún no hay STA). No hay pantalla `UI_BOOT` aparte.
-
-USB Improv / `HUESET` no añaden patrón: sin STA → #1; STA sin token/url (aún en NVS) → #2.
+- Pairing timeout or Bridge not found → **#3**.
+- Wi‑Fi down, no sticky 401 → **#1**.
+- Failed Hue PUT on a GPIO touch (on/off/double/short), or unreachable Bridge → **the LED doesn't change**.
+- Console poll, `rev`, snapshot, debounce, any `LOG`.
 
 ---
 
-## 8. Hecho en 0.2.7
+## 5. Hue "paired"
 
-- Tick de LED por timer, **sin `delay()`**, cada **~50 ms**, también durante el POST de pairing. El GPIO no espera al LED (`channelsPoll` primero).
-- El patrón #3 lo pone el clasificador, no `hueBlink`.
-- Polaridad: `LOW` = encendido (GPIO15, activo en bajo). `HIGH` apaga.
-- No se toca el LED rojo de carga.
-- `FIRMWARE_VERSION` 0.2.7. La tabla del README coincide.
+For #3 vs #4/#5: there is a key in NVS that `hueLooksLikeKey` accepts **and** a Bridge IP. Do **not** GET Clip on every LED tick.
 
-Fuera de este recorte: Round (disco), Improv copy, consola.
+It is lost, dropping to **#3**, only if a Hue HTTP call **that sent the key** says it's no good: **401 or 403**, and the body isn't "link button not pressed". A 401/403 from a request without the key (`/api/config`, discovery) doesn't count. A PUT that did carry the key and returns 401/403 does drop to #3. A timeout, a 5xx or the Bridge being off do **not** drop the step. Never #6.
+
+For **20 s** after the pairing POST has just delivered the key, a 401 or 403 does **not** drop to #3. The key just came out of the Bridge. A later call, outside those 20 s, does.
 
 ---
 
-## 9. Prueba de banco (aceptación)
+## 6. Empty recipes
 
-Con el XIAO a la vista, sin abrir Serial:
+#4 = `gRecipeCount == 0` (no channel). One recipe on a single channel is already armed (#5). Don't distinguish "the other three are missing".
 
-1. Sin SSID / Wi-Fi down → continuo ~2 Hz.
-2. Wi-Fi, borrar o vaciar URL/token → se cuentan **2**.
-3. Wi-Fi+consola, hold 3 s BOOT o sin key → se cuentan **3**; pulsar el Bridge pasa a 4 o 5.
-4. Pareado, consola sin recetas → se cuentan **4**.
-5. Una receta en cualquier canal → un destello cada ~3 s.
-6. Token consola inválido (401) → fijo. Restaurar token → vuelve a 4 o 5.
-7. Durante 4 o 5, un GPIO cuyo PUT falle → el patrón **no** pasa a fijo.
+---
+
+## 7. Boot
+
+After `pinMode(LED_BUILTIN, OUTPUT)` the same classifier runs. The first few hundred ms may look like #1 (no STA yet). There is no separate `UI_BOOT` screen.
+
+USB Improv / `HUESET` add no pattern: no STA → #1; STA without token/url (not yet in NVS) → #2.
+
+---
+
+## 8. Done in 0.2.7
+
+- LED tick on a timer, **no `delay()`**, every **~50 ms**, also during the pairing POST. The GPIO doesn't wait for the LED (`channelsPoll` first).
+- Pattern #3 is set by the classifier, not `hueBlink`.
+- Polarity: `LOW` = on (GPIO15, active low). `HIGH` turns it off.
+- The red charging LED is untouched.
+- `FIRMWARE_VERSION` 0.2.7. The README table matches.
+
+Outside this slice: Round (disc), Improv copy, console.
+
+---
+
+## 9. Bench test (acceptance)
+
+With the XIAO in view, without opening Serial:
+
+1. No SSID / Wi‑Fi down → continuous ~2 Hz.
+2. Wi‑Fi, delete or empty URL/token → count **2**.
+3. Wi‑Fi + console, BOOT hold 3 s or no key → count **3**; pressing the Bridge button moves to 4 or 5.
+4. Paired, console without recipes → count **4**.
+5. One recipe on any channel → one flash every ~3 s.
+6. Invalid console token (401) → solid. Restore the token → back to 4 or 5.
+7. During 4 or 5, a GPIO whose PUT fails → the pattern does **not** go solid.

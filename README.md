@@ -1,8 +1,8 @@
 # hue-simple-switch
 
-Interruptor de pared Wi-Fi para **Seeed XIAO ESP32-C6**. Llama a la API local Clip v2 (HTTPS) del Bridge Hue. No es Zigbee.
+Wi‑Fi wall switch for the **Seeed XIAO ESP32-C6**. Calls the Hue Bridge's local Clip v2 API (HTTPS). Not Zigbee.
 
-Canales GPIO v1 (cerrado = pin a GND, `INPUT_PULLUP`):
+GPIO channels v1 (closed = pin to GND, `INPUT_PULLUP`):
 
 | id | GPIO | kind | label |
 | --- | --- | --- | --- |
@@ -11,54 +11,64 @@ Canales GPIO v1 (cerrado = pin a GND, `INPUT_PULLUP`):
 | `d1` | 1 | `maintained` | D1 |
 | `d2` | 2 | `maintained` | D2 |
 
-Cada canal tiene recetas por evento (`on` / `off` / `double_click` en maintained; `short` en BOOT). Las asigna la consola. El GPIO ejecuta NVS → Bridge; no espera a Vercel.
+Each channel has recipes per event (`on` / `off` / `double_click` on maintained; `short` on BOOT). The console assigns them. The GPIO runs NVS → Bridge; it doesn't wait for Vercel.
 
-**BOOT** (GPIO9) y **RST** (CHIP_PU) son **botones**, no LEDs. En la placa hay dos luces:
+Wiring for three wall switches: [`docs/wiring-3-switches.svg`](docs/wiring-3-switches.svg).
 
-Alfabeto del naranja, **implementado** en firmware 0.2.7: `docs/specs/finished/led-status.md`.
+**BOOT** (GPIO9) and **RST** (CHIP_PU) are **buttons**, not LEDs. The board has two lights:
 
-| Luz | Dónde | Quién la mueve |
+The orange LED's alphabet is **implemented** in firmware 0.2.7: `docs/specs/finished/led-status.md`.
+
+| Light | Where | Driven by |
 | --- | --- | --- |
-| Naranja (user, GPIO15 `LED_BUILTIN`) | Lado derecho, junto a RST | Este firmware |
-| Roja (carga) | Junto al USB-C | Hardware del cargador, el sketch no la toca |
+| Orange (user, GPIO15 `LED_BUILTIN`) | Right side, next to RST | This firmware |
+| Red (charging) | Next to the USB-C | The charger hardware; the sketch doesn't touch it |
 
-### LED naranja (firmware)
+### Orange LED (firmware)
 
-Un solo patrón a la vez, de arriba abajo. Al cambiar de peldaño la ráfaga empieza de cero. `LOW` en GPIO15 enciende el naranja (activo en bajo).
+One pattern at a time, top to bottom. When the step changes, the burst starts from zero. `LOW` on GPIO15 turns the orange on (active low).
 
-| Qué ves | Significa |
+| What you see | Meaning |
 | --- | --- |
-| Encendido fijo | Error de sistema: no se creó la tarea de consola, o la consola respondió 401. El 401 sigue fijo hasta una respuesta con código distinto de 401, o un `HUESET token` nuevo. Gana aunque no haya Wi-Fi. |
-| Parpadeo continuo ~2 Hz (250 ms on / 250 ms off) | Sin Wi-Fi STA, o scan Improv. Aunque haya SSID guardado. |
-| 2 destellos y pausa | Wi-Fi ok, sin consola (URL o token vacíos, o placeholder `your-…`). |
-| 3 destellos y pausa | Wi-Fi y consola, sin Hue pareado, o pairing en curso / timeout. Hold 3 s en BOOT (re-pair) usa este patrón. |
-| 4 destellos y pausa | Wi-Fi, consola y Hue, ninguna receta. |
-| Un destello corto cada ~3 s | Armado: una o más recetas. |
+| Solid on | System error: the console task wasn't created, or the console answered 401. The 401 stays solid until a response with a code other than 401, or a new `HUESET token`. Wins even without Wi‑Fi. |
+| Continuous blink ~2 Hz (250 ms on / 250 ms off) | No Wi‑Fi STA, or Improv scan. Even with a saved SSID. |
+| 2 flashes and a pause | Wi‑Fi ok, no console (URL or token empty, or a `your-…` placeholder). |
+| 3 flashes and a pause | Wi‑Fi and console, Hue not paired, or pairing in progress / timed out. Holding BOOT 3 s (re-pair) uses this pattern. |
+| 4 flashes and a pause | Wi‑Fi, console and Hue, no recipes. |
+| One short flash every ~3 s | Armed: one or more recipes. |
 
-Ráfaga (#2–#4): 100 ms encendido, 200 ms entre destellos, 1400 ms de pausa. El destello armado dura 80 ms y se repite cada 3 s.
+Burst (#2–#4): 100 ms on, 200 ms between flashes, 1400 ms pause. The armed flash lasts 80 ms and repeats every 3 s.
 
-### LED rojo (carga, no es el sketch)
+### Red LED (charging, not the sketch)
 
-| Qué ves | Significa |
+| What you see | Meaning |
 | --- | --- |
-| Encendido ~30 s al conectar USB sin batería | USB presente; luego se apaga. |
-| Parpadea | Batería LiPo conectada y cargando por USB. |
-| Apagado con USB y batería | Carga completa (o no hay ciclo de carga). |
+| On for ~30 s when USB is plugged in without a battery | USB present; then it turns off. |
+| Blinking | LiPo battery connected and charging over USB. |
+| Off with USB and battery | Charge complete (or no charge cycle). |
 
-Contrato: `hue-switch-console/docs/definiciones.md` y `docs/device-api.md`.
+Contract: `hue-switch-console/docs/definitions.md` and `docs/device-api.md`.
 
 ## Setup
 
-1. Flashea y provisiona desde Chrome en [hue.tineira.com](https://hue.tineira.com) (USB). Improv guarda la red **2.4 GHz** y `HUESET` deja token (`hsw_…`) y url en NVS `console`. Nada de eso va compilado. Para desarrollo, copia `config.example.h` a `config.h` (solo `SERIAL_DEBUG`); `arduino-cli upload` no borra la NVS, así que la red y el token siguen tras cada flasheo.
-2. El XIAO descubre el Bridge (mDNS `_hue._tcp`, NVS, `discovery.meethue.com`) y empareja la key Hue (tres destellos en el naranja → botón del Bridge). IP y key quedan en NVS, no en `config.h`.
-3. Register: `POST /api/device/register` con `product: "simple"`, MAC, `channels[]` y snapshot (lights/rooms/scenes). Poll: `GET /api/device/config?mac=` (~1 min sin recetas; al boot y cada 1 h si hay).
-4. Arduino IDE 2.3.10: abre `hue-simple-switch.ino`, placa **XIAO_ESP32C6**.
-5. O arduino-cli: `arduino-cli compile --profile xiao-c6 .`
+1. Flash and provision from Chrome on [hue.tineira.com](https://hue.tineira.com) → Devices (USB). Improv saves the **2.4 GHz** network and `HUESET` stores the token (`hsw_…`) and url in NVS `console`. None of that is compiled in. For development, copy `config.example.h` to `config.h` (only `SERIAL_DEBUG`); `arduino-cli upload` doesn't erase NVS, so the network and token survive every flash.
+2. The XIAO discovers the Bridge (mDNS `_hue._tcp`, NVS, `discovery.meethue.com`) and pairs the Hue key (three orange flashes → Bridge button). IP and key stay in NVS, not in `config.h`.
+3. Register: `POST /api/device/register` with `product: "simple"`, MAC, `channels[]` and snapshot (lights/rooms/scenes). Poll: `GET /api/device/config?mac=` (~1 min without recipes; at boot and every 1 h if there are some).
+4. Arduino IDE 2.3.10: open `hue-simple-switch.ino`, board **XIAO_ESP32C6**.
+5. Or arduino-cli: `arduino-cli compile --profile xiao-c6 .`
 
-Listar lámparas (diagnóstico):
+List lamps (diagnostics):
 
 ```
 curl -k -H "hue-application-key: KEY" https://BRIDGE_IP/clip/v2/resource/light
 ```
 
-`config.h` no se sube a git. Alta de producto = instalador USB en hue.tineira.com.
+`config.h` is not committed. Product onboarding = the USB installer on hue.tineira.com.
+
+## Release
+
+A push to `main` **is a release**. `.github/workflows/firmware.yml` builds the product image, publishes the `usb-installer` GitHub Release, and triggers the console to pull the bins into `public/firmware/simple/`. The Devices screen then offers that build to every Simple plugged in over USB.
+
+- `FIRMWARE_VERSION` in `console.h` is the version the console shows. Bump it for any change a board should pick up, and add a `## Simple` entry to the console's `docs/changelog.md`.
+- Image layout and offsets: [`docs/firmware-artifacts.md`](docs/firmware-artifacts.md).
+- The pipeline needs the `CONSOLE_REPO_TOKEN` secret in this repo. Setup, rotation and troubleshooting: the console repo's `README.md`, "Firmware release pipeline".

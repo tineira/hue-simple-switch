@@ -1,6 +1,6 @@
 #pragma once
 
-// SERIAL_DEBUG en config.h (0 = binario de producto: CDC abierto, sin logs USB).
+// SERIAL_DEBUG in config.h (0 = product binary: CDC open, no USB logs).
 #if defined(__has_include)
 #if __has_include("config.h")
 #include "config.h"

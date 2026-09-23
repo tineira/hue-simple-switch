@@ -12,23 +12,23 @@
 #define HUE_APP_KEY ""
 #endif
 
-// IP y application key en runtime (mDNS / NVS / emparejado).
+// IP and application key at runtime (mDNS / NVS / pairing).
 extern String gHueBridgeIp;
 extern String gHueAppKey;
 
-// Estado de pareo para el LED. RAM: se pierde al boot. No hay GET extra.
+// Pairing state for the LED. RAM: lost at boot. No extra GET.
 inline volatile bool gHueKeyUsable = false;
 inline volatile bool gHueIpUsable = false;
 inline volatile bool gHueAuthRejected = false;
-// Tras recibir la key del botón del Bridge, un 401 inmediato no se queda pegado.
+// After receiving the key from the Bridge button, an immediate 401 does not stick.
 inline unsigned long gHueAuthGraceUntil = 0;
 inline volatile bool gHuePairing = false;
 inline volatile bool gHuePairTimeout = false;
 inline volatile bool gHueBridgeMissing = false;
 
-// 401/403 con key (salvo "link button not pressed") bajan a #3, también un PUT GPIO.
-// Sin key (/api/config, discovery) no prueba que la key guardada esté mala.
-// Un 200 con key recupera. Timeout, 5xx o Bridge caído no entran aquí.
+// 401/403 with the key (except "link button not pressed") drop to #3, a GPIO PUT too.
+// Without the key (/api/config, discovery) it does not prove the saved key is bad.
+// A 200 with the key recovers. Timeout, 5xx or Bridge down do not count here.
 inline void hueAuthGraceArm(unsigned long ms) {
   gHueAuthGraceUntil = millis() + ms;
   gHueAuthRejected = false;
@@ -56,8 +56,8 @@ inline void hueNoteAuth(int code, const String *body, bool withKey) {
   }
 }
 
-// El Bridge usa un certificado propio; Clip v2 exige HTTPS local.
-// setInsecure() evita validar esa CA (solo LAN, no cloud).
+// The Bridge uses a self-signed certificate; Clip v2 requires local HTTPS.
+// setInsecure() skips validating that CA (LAN only, not cloud).
 
 inline int hueHttp(const String &url, const char *method, const char *body, String *response, bool withKey,
                    bool insecure) {

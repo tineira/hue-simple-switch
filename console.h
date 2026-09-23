@@ -25,7 +25,7 @@ inline bool gConsolePolledBoot = false;
 inline String gConsoleUrlNvs;
 inline String gConsoleTokenNvs;
 
-// 401 de consola, pegado en RAM (no NVS). Se limpia al boot.
+// Console 401, sticky in RAM (not NVS). Cleared at boot.
 inline volatile bool gConsoleAuthRejected = false;
 inline volatile bool gConsoleConfiguredOk = false;
 inline volatile bool gConsoleTaskFailed = false;
@@ -33,7 +33,7 @@ inline volatile bool gConsoleTaskFailed = false;
 inline void consoleRefreshConfigured();
 inline void consoleNoteHttp(int code);
 
-// Token y URL solo vienen de NVS console (HUESET desde la consola web).
+// Token and URL only come from NVS console (HUESET from the web console).
 inline String consoleUrl() { return gConsoleUrlNvs; }
 
 inline String consoleToken() { return gConsoleTokenNvs; }
@@ -75,7 +75,7 @@ inline bool consoleSetToken(const char *tok) {
     return false;
   }
   gConsoleTokenNvs = tok;
-  // HUESET token nuevo despega el 401 aunque la próxima respuesta aún no llegue.
+  // A new HUESET token clears the 401 even before the next response arrives.
   gConsoleAuthRejected = false;
   consoleRefreshConfigured();
   return true;
@@ -131,7 +131,7 @@ inline void consoleNoteHttp(int code) {
     gConsoleAuthRejected = true;
     return;
   }
-  // code <= 0 (timeout, -1, sin Wi-Fi) no despega.
+  // code <= 0 (timeout, -1, no Wi-Fi) does not clear it.
   if (code > 0) {
     gConsoleAuthRejected = false;
   }

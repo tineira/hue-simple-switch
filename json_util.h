@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-// Extrae campos de JSON (Clip v2 / consola). Acepta espacio tras `:`. No es un parser completo.
+// Extracts fields from JSON (Clip v2 / console). Accepts a space after `:`. Not a full parser.
 
 inline void jsonAppendEscaped(String &out, const char *s) {
   out += '"';
@@ -169,7 +169,7 @@ inline bool jsonHueOn(const char *json, bool *on) {
   return false;
 }
 
-// Rid cuya pareja rtype coincide (p. ej. grouped_light en services[]).
+// Rid whose paired rtype matches (e.g. grouped_light in services[]).
 inline bool jsonFindRidByRtype(const char *json, const char *rtype, char *out, size_t outSz) {
   if (!json || !rtype || !out || outSz < 2) {
     return false;
@@ -286,7 +286,7 @@ inline bool jsonStringField(const String &body, const char *key, String *out) {
   return true;
 }
 
-// Recibe el cuerpo HTTP (chunked ya decodificado) y entrega cada objeto de data[].
+// Receives the HTTP body (chunked already decoded) and hands over each object of data[].
 class JsonDataSink : public Stream {
  public:
   static const size_t kMaxObj = 20480;
@@ -329,7 +329,7 @@ class JsonDataSink : public Stream {
   bool escape_ = false;
   State state_ = kSeekData;
   uint8_t match_ = 0;
-  // Clip v2 scene.actions puede superar kMaxObj; no lo copiamos.
+  // Clip v2 scene.actions can exceed kMaxObj; we don't copy it.
   bool skippingActions_ = false;
   bool skipStarted_ = false;
   bool skipPrim_ = false;
@@ -350,7 +350,7 @@ class JsonDataSink : public Stream {
     }
   }
 
-  // true = este byte ya se consumió (incluido re-feed al objeto).
+  // true = this byte was already consumed (including a re-feed to the object).
   bool feedSkipActions(char c) {
     if (!skipStarted_) {
       if (c == ' ' || c == '\n' || c == '\r' || c == '\t') {

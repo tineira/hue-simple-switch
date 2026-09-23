@@ -5,7 +5,7 @@
 #include "json_util.h"
 #include "recipes.h"
 
-// Snapshot compacto para POST /api/device/register (no el JSON crudo de Clip v2).
+// Compact snapshot for POST /api/device/register (not the raw Clip v2 JSON).
 
 static const uint8_t kMaxOwners = 64;
 
