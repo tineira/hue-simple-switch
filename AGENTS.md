@@ -50,7 +50,7 @@ arduino-cli monitor -p COMx -c baudrate=115200
 
 Replace `COMx` with the XIAO port (`arduino-cli board list`).
 
-Release: a push to `main` runs `.github/workflows/firmware.yml`. It builds with `SERIAL_DEBUG` 0 and uploads the four installer parts plus this version's `CHANGELOG.md` entry to the console (`POST https://hue.tineira.com/api/firmware/simple`, secret `FIRMWARE_UPLOAD_TOKEN`); the console serves `/install` and `/changelog` from that upload. A failed upload fails the run. The same version with different bins is kept as released (`409 version_exists`, a warning, normal on pushes that do not bump the version): bump `FIRMWARE_VERSION` to ship new bins. The console still owns the contract docs; see its `docs/specs/firmware-uploads.md`.
+Release: a push to `main` runs `.github/workflows/firmware.yml`. It builds with `SERIAL_DEBUG` 0 and uploads the four installer parts plus this version's `CHANGELOG.md` entry to the console (`POST https://hue.tineira.com/api/firmware/simple`, secret `FIRMWARE_UPLOAD_TOKEN`); the console serves `/install` and `/changelog` from that upload. A failed upload fails the run. The same version with different bins is kept as released (`409 version_exists`, a warning, normal on pushes that do not bump the version): bump `FIRMWARE_VERSION` to ship new bins. The console still owns the contract docs; see its `docs/specs/finished/firmware-uploads.md`.
 
 Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` heading at the top of this repo's `CHANGELOG.md` in the same commit (not in the console's `docs/changelog.md`). CI sends that entry as the release notes. Write each bullet as what changed for the person using the switch (what they see or can now do), not how the code changed: no function names, macros, USB command names, NVS keys, or GPIO numbers. Example: "The switch remembers the Wi-Fi network you saved during setup after it restarts." Not: "Reconnect stored Wi-Fi through the Arduino STA API."
 
@@ -65,6 +65,7 @@ Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` hea
 
 - `product`: always `"simple"` on `POST /api/device/register` (plus GPIO `channels[]`, `source: xiao`)
 - Channels v1: `boot` GPIO9 momentary (short = recipe, hold 3 s = Hue re-pair); `d0`/`d1`/`d2` GPIO 0/1/2 maintained (`on` / `off` / `double_click`)
+- USB commands (ASCII lines, besides Improv): `HUESET`, `HUEGET`, `HUEPAIR`, `HUECLR`, `HUEBOOT` (answers `HUEOK boot`, then restarts into the ROM bootloader so Devices can flash without BOOT/RESET). Anything else answers `HUEERR unknown`. See the console `docs/specs/finished/devices.md` §6
 - Console: URL + token from NVS `console` (`HUESET` over USB). Register + `GET /api/device/config`. Poll ~1 min if no recipes; at boot and every 1 h if any. GPIO loop never waits on that HTTP (console FreeRTOS task)
 - Last **good** Hue snapshot wins: do not POST empty `[]` if a Clip stream is not 200
 - On `bridgeid` change: clear NVS recipes/`rev` **before** the next poll

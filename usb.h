@@ -3,10 +3,14 @@
 #include <string.h>
 #include <WiFi.h>
 #include <esp_wifi.h>
+#include <esp_system.h>
+#include "soc/soc.h"
+#include "soc/lp_aon_reg.h"
 #include "log.h"
 #include "console.h"
 
-// Improv Serial (https://www.improv-wifi.com/serial) + ASCII HUESET/HUEGET/HUEPAIR/HUECLR.
+// Improv Serial (https://www.improv-wifi.com/serial) + ASCII HUESET/HUEGET/HUEPAIR/HUECLR/HUEBOOT.
+// HUEBOOT restarts into the ROM serial bootloader so the console can flash without BOOT/RESET.
 // No WebServer / SoftAP. Arduino remembers STA; NVS namespace console holds token/url.
 
 static const uint8_t kImprovVer = 1;
@@ -572,6 +576,16 @@ inline void usbHandleHueclr() {
   usbReplyLine("HUEOK clear");
 }
 
+// Reply, let the line leave over USB, then restart into ROM download mode.
+// NVS and flash are untouched. The console clears the flag after flashing.
+inline void usbHandleHueboot() {
+  usbReplyLine("HUEOK boot");
+  Serial.flush();
+  delay(100);
+  REG_SET_BIT(LP_AON_SYS_CFG_REG, LP_AON_FORCE_DOWNLOAD_BOOT);
+  esp_restart();
+}
+
 inline void usbTrimAscii(char *line) {
   size_t n = strlen(line);
   while (n && (line[n - 1] == ' ' || line[n - 1] == '\r' || line[n - 1] == '\t')) {
@@ -591,6 +605,10 @@ inline void usbHandleAscii(char *line) {
   }
   if (strcmp(line, "HUECLR") == 0) {
     usbHandleHueclr();
+    return;
+  }
+  if (strcmp(line, "HUEBOOT") == 0) {
+    usbHandleHueboot();
     return;
   }
   if (strncmp(line, "HUESET", 6) == 0 && (line[6] == 0 || line[6] == ' ')) {

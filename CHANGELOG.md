@@ -2,6 +2,10 @@
 
 User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired buttons). One `### <version> — <YYYY-MM-DD>` heading per `FIRMWARE_VERSION`, newest first, written in the same commit that bumps `FIRMWARE_VERSION`, in the wording of the person using the switch. CI sends the entry for the current version to the console as the release notes.
 
+### 0.2.11 — 2026-09-24
+
+- After this update, installing new firmware from Devices no longer needs the BOOT and RESET buttons.
+
 ### 0.2.10 — 2026-09-22
 
 - Pairing with the Bridge no longer fails if the first check right after pairing does not go through.
