@@ -10,7 +10,7 @@
 #include "console.h"
 
 // Improv Serial (https://www.improv-wifi.com/serial) + ASCII HUESET/HUEGET/HUEPAIR/HUECLR/HUEBOOT.
-// HUEBOOT restarts into the ROM serial bootloader so the console can flash without BOOT/RESET.
+// HUEBOOT restarts into the ROM serial bootloader so the console can flash without the BOOT button.
 // No WebServer / SoftAP. Arduino remembers STA; NVS namespace console holds token/url.
 
 static const uint8_t kImprovVer = 1;

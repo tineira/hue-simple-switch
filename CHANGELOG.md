@@ -4,7 +4,7 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 ### 0.2.11 — 2026-09-24
 
-- After this update, installing new firmware from Devices no longer needs the BOOT and RESET buttons.
+- After this update, installing new firmware from Devices no longer needs the BOOT button. Press RESET once when the write finishes.
 
 ### 0.2.10 — 2026-09-22
 
