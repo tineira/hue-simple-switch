@@ -67,8 +67,8 @@ curl -k -H "hue-application-key: KEY" https://BRIDGE_IP/clip/v2/resource/light
 
 ## Release
 
-A push to `main` **is a release**. `.github/workflows/firmware.yml` builds the product image, publishes the `usb-installer` GitHub Release, and triggers the console to pull the bins into `public/firmware/simple/`. The Devices screen then offers that build to every Simple plugged in over USB.
+A push to `main` **is a release**. `.github/workflows/firmware.yml` builds the product image and uploads it to the console (hue.tineira.com) with this version's `CHANGELOG.md` entry as release notes. The console's USB installer then offers that build to every Simple plugged in over USB. The workflow also keeps the `usb-installer` GitHub Release as a download link.
 
-- `FIRMWARE_VERSION` in `console.h` is the version the console shows. Bump it for any change a board should pick up, and add a `## Simple` entry to the console's `docs/changelog.md`.
+- `FIRMWARE_VERSION` in `console.h` is the version the console shows. Bump it for any change a board should pick up, and add its entry to `CHANGELOG.md` in the same commit. A push without a bump re-sends the notes only (`409 version_exists` warning).
 - Image layout and offsets: [`docs/firmware-artifacts.md`](docs/firmware-artifacts.md).
-- The pipeline needs the `CONSOLE_REPO_TOKEN` secret in this repo. Setup, rotation and troubleshooting: the console repo's `README.md`, "Firmware release pipeline".
+- The pipeline needs the `FIRMWARE_UPLOAD_TOKEN` secret in this repo. Setup and troubleshooting: the console repo's `README.md`, "Firmware release pipeline".
