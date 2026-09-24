@@ -92,7 +92,7 @@ jobs:
         env:
           FIRMWARE_UPLOAD_TOKEN: ${{ secrets.FIRMWARE_UPLOAD_TOKEN }}
         run: |
-          set -uo pipefail
+          set +e -uo pipefail
           # Warn-only until the console serves firmware from uploads (docs/specs/firmware-uploads.md phase B).
           if [ -z "${FIRMWARE_UPLOAD_TOKEN}" ]; then
             echo "FIRMWARE_UPLOAD_TOKEN missing; skip console upload"
