@@ -87,3 +87,51 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/tineira/hue-switch-console/dispatches \
             -d "{\"event_type\":\"firmware-bins\",\"client_payload\":{\"product\":\"simple\",\"version\":\"${VERSION}\"}}"
+
+      - name: Upload to console
+        env:
+          FIRMWARE_UPLOAD_TOKEN: ${{ secrets.FIRMWARE_UPLOAD_TOKEN }}
+        run: |
+          set -uo pipefail
+          # Warn-only until the console serves firmware from uploads (docs/specs/firmware-uploads.md phase B).
+          if [ -z "${FIRMWARE_UPLOAD_TOKEN}" ]; then
+            echo "FIRMWARE_UPLOAD_TOKEN missing; skip console upload"
+            exit 0
+          fi
+          # Notes: the CHANGELOG.md section whose heading starts with this version,
+          # up to the next ### or ## heading, HTML comments removed, blank edges trimmed.
+          awk -v v="$VERSION" '
+            /^##+ / && f { exit }
+            /^### / { h = substr($0, 5); if (h == v || index(h, v " ") == 1) { f = 1; next } }
+            f
+          ' CHANGELOG.md \
+            | perl -0pe 's/<!--.*?-->\n?//gs' \
+            | sed -e '/[^[:space:]]/,$!d' \
+            | sed -e :a -e '/^[[:space:]]*$/{$d;N;ba' -e '}' > notes.md
+          if [ ! -s notes.md ]; then
+            echo "::warning::No CHANGELOG.md entry for ${VERSION}; a release must have notes. Skip console upload."
+            exit 0
+          fi
+          echo "Notes for ${VERSION}:"
+          cat notes.md
+          D=dist/installer
+          CODE=$(curl -sS -o resp.json -w '%{http_code}' -X POST "https://hue.tineira.com/api/firmware/simple" \
+            -H "Authorization: Bearer ${FIRMWARE_UPLOAD_TOKEN}" \
+            -F "version=${VERSION}" \
+            -F "commit=${GITHUB_SHA}" \
+            -F "notes=<notes.md" \
+            -F "bootloader.bin=@${D}/bootloader.bin" \
+            -F "partitions.bin=@${D}/partitions.bin" \
+            -F "boot_app0.bin=@${D}/boot_app0.bin" \
+            -F "firmware.bin=@${D}/firmware.bin") || CODE="curl failed"
+          echo "HTTP ${CODE}"
+          cat resp.json 2>/dev/null; echo
+          case "$CODE" in
+            200|201)
+              echo "Uploaded ${VERSION} to the console." ;;
+            409)
+              echo "::warning::version_exists: ${VERSION} bins are already released (notes were updated). Bump FIRMWARE_VERSION to ship new bins." ;;
+            *)
+              echo "::warning::Console upload failed (HTTP ${CODE}); not fatal until phase B." ;;
+          esac
+          exit 0

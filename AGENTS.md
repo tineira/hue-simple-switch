@@ -8,7 +8,7 @@ This firmware is one of several switches for one console. The console repo `C:\U
 
 - `docs/device-api.md`: endpoints, auth, payloads, error codes. Authoritative.
 - `docs/definitions.md`: product model (recipes, channels, pages).
-- `docs/changelog.md`: user-facing release notes (this product's section).
+- `docs/changelog.md`: the console's own release notes. This firmware's notes live in this repo's `CHANGELOG.md`.
 - `docs/specs/`: cross-repo specs, each with a checklist per repo.
 
 Rules:
@@ -50,9 +50,9 @@ arduino-cli monitor -p COMx -c baudrate=115200
 
 Replace `COMx` with the XIAO port (`arduino-cli board list`).
 
-USB installer images: a push to `main` runs `.github/workflows/firmware.yml` (builds with `SERIAL_DEBUG` 0, publishes the `usb-installer` release, and, if `CONSOLE_REPO_TOKEN` is set, triggers the console's `sync-firmware-bins.yml`, which copies the four parts into `public/firmware/simple/` and sets `manifest.json` `version`). Fallback without the secret: run **Sync USB installer bins** in the console by hand, or copy the four parts yourself and set `version` to `FIRMWARE_VERSION`. Console agents must not revert that folder; tell them in the same recorte. The wizard shows that version, not this sketch until those files are in the console repo (and deployed).
+Release: a push to `main` runs `.github/workflows/firmware.yml`. It builds with `SERIAL_DEBUG` 0 and uploads the four installer parts plus this version's `CHANGELOG.md` entry to the console (`POST https://hue.tineira.com/api/firmware/simple`, secret `FIRMWARE_UPLOAD_TOKEN`); see the console's `docs/specs/firmware-uploads.md`. The same version with different bins is rejected (`409 version_exists`): bump `FIRMWARE_VERSION` to ship new bins. Until that spec's phase B the upload is warn-only, and the older path still runs too (the `usb-installer` release and the `CONSOLE_REPO_TOKEN` dispatch that syncs `public/firmware/simple/` in the console). The console still owns the contract docs.
 
-Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` heading under `## Simple` in the **console** tree `docs/changelog.md`, with the `<!-- commit -->` marker above it, in the same recorte. Write each bullet as what changed for the person using the switch (what they see or can now do), not how the code changed: no function names, macros, USB command names, NVS keys, or GPIO numbers. Example: "The switch remembers the Wi-Fi network you saved during setup after it restarts." Not: "Reconnect stored Wi-Fi through the Arduino STA API."
+Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` heading at the top of this repo's `CHANGELOG.md` in the same commit (not in the console's `docs/changelog.md`). CI sends that entry as the release notes. Write each bullet as what changed for the person using the switch (what they see or can now do), not how the code changed: no function names, macros, USB command names, NVS keys, or GPIO numbers. Example: "The switch remembers the Wi-Fi network you saved during setup after it restarts." Not: "Reconnect stored Wi-Fi through the Arduino STA API."
 
 ## Arduino IDE 2.3.10
 
