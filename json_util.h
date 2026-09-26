@@ -169,6 +169,52 @@ inline bool jsonHueOn(const char *json, bool *on) {
   return false;
 }
 
+// dimming.brightness (0–100) of a light or grouped_light. Searched inside the first
+// "dimming" object, so powerup.dimming further down is never read.
+inline bool jsonHueBrightness(const char *json, float *bri) {
+  if (!json || !bri) {
+    return false;
+  }
+  const char *p = strstr(json, "\"dimming\"");
+  if (!p) {
+    return false;
+  }
+  p += 9;
+  while (*p == ' ') {
+    p++;
+  }
+  if (*p != ':') {
+    return false;
+  }
+  p++;
+  while (*p == ' ') {
+    p++;
+  }
+  if (*p != '{') {
+    return false;
+  }
+  const char *close = strchr(p, '}');
+  const char *key = strstr(p, "\"brightness\"");
+  if (!key || (close && key > close)) {
+    return false;
+  }
+  key += 12;
+  while (*key == ' ') {
+    key++;
+  }
+  if (*key != ':') {
+    return false;
+  }
+  key++;
+  char *end = nullptr;
+  const float v = strtof(key, &end);
+  if (end == key) {
+    return false;
+  }
+  *bri = v;
+  return true;
+}
+
 // Rid whose paired rtype matches (e.g. grouped_light in services[]).
 inline bool jsonFindRidByRtype(const char *json, const char *rtype, char *out, size_t outSz) {
   if (!json || !rtype || !out || outSz < 2) {

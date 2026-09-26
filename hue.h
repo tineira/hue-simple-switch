@@ -144,7 +144,8 @@ inline bool hueParseOn(const String &body, bool *on) {
   return jsonHueOn(body.c_str(), on);
 }
 
-inline bool hueGetOn(const char *rtype, const char *rid, bool *on) {
+// bri (optional): dimming.brightness, -1 when the resource has none.
+inline bool hueGetOn(const char *rtype, const char *rid, bool *on, float *bri = nullptr) {
   if (!gHueBridgeIp.length() || !gHueAppKey.length() || !rtype || !rid || !on) {
     LOGLN("Hue GET: begin failed");
     return false;
@@ -161,23 +162,52 @@ inline bool hueGetOn(const char *rtype, const char *rid, bool *on) {
     LOGLN(body);
     return false;
   }
+  if (bri && !jsonHueBrightness(body.c_str(), bri)) {
+    *bri = -1;
+  }
   return true;
 }
 
-inline bool hueSetOn(const char *rtype, const char *rid, bool on) {
+inline bool huePut(const char *rtype, const char *rid, const char *payload, const char *what) {
   if (!gHueBridgeIp.length() || !gHueAppKey.length() || !rtype || !rid) {
     LOGLN("Hue PUT: begin failed");
     return false;
   }
-  const char *payload = on ? "{\"on\":{\"on\":true}}" : "{\"on\":{\"on\":false}}";
   String body;
   const int code = hueHttp(hueResourceUrl(rtype, rid), "PUT", payload, &body, true, true);
-  LOG("Hue PUT %s/%s %d -> %s\n", rtype, rid, code, on ? "on" : "off");
+  LOG("Hue PUT %s/%s %d -> %s\n", rtype, rid, code, what);
   if (code != HTTP_CODE_OK) {
     LOGLN(body);
     return false;
   }
   return true;
+}
+
+inline bool hueSetOn(const char *rtype, const char *rid, bool on) {
+  return huePut(rtype, rid, on ? "{\"on\":{\"on\":true}}" : "{\"on\":{\"on\":false}}", on ? "on" : "off");
+}
+
+// Hold to dim: the Bridge runs the ramp (dimming_delta over dynamics.duration); the switch
+// only starts and stops it.
+static const unsigned long kDimSweepMs = 5000;  // 0 → 100 %
+static const int kDimMinBrightness = 1;         // start level when the target was off
+
+inline bool hueDimFromOff(const char *rtype, const char *rid) {
+  char payload[64];
+  snprintf(payload, sizeof(payload), "{\"on\":{\"on\":true},\"dimming\":{\"brightness\":%d}}", kDimMinBrightness);
+  return huePut(rtype, rid, payload, "on at minimum");
+}
+
+inline bool hueDimStart(const char *rtype, const char *rid, bool up) {
+  char payload[128];
+  snprintf(payload, sizeof(payload),
+           "{\"dimming_delta\":{\"action\":\"%s\",\"brightness_delta\":100},\"dynamics\":{\"duration\":%lu}}",
+           up ? "up" : "down", kDimSweepMs);
+  return huePut(rtype, rid, payload, up ? "dim up" : "dim down");
+}
+
+inline bool hueDimStop(const char *rtype, const char *rid) {
+  return huePut(rtype, rid, "{\"dimming_delta\":{\"action\":\"stop\"}}", "dim stop");
 }
 
 // HTTP code (-1 if it could not start): a scene list skips a 404 and tries the next one.

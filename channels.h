@@ -47,7 +47,17 @@ struct ChannelMode {
   bool hasHold;
 };
 
+// Hold to dim (RAM only). active: a ramp was started and needs its stop on release; the
+// target is kept so the stop goes where the start went, even if recipes change mid-hold.
+struct DimRuntime {
+  bool active;
+  bool lastUp;  // false at boot: the first mid-level hold ramps up
+  char rtype[16];
+  char rid[40];
+};
+
 inline ChannelRuntime gCh[kChannelCount];
+inline DimRuntime gDim[kChannelCount];
 inline ChannelMode gChMode[kChannelCount];
 inline uint32_t gChModeGen = 0;
 inline bool gChModeValid = false;
@@ -135,6 +145,50 @@ inline bool channelRecallNextScene(size_t i, const HueRecipe &r) {
   return false;
 }
 
+// Hold with dim: one GET, maybe turn on at the minimum, then start the ramp. Off → up;
+// ≥ 95 % → down; ≤ 5 % → up; otherwise the other way from the last ramp. A failed GET
+// flips direction without turning the light on. Never turns the light off.
+inline bool channelDimStart(size_t i, const HueRecipe &r) {
+  DimRuntime &d = gDim[i];
+  bool up = !d.lastUp;
+  bool on = false;
+  float bri = -1;
+  if (!hueGetOn(r.rtype, r.rid, &on, &bri)) {
+    LOGLN("Dim: GET failed, ramping the other way");
+  } else if (!on) {
+    if (!hueDimFromOff(r.rtype, r.rid)) {
+      return false;
+    }
+    up = true;
+  } else if (bri >= 95) {
+    up = false;
+  } else if (bri >= 0 && bri <= 5) {
+    up = true;
+  }
+  d.lastUp = up;
+  if (!hueDimStart(r.rtype, r.rid, up)) {
+    return false;
+  }
+  recipeCopyField(d.rtype, sizeof(d.rtype), r.rtype);
+  recipeCopyField(d.rid, sizeof(d.rid), r.rid);
+  d.active = true;
+  return true;
+}
+
+// Release (or the channel stopped being a push button). A failed stop is not retried: the
+// ramp ends on its own at full or at the minimum.
+inline void channelDimStop(size_t i) {
+  DimRuntime &d = gDim[i];
+  d.active = false;
+  if (WiFi.status() != WL_CONNECTED) {
+    LOG("%s dim stop skipped: WiFi down\n", kChannels[i].id);
+    return;
+  }
+  if (!hueDimStop(d.rtype, d.rid)) {
+    LOGLN("Hue dim stop failed");
+  }
+}
+
 // false if the channel has no recipe for this event.
 inline bool channelFire(size_t i, const char *event) {
   const char *channelId = kChannels[i].id;
@@ -160,6 +214,9 @@ inline bool channelFire(size_t i, const char *event) {
   if (r.sceneCount) {
     LOG("%s %s -> recall_scene (%u scenes)\n", channelId, event, r.sceneCount);
     ok = channelRecallNextScene(i, r);
+  } else if (strcmp(r.action, "dim") == 0) {
+    LOG("%s %s -> dim %s/%s\n", channelId, event, r.rtype, r.rid);
+    ok = channelDimStart(i, r);
   } else {
     LOG("%s %s -> %s %s/%s\n", channelId, event, r.action, r.rtype, r.rid);
     ok = hueExecute(r.action, r.rtype, r.rid);
@@ -371,6 +428,11 @@ inline void channelsPoll(unsigned long now) {
       channelMaintained(i, now);
     } else if (gChMode[i].kind == CHK_MOMENTARY) {
       channelMomentary(i, now);
+    }
+    // The GPIO loop blocks during the start PUT, so a release that came meanwhile is seen here
+    // right after it: the stop always follows the start.
+    if (gDim[i].active && (gChMode[i].kind != CHK_MOMENTARY || gCh[i].stable == HIGH)) {
+      channelDimStop(i);
     }
   }
 }

@@ -79,7 +79,11 @@ inline bool recipeEventOk(const char *e) {
                strcmp(e, "short") == 0 || strcmp(e, "hold") == 0);
 }
 
-inline bool recipeActionOk(const char *a) {
+// dim needs a release to stop the ramp: hold only.
+inline bool recipeActionOk(const char *a, const char *event) {
+  if (a && strcmp(a, "dim") == 0) {
+    return event && strcmp(event, "hold") == 0;
+  }
   return a && (strcmp(a, "on") == 0 || strcmp(a, "off") == 0 || strcmp(a, "recall_scene") == 0 ||
                strcmp(a, "toggle") == 0);
 }
@@ -170,7 +174,7 @@ inline void recipeSceneTargetOne(const char *obj, void *ctx) {
 }
 
 // recall_scene: targets[] (1–8 scenes), or the old single target with rtype scene.
-// on / off / toggle: target with rtype light or grouped_light.
+// on / off / toggle / dim: target with rtype light or grouped_light.
 inline bool recipeFromObject(const char *obj, HueRecipe *out) {
   if (!obj || !out) {
     return false;
@@ -182,7 +186,8 @@ inline bool recipeFromObject(const char *obj, HueRecipe *out) {
   if (!jsonGetString(obj, "event", out->event, sizeof(out->event)) || !recipeEventOk(out->event)) {
     return false;
   }
-  if (!jsonGetString(obj, "action", out->action, sizeof(out->action)) || !recipeActionOk(out->action)) {
+  if (!jsonGetString(obj, "action", out->action, sizeof(out->action)) ||
+      !recipeActionOk(out->action, out->event)) {
     return false;
   }
   char rtype[16] = "";

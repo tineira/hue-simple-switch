@@ -2,6 +2,12 @@
 
 User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired buttons). One `### <version> — <YYYY-MM-DD>` heading per `FIRMWARE_VERSION`, newest first, written in the same commit that bumps `FIRMWARE_VERSION`, in the wording of the person using the switch. CI sends the entry for the current version to the console as the release notes.
 
+### 0.4.0 — 2026-09-25
+
+- A push button can dim its lights while you hold it, if you choose Dim for its hold in the console. Let go to stop at the level you want.
+- Each hold dims the other way from the last one. A light at full brightness always dims down, and one near its lowest always brightens.
+- Holding to dim a light that is off turns it on at its lowest level and brightens it. Dimming down never turns a light off.
+
 ### 0.3.0 — 2026-09-25
 
 - Each input can be a toggle switch or a push button, whichever you choose for it in the console.
