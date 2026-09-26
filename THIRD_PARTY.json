@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Arduino-ESP32 core",
+    "version": "3.3.12",
+    "license": "LGPL-2.1-or-later",
+    "url": "https://github.com/espressif/arduino-esp32/blob/3.3.12/LICENSE.md"
+  },
+  {
+    "name": "ESP-IDF",
+    "version": "v5.5.5",
+    "license": "Apache-2.0",
+    "url": "https://github.com/espressif/esp-idf/blob/v5.5.5/docs/en/COPYRIGHT.rst"
+  }
+]
