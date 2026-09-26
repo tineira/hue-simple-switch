@@ -13,15 +13,24 @@
 #include "snapshot.h"
 
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.4.0"
+#define FIRMWARE_VERSION "0.4.1"
 #endif
 
+// Fallback cadence when the console sends no X-Poll-Sec (older console).
 static const unsigned long kPollEmptyMs = 60UL * 1000UL;
 static const unsigned long kPollArmedMs = 60UL * 60UL * 1000UL;
+// X-Poll-Sec is clamped to this range.
+static const unsigned long kPollMinSec = 30UL;
+static const unsigned long kPollMaxSec = 3600UL;
 
 inline bool gConsoleRegistered = false;
 inline unsigned long gConsoleLastPollMs = 0;
 inline bool gConsolePolledBoot = false;
+// Delay the console asked for (X-Poll-Sec), or the maximum after a 401. 0 = the fallback above.
+inline unsigned long gConsolePollMs = 0;
+// NVS took a new rev: poll once more right away so the console sees it applied.
+inline bool gConsoleConfirmPoll = false;
+inline unsigned long gConsoleLastRegisterMs = 0;
 inline String gConsoleUrlNvs;
 inline String gConsoleTokenNvs;
 
@@ -153,7 +162,9 @@ inline String consoleBaseUrl() {
   return url;
 }
 
-inline int consoleHttp(const char *method, const String &path, const char *body, String *response) {
+// pollSec (optional): X-Poll-Sec from the response, 0 when missing or not a number.
+inline int consoleHttp(const char *method, const String &path, const char *body, String *response,
+                       unsigned long *pollSec = nullptr) {
   const String url = consoleBaseUrl() + path;
   HTTPClient http;
   http.setTimeout(15000);
@@ -173,6 +184,10 @@ inline int consoleHttp(const char *method, const String &path, const char *body,
 
   http.addHeader("Authorization", String("Bearer ") + consoleToken());
   http.addHeader("Content-Type", "application/json");
+  if (pollSec) {
+    static const char *kPollHeader[] = {"X-Poll-Sec"};
+    http.collectHeaders(kPollHeader, 1);
+  }
 
   int code = -1;
   if (strcmp(method, "GET") == 0) {
@@ -180,8 +195,13 @@ inline int consoleHttp(const char *method, const String &path, const char *body,
   } else {
     code = http.POST(body ? String(body) : String("{}"));
   }
-  if (response) {
+  // 204 has no body; reading one would wait for the socket to close.
+  if (response && code != HTTP_CODE_NO_CONTENT) {
     *response = http.getString();
+  }
+  if (pollSec) {
+    const long sec = http.header("X-Poll-Sec").toInt();
+    *pollSec = sec > 0 ? static_cast<unsigned long>(sec) : 0;
   }
   http.end();
   consoleNoteHttp(code);
@@ -240,11 +260,28 @@ inline void consoleFetchConfig() {
   if (!consoleConfigured()) {
     return;
   }
+  recipesLock();
+  const uint32_t sentRev = gRecipeRev;
+  recipesUnlock();
   String path = "/api/device/config?mac=";
   path += deviceMacHex();
+  path += "&rev=";
+  path += sentRev;
   String body;
-  const int code = consoleHttp("GET", path, nullptr, &body);
-  LOG("console GET config %d\n", code);
+  unsigned long pollSec = 0;
+  const int code = consoleHttp("GET", path, nullptr, &body, &pollSec);
+  LOG("console GET config %d rev=%u poll=%lus\n", code, static_cast<unsigned>(sentRev), pollSec);
+  if (code == HTTP_CODE_OK || code == HTTP_CODE_NO_CONTENT) {
+    // No header (older console): back to the fallback cadence.
+    gConsolePollMs = pollSec ? constrain(pollSec, kPollMinSec, kPollMaxSec) * 1000UL : 0;
+  } else if (code == HTTP_CODE_UNAUTHORIZED) {
+    gConsolePollMs = kPollMaxSec * 1000UL;
+  } else {
+    gConsolePollMs = 0;
+  }
+  if (code == HTTP_CODE_NO_CONTENT) {
+    return;  // Nothing newer than sentRev: keep NVS.
+  }
   if (code != HTTP_CODE_OK) {
     if (code == HTTP_CODE_UNAUTHORIZED) {
       LOGLN("console unauthorized — NVS recipes kept");
@@ -277,8 +314,12 @@ inline void consoleFetchConfig() {
   }
   recipesApply(gRecipeStage);
   gRecipeRev = rev;
-  recipesSave();
+  const bool saved = recipesSave();
   recipesUnlock();
+  gConsoleConfirmPoll = saved;
+  if (!saved) {
+    LOGLN("console config NVS write failed");
+  }
   LOG("console rev %u — replaced %u recipes, channels=%s\n", gRecipeRev, gRecipeCount,
       gChannelsFromConsole ? "console" : "defaults");
 }
@@ -303,7 +344,11 @@ inline void consoleDoSync() {
   if (gNvsEpoch != epoch) {
     return;
   }
-  if (!gConsoleRegistered || count > 0) {
+  // With recipes, refresh the topology at most hourly, however often the console asks for a poll.
+  // Timed from the poll start, so the hourly fallback poll still registers every time.
+  const unsigned long now = gConsoleLastPollMs;
+  if (!gConsoleRegistered || (count > 0 && now - gConsoleLastRegisterMs >= kPollArmedMs)) {
+    gConsoleLastRegisterMs = now;
     consoleRegister();
   }
   if (gNvsEpoch != epoch) {
@@ -318,13 +363,18 @@ inline void consoleWorkerTask(void *) {
     if (gNeedConsoleSync) {
       gNeedConsoleSync = false;
       gConsoleRegistered = false;
+      gConsoleConfirmPoll = false;
+      run = true;
+    } else if (gConsoleConfirmPoll) {
+      gConsoleConfirmPoll = false;
       run = true;
     } else if (consoleConfigured() && WiFi.status() == WL_CONNECTED && gHueBridgeId.length() &&
                hueLooksLikeKey(gHueAppKey)) {
       recipesLock();
       const uint8_t count = gRecipeCount;
       recipesUnlock();
-      const unsigned long interval = (count == 0) ? kPollEmptyMs : kPollArmedMs;
+      const unsigned long fallback = (count == 0) ? kPollEmptyMs : kPollArmedMs;
+      const unsigned long interval = gConsolePollMs ? gConsolePollMs : fallback;
       const unsigned long now = millis();
       if (!gConsolePolledBoot || (now - gConsoleLastPollMs) >= interval) {
         run = true;

@@ -62,7 +62,7 @@ Contract: `hue-switch-console/docs/definitions.md` and `docs/device-api.md`.
 
 1. Flash and provision from Chrome on [hue.tineira.com](https://hue.tineira.com) → Devices (USB). Improv saves the **2.4 GHz** network and `HUESET` stores the token (`hsw_…`) and url in NVS `console`. None of that is compiled in. For development, copy `config.example.h` to `config.h` (only `SERIAL_DEBUG`); `arduino-cli upload` doesn't erase NVS, so the network and token survive every flash.
 2. The XIAO discovers the Bridge (mDNS `_hue._tcp`, NVS, `discovery.meethue.com`) and pairs the Hue key (three orange flashes → Bridge button). IP and key stay in NVS, not in `config.h`.
-3. Register: `POST /api/device/register` with `product: "simple"`, MAC, `channels[]` and snapshot (lights/rooms/scenes). Poll: `GET /api/device/config?mac=` (~1 min without recipes; at boot and every 1 h if there are some).
+3. Register: `POST /api/device/register` with `product: "simple"`, MAC, `channels[]` and snapshot (lights/rooms/scenes). Poll: `GET /api/device/config?mac=&rev=` at boot, then every `X-Poll-Sec` seconds from the console (clamped 30 s to 1 h; `204` = unchanged, keep NVS), once more right after a new `rev` is saved, and 1 h after a `401`. Without the header (older console): ~1 min without recipes, 1 h with some. With recipes, register (topology) at most hourly.
 4. Arduino IDE 2.3.10: open `hue-simple-switch.ino`, board **XIAO_ESP32C6**.
 5. Or arduino-cli: `arduino-cli compile --profile xiao-c6 .`
 

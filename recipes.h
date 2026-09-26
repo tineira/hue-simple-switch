@@ -273,18 +273,22 @@ inline bool recipesParseConfig(const char *body, uint32_t *revOut) {
   return true;
 }
 
-inline void recipesSave() {
+// false if NVS did not take the rev or the recipes.
+inline bool recipesSave() {
   const String json = recipesToJson();
   Preferences prefs;
-  prefs.begin("recipes", false);
-  prefs.putUInt("rev", gRecipeRev);
+  if (!prefs.begin("recipes", false)) {
+    return false;
+  }
+  bool ok = prefs.putUInt("rev", gRecipeRev) > 0;
   prefs.putString("bid", gRecipeBridgeId);
   // A blob: scene lists can pass the 4000-byte limit of an NVS string.
-  prefs.putBytes("jsonb", json.c_str(), json.length());
+  ok = prefs.putBytes("jsonb", json.c_str(), json.length()) == json.length() && ok;
   if (prefs.isKey("json")) {
     prefs.remove("json");
   }
   prefs.end();
+  return ok;
 }
 
 // Caller holds the lock.

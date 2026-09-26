@@ -2,6 +2,11 @@
 
 User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired buttons). One `### <version> — <YYYY-MM-DD>` heading per `FIRMWARE_VERSION`, newest first, written in the same commit that bumps `FIRMWARE_VERSION`, in the wording of the person using the switch. CI sends the entry for the current version to the console as the release notes.
 
+### 0.4.1 — 2026-09-26
+
+- The console shows whether the switch has your latest settings.
+- Changes you save in the console reach the switch in about 30 seconds while you are working on it, and in about 5 minutes otherwise, instead of up to an hour.
+
 ### 0.4.0 — 2026-09-25
 
 - A push button can dim its lights while you hold it, if you choose Dim for its hold in the console. Let go to stop at the level you want.

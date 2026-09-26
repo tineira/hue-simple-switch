@@ -66,7 +66,7 @@ Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` hea
 - `product`: always `"simple"` on `POST /api/device/register` (plus GPIO `channels[]`, `source: xiao`)
 - Channels v1: `boot` GPIO9 momentary (short = recipe, hold 3 s = Hue re-pair); `d0`/`d1`/`d2` GPIO 0/1/2 maintained (`on` / `off` / `double_click`)
 - USB commands (ASCII lines, besides Improv): `HUESET`, `HUEGET`, `HUEPAIR`, `HUECLR`, `HUEBOOT` (answers `HUEOK boot`, then restarts into the ROM bootloader so Devices can flash without the BOOT button; RESET is still pressed once after the write). Anything else answers `HUEERR unknown`. See the console `docs/specs/finished/devices.md` §6
-- Console: URL + token from NVS `console` (`HUESET` over USB). Register + `GET /api/device/config`. Poll ~1 min if no recipes; at boot and every 1 h if any. GPIO loop never waits on that HTTP (console FreeRTOS task)
+- Console: URL + token from NVS `console` (`HUESET` over USB). Register + `GET /api/device/config`. Poll at boot, then as often as the console says (`X-Poll-Sec`, clamped 30 s to 1 h); without it, ~1 min if no recipes and 1 h if any (console `docs/specs/config-sync.md`). GPIO loop never waits on that HTTP (console FreeRTOS task)
 - Last **good** Hue snapshot wins: do not POST empty `[]` if a Clip stream is not 200
 - On `bridgeid` change: clear NVS recipes/`rev` **before** the next poll
 
