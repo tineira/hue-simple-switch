@@ -84,7 +84,7 @@ void setup() {
   }
 
   channelsPrime();
-  LOGLN("GPIO: boot short=recipe, hold 3s=re-pair. d0/d1/d2 maintained.");
+  LOGLN("GPIO: kinds from console channels[] (defaults: boot push button, d0/d1/d2 toggle switch)");
 }
 
 static void huePairApplySync() {

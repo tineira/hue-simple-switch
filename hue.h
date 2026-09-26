@@ -180,10 +180,11 @@ inline bool hueSetOn(const char *rtype, const char *rid, bool on) {
   return true;
 }
 
-inline bool hueRecallScene(const char *rid) {
+// HTTP code (-1 if it could not start): a scene list skips a 404 and tries the next one.
+inline int hueRecallScene(const char *rid) {
   if (!gHueBridgeIp.length() || !gHueAppKey.length() || !rid) {
     LOGLN("Hue recall: begin failed");
-    return false;
+    return -1;
   }
   String body;
   const int code =
@@ -191,9 +192,8 @@ inline bool hueRecallScene(const char *rid) {
   LOG("Hue recall scene/%s %d\n", rid, code);
   if (code != HTTP_CODE_OK) {
     LOGLN(body);
-    return false;
   }
-  return true;
+  return code;
 }
 
 inline bool hueToggle(const char *rtype, const char *rid, bool *nowOn) {
@@ -221,7 +221,7 @@ inline bool hueExecute(const char *action, const char *rtype, const char *rid) {
     return hueSetOn(rtype, rid, false);
   }
   if (strcmp(action, "recall_scene") == 0) {
-    return hueRecallScene(rid);
+    return hueRecallScene(rid) == HTTP_CODE_OK;
   }
   if (strcmp(action, "toggle") == 0) {
     return hueToggle(rtype, rid, nullptr);

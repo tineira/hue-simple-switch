@@ -2,16 +2,25 @@
 
 Wi‑Fi wall switch for the **Seeed XIAO ESP32-C6**. Calls the Hue Bridge's local Clip v2 API (HTTPS). Not Zigbee.
 
-GPIO channels v1 (closed = pin to GND, `INPUT_PULLUP`):
+GPIO channels (closed = pin to GND, `INPUT_PULLUP`):
 
-| id | GPIO | kind | label |
+| id | GPIO | default kind | label |
 | --- | --- | --- | --- |
 | `boot` | 9 | `momentary` | BOOT |
 | `d0` | 0 | `maintained` | D0 |
 | `d1` | 1 | `maintained` | D1 |
 | `d2` | 2 | `maintained` | D2 |
 
-Each channel has recipes per event (`on` / `off` / `double_click` on maintained; `short` on BOOT). The console assigns them. The GPIO runs NVS → Bridge; it doesn't wait for Vercel.
+Since 0.3.0 the console picks each channel's kind (`maintained` = toggle switch, `momentary` = push button) and sends it in the config's `channels[]`; a pin it does not list does nothing. BOOT is always a push button. The default kinds above apply only to the old config payload (no `channels[]`), from a console that predates channel types.
+
+Each channel has recipes per event, derived by the console:
+
+- Toggle switch: `on` (lever closes), `off` (lever opens, after the ~400 ms double-click window), `double_click` (opens and closes inside the window; runs `on` when there is no `double_click` recipe).
+- Push button: `short` on release, at once when the channel has no `double_click` recipe; with one, a second press inside ~400 ms is `double_click` and an expired window is `short`. `hold` fires once at ~800 ms while pressed, only when the channel has a `hold` recipe.
+- BOOT without a `hold` recipe: a 3 s press re-pairs with the Bridge. With one, the button never re-pairs (USB install only).
+- A scene list (`recall_scene` with `targets[]`) cycles from the last scene the channel set (kept in NVS), wraps, skips scenes that answer 404, and starts over at the first scene after an `off` on the channel.
+
+The GPIO runs NVS → Bridge; it doesn't wait for Vercel.
 
 Wiring for three wall switches: [`docs/wiring-3-switches.svg`](docs/wiring-3-switches.svg).
 

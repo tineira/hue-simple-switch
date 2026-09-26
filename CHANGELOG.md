@@ -2,6 +2,14 @@
 
 User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired buttons). One `### <version> — <YYYY-MM-DD>` heading per `FIRMWARE_VERSION`, newest first, written in the same commit that bumps `FIRMWARE_VERSION`, in the wording of the person using the switch. CI sends the entry for the current version to the console as the release notes.
 
+### 0.3.0 — 2026-09-25
+
+- Each input can be a toggle switch or a push button, whichever you choose for it in the console.
+- An input you have not set up in the console does nothing.
+- A push button responds as soon as you let go, unless you gave it a double-click action.
+- Double-clicking a toggle switch steps through your chosen scenes, one per double-click, and starts again from the first after you switch the lights off.
+- Holding BOOT can run a Hue action instead of re-pairing with the Bridge, if you choose that in the console.
+
 ### 0.2.11 — 2026-09-24
 
 - After this update, installing new firmware from Devices no longer needs the BOOT button. Press RESET once when the write finishes.

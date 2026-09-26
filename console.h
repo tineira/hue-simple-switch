@@ -13,7 +13,7 @@
 #include "snapshot.h"
 
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.2.11"
+#define FIRMWARE_VERSION "0.3.0"
 #endif
 
 static const unsigned long kPollEmptyMs = 60UL * 1000UL;
@@ -258,41 +258,29 @@ inline void consoleFetchConfig() {
   if (gNvsEpoch != epoch) {
     return;
   }
+  // Parse into the stage buffer (only this task writes it), then swap under the lock.
+  uint32_t rev = 0;
+  if (!recipesParseConfig(body.c_str(), &rev)) {
+    LOGLN("console config parse failed");
+    return;
+  }
   recipesLock();
   if (gNvsEpoch != epoch) {
     recipesUnlock();
     return;
   }
   const uint32_t localRev = gRecipeRev;
-  const uint8_t localCount = gRecipeCount;
-  HueRecipe backup[kMaxRecipes];
-  memcpy(backup, gRecipes, sizeof(backup));
-
-  uint32_t rev = 0;
-  if (!recipesParseConfig(body.c_str(), &rev)) {
-    memcpy(gRecipes, backup, sizeof(backup));
-    gRecipeCount = localCount;
-    recipesUnlock();
-    LOGLN("console config parse failed");
-    return;
-  }
   if (localRev >= rev) {
-    memcpy(gRecipes, backup, sizeof(backup));
-    gRecipeCount = localCount;
     recipesUnlock();
     LOG("console rev %u local %u — keep NVS\n", rev, localRev);
     return;
   }
-  if (gNvsEpoch != epoch) {
-    memcpy(gRecipes, backup, sizeof(backup));
-    gRecipeCount = localCount;
-    recipesUnlock();
-    return;
-  }
+  recipesApply(gRecipeStage);
   gRecipeRev = rev;
   recipesSave();
   recipesUnlock();
-  LOG("console rev %u — replaced %u recipes\n", gRecipeRev, gRecipeCount);
+  LOG("console rev %u — replaced %u recipes, channels=%s\n", gRecipeRev, gRecipeCount,
+      gChannelsFromConsole ? "console" : "defaults");
 }
 
 inline void consoleDoSync() {

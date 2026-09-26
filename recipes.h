@@ -6,9 +6,11 @@
 #include <freertos/semphr.h>
 #include "json_util.h"
 
-// Recipes in NVS: the GPIO only reads this, never Vercel.
+// Recipes and channel settings in NVS: the GPIO only reads this, never Vercel.
 
 static const uint8_t kMaxRecipes = 16;
+static const uint8_t kMaxSceneTargets = 8;
+static const uint8_t kMaxChannelSettings = 8;
 
 struct HueRecipe {
   char channelId[12];
@@ -16,15 +18,42 @@ struct HueRecipe {
   char action[16];
   char rtype[16];
   char rid[40];
+  // recall_scene: the scene list (targets[], or the old single scene target). rtype/rid unused.
+  uint8_t sceneCount;
+  char scenes[kMaxSceneTargets][40];
+};
+
+enum ChannelSettingKind : uint8_t { CHK_NONE = 0, CHK_MAINTAINED = 1, CHK_MOMENTARY = 2 };
+
+struct ChannelSetting {
+  char id[12];
+  uint8_t kind;
+};
+
+// One config: recipes plus channels[]. fromConsole false = the old payload (no channels[]):
+// compiled defaults for every pin.
+struct RecipeConfig {
+  HueRecipe recipes[kMaxRecipes];
+  uint8_t recipeCount;
+  ChannelSetting channels[kMaxChannelSettings];
+  uint8_t channelCount;
+  bool fromConsole;
 };
 
 inline HueRecipe gRecipes[kMaxRecipes];
 inline uint8_t gRecipeCount = 0;
+inline ChannelSetting gChannelSettings[kMaxChannelSettings];
+inline uint8_t gChannelSettingCount = 0;
+inline bool gChannelsFromConsole = false;
+// Bumped on every change of recipes or channels; the GPIO loop re-reads its channel modes.
+inline volatile uint32_t gRecipesGen = 0;
 inline uint32_t gRecipeRev = 0;
 inline String gRecipeBridgeId;
 inline volatile bool gNeedConsoleSync = false;
 inline volatile uint32_t gNvsEpoch = 0;
 inline SemaphoreHandle_t gRecipesMux = nullptr;
+// Parse buffer (console task and boot only): too big for the task stack.
+inline RecipeConfig gRecipeStage;
 
 inline void recipesMuxEnsure() {
   if (!gRecipesMux) {
@@ -47,7 +76,7 @@ inline void recipesUnlock() {
 
 inline bool recipeEventOk(const char *e) {
   return e && (strcmp(e, "on") == 0 || strcmp(e, "off") == 0 || strcmp(e, "double_click") == 0 ||
-               strcmp(e, "short") == 0);
+               strcmp(e, "short") == 0 || strcmp(e, "hold") == 0);
 }
 
 inline bool recipeActionOk(const char *a) {
@@ -56,7 +85,7 @@ inline bool recipeActionOk(const char *a) {
 }
 
 inline bool recipeRtypeOk(const char *r) {
-  return r && (strcmp(r, "light") == 0 || strcmp(r, "grouped_light") == 0 || strcmp(r, "scene") == 0);
+  return r && (strcmp(r, "light") == 0 || strcmp(r, "grouped_light") == 0);
 }
 
 inline void recipeCopyField(char *dst, size_t n, const char *src) {
@@ -71,179 +100,205 @@ inline void recipeCopyField(char *dst, size_t n, const char *src) {
   dst[n - 1] = 0;
 }
 
+// NVS keeps the wire shape, without scene names.
 inline String recipesToJson() {
-  String s = "[";
+  String s = "{";
+  if (gChannelsFromConsole) {
+    s += "\"channels\":[";
+    for (uint8_t i = 0; i < gChannelSettingCount; i++) {
+      if (i) {
+        s += ',';
+      }
+      s += "{\"id\":";
+      jsonAppendEscaped(s, gChannelSettings[i].id);
+      s += ",\"kind\":";
+      jsonAppendEscaped(s, gChannelSettings[i].kind == CHK_MOMENTARY ? "momentary" : "maintained");
+      s += '}';
+    }
+    s += "],";
+  }
+  s += "\"recipes\":[";
   for (uint8_t i = 0; i < gRecipeCount; i++) {
+    const HueRecipe &r = gRecipes[i];
     if (i) {
       s += ',';
     }
     s += "{\"channelId\":";
-    jsonAppendEscaped(s, gRecipes[i].channelId);
+    jsonAppendEscaped(s, r.channelId);
     s += ",\"event\":";
-    jsonAppendEscaped(s, gRecipes[i].event);
+    jsonAppendEscaped(s, r.event);
     s += ",\"action\":";
-    jsonAppendEscaped(s, gRecipes[i].action);
-    s += ",\"target\":{\"rtype\":";
-    jsonAppendEscaped(s, gRecipes[i].rtype);
-    s += ",\"rid\":";
-    jsonAppendEscaped(s, gRecipes[i].rid);
-    s += "}}";
+    jsonAppendEscaped(s, r.action);
+    if (r.sceneCount) {
+      s += ",\"targets\":[";
+      for (uint8_t k = 0; k < r.sceneCount; k++) {
+        if (k) {
+          s += ',';
+        }
+        s += "{\"rtype\":\"scene\",\"rid\":";
+        jsonAppendEscaped(s, r.scenes[k]);
+        s += '}';
+      }
+      s += "]}";
+    } else {
+      s += ",\"target\":{\"rtype\":";
+      jsonAppendEscaped(s, r.rtype);
+      s += ",\"rid\":";
+      jsonAppendEscaped(s, r.rid);
+      s += "}}";
+    }
   }
-  s += "]";
+  s += "]}";
   return s;
 }
 
+inline void recipeSceneTargetOne(const char *obj, void *ctx) {
+  HueRecipe *r = static_cast<HueRecipe *>(ctx);
+  if (!r || r->sceneCount >= kMaxSceneTargets) {
+    return;
+  }
+  char rtype[16];
+  char rid[40];
+  if (!jsonGetString(obj, "rtype", rtype, sizeof(rtype)) || strcmp(rtype, "scene") != 0) {
+    return;
+  }
+  if (!jsonGetString(obj, "rid", rid, sizeof(rid)) || !rid[0]) {
+    return;
+  }
+  recipeCopyField(r->scenes[r->sceneCount], sizeof(r->scenes[0]), rid);
+  r->sceneCount++;
+}
+
+// recall_scene: targets[] (1–8 scenes), or the old single target with rtype scene.
+// on / off / toggle: target with rtype light or grouped_light.
 inline bool recipeFromObject(const char *obj, HueRecipe *out) {
   if (!obj || !out) {
     return false;
   }
-  char channelId[12];
-  char event[16];
-  char action[16];
-  char rtype[16];
-  char rid[40];
-  if (!jsonGetString(obj, "channelId", channelId, sizeof(channelId)) || !channelId[0]) {
-    return false;
-  }
-  if (!jsonGetString(obj, "event", event, sizeof(event)) || !recipeEventOk(event)) {
-    return false;
-  }
-  if (!jsonGetString(obj, "action", action, sizeof(action)) || !recipeActionOk(action)) {
-    return false;
-  }
-  if (!jsonGetObjectString(obj, "target", "rtype", rtype, sizeof(rtype)) || !recipeRtypeOk(rtype)) {
-    return false;
-  }
-  if (!jsonGetObjectString(obj, "target", "rid", rid, sizeof(rid)) || !rid[0]) {
-    return false;
-  }
   memset(out, 0, sizeof(*out));
-  recipeCopyField(out->channelId, sizeof(out->channelId), channelId);
-  recipeCopyField(out->event, sizeof(out->event), event);
-  recipeCopyField(out->action, sizeof(out->action), action);
+  if (!jsonGetString(obj, "channelId", out->channelId, sizeof(out->channelId)) || !out->channelId[0]) {
+    return false;
+  }
+  if (!jsonGetString(obj, "event", out->event, sizeof(out->event)) || !recipeEventOk(out->event)) {
+    return false;
+  }
+  if (!jsonGetString(obj, "action", out->action, sizeof(out->action)) || !recipeActionOk(out->action)) {
+    return false;
+  }
+  char rtype[16] = "";
+  char rid[40] = "";
+  const bool hasTarget = jsonGetObjectString(obj, "target", "rtype", rtype, sizeof(rtype)) &&
+                         jsonGetObjectString(obj, "target", "rid", rid, sizeof(rid)) && rid[0];
+  if (strcmp(out->action, "recall_scene") == 0) {
+    jsonEachArrayObject(obj, "targets", recipeSceneTargetOne, out);
+    if (!out->sceneCount && hasTarget && strcmp(rtype, "scene") == 0) {
+      recipeCopyField(out->scenes[0], sizeof(out->scenes[0]), rid);
+      out->sceneCount = 1;
+    }
+    return out->sceneCount > 0;
+  }
+  if (!hasTarget || !recipeRtypeOk(rtype)) {
+    return false;
+  }
   recipeCopyField(out->rtype, sizeof(out->rtype), rtype);
   recipeCopyField(out->rid, sizeof(out->rid), rid);
   return true;
 }
 
 inline void recipesParseOne(const char *obj, void *ctx) {
-  uint8_t *n = static_cast<uint8_t *>(ctx);
-  if (!n || *n >= kMaxRecipes) {
+  RecipeConfig *cfg = static_cast<RecipeConfig *>(ctx);
+  if (!cfg || cfg->recipeCount >= kMaxRecipes) {
     return;
   }
-  HueRecipe rec;
-  if (!recipeFromObject(obj, &rec)) {
-    return;
+  if (recipeFromObject(obj, &cfg->recipes[cfg->recipeCount])) {
+    cfg->recipeCount++;
   }
-  gRecipes[*n] = rec;
-  (*n)++;
 }
 
-inline bool recipesParseArray(const char *json, uint8_t *countOut) {
-  uint8_t n = 0;
+inline void channelSettingParseOne(const char *obj, void *ctx) {
+  RecipeConfig *cfg = static_cast<RecipeConfig *>(ctx);
+  if (!cfg || cfg->channelCount >= kMaxChannelSettings) {
+    return;
+  }
+  ChannelSetting &c = cfg->channels[cfg->channelCount];
+  char kind[16];
+  if (!jsonGetString(obj, "id", c.id, sizeof(c.id)) || !c.id[0]) {
+    return;
+  }
+  if (!jsonGetString(obj, "kind", kind, sizeof(kind))) {
+    return;
+  }
+  if (strcmp(kind, "maintained") == 0) {
+    c.kind = CHK_MAINTAINED;
+  } else if (strcmp(kind, "momentary") == 0) {
+    c.kind = CHK_MOMENTARY;
+  } else {
+    return;
+  }
+  cfg->channelCount++;
+}
+
+// Fills cfg from a config body or the NVS copy. channels[] present = the console picked the
+// channels (absent pins are ignored); missing = old payload, compiled defaults.
+inline void recipesParseInto(const char *json, RecipeConfig *cfg) {
+  memset(cfg, 0, sizeof(*cfg));
   if (!json) {
-    if (countOut) {
-      *countOut = 0;
-    }
-    return false;
+    return;
   }
-  if (!strchr(json, '[')) {
-    return false;
+  cfg->fromConsole = jsonHasKey(json, "channels");
+  if (cfg->fromConsole) {
+    jsonEachArrayObject(json, "channels", channelSettingParseOne, cfg);
   }
-  jsonEachArrayObject(json, "recipes", recipesParseOne, &n);
-  // NVS stores the bare array, without a "recipes" key.
-  if (n == 0 && json[0] == '[') {
-    const char *p = json;
-    const char *start = nullptr;
-    int depth = 0;
-    bool inString = false;
-    bool escape = false;
-    for (; *p; p++) {
-      const char c = *p;
-      if (depth == 0 && !inString) {
-        if (c == ']') {
-          break;
-        }
-        if (c == '{') {
-          depth = 1;
-          start = p;
-          inString = false;
-          escape = false;
-        }
-        continue;
-      }
-      if (escape) {
-        escape = false;
-        continue;
-      }
-      if (inString) {
-        if (c == '\\') {
-          escape = true;
-        } else if (c == '"') {
-          inString = false;
-        }
-        continue;
-      }
-      if (c == '"') {
-        inString = true;
-        continue;
-      }
-      if (c == '{') {
-        depth++;
-      } else if (c == '}') {
-        depth--;
-        if (depth == 0 && start) {
-          const size_t len = static_cast<size_t>(p - start + 1);
-          char *tmp = static_cast<char *>(malloc(len + 1));
-          if (tmp) {
-            memcpy(tmp, start, len);
-            tmp[len] = 0;
-            recipesParseOne(tmp, &n);
-            free(tmp);
-          }
-          start = nullptr;
-        }
-      }
-    }
-  }
-  if (countOut) {
-    *countOut = n;
-  }
-  return true;
+  jsonEachArrayObject(json, "recipes", recipesParseOne, cfg);
 }
 
 inline bool recipesParseConfig(const char *body, uint32_t *revOut) {
   if (!body || !revOut) {
     return false;
   }
-  if (!jsonHasKey(body, "rev") || !strstr(body, "\"recipes\"")) {
+  if (!jsonHasKey(body, "rev") || !jsonHasKey(body, "recipes")) {
     return false;
   }
   const int rev = jsonGetInt(body, "rev", -1);
   if (rev < 0) {
     return false;
   }
-  gRecipeCount = 0;
-  uint8_t n = 0;
-  jsonEachArrayObject(body, "recipes", recipesParseOne, &n);
-  gRecipeCount = n;
+  recipesParseInto(body, &gRecipeStage);
   *revOut = static_cast<uint32_t>(rev);
   return true;
 }
 
 inline void recipesSave() {
+  const String json = recipesToJson();
   Preferences prefs;
   prefs.begin("recipes", false);
   prefs.putUInt("rev", gRecipeRev);
   prefs.putString("bid", gRecipeBridgeId);
-  prefs.putString("json", recipesToJson());
+  // A blob: scene lists can pass the 4000-byte limit of an NVS string.
+  prefs.putBytes("jsonb", json.c_str(), json.length());
+  if (prefs.isKey("json")) {
+    prefs.remove("json");
+  }
   prefs.end();
 }
 
+// Caller holds the lock.
+inline void recipesApply(const RecipeConfig &cfg) {
+  gRecipeCount = cfg.recipeCount;
+  memcpy(gRecipes, cfg.recipes, sizeof(gRecipes));
+  gChannelSettingCount = cfg.channelCount;
+  memcpy(gChannelSettings, cfg.channels, sizeof(gChannelSettings));
+  gChannelsFromConsole = cfg.fromConsole;
+  gRecipesGen++;
+}
+
+// Caller holds the lock.
 inline void recipesClear() {
   gRecipeCount = 0;
+  gChannelSettingCount = 0;
+  gChannelsFromConsole = false;
+  gRecipesGen++;
   gRecipeRev = 0;
-  memset(gRecipes, 0, sizeof(gRecipes));
   recipesSave();
 }
 
@@ -252,9 +307,11 @@ inline void recipesWipe() {
   recipesLock();
   gNvsEpoch++;
   gRecipeCount = 0;
+  gChannelSettingCount = 0;
+  gChannelsFromConsole = false;
+  gRecipesGen++;
   gRecipeRev = 0;
   gRecipeBridgeId = "";
-  memset(gRecipes, 0, sizeof(gRecipes));
   Preferences prefs;
   if (prefs.begin("recipes", false)) {
     prefs.clear();
@@ -269,13 +326,27 @@ inline void recipesLoad() {
   prefs.begin("recipes", true);
   gRecipeRev = prefs.getUInt("rev", 0);
   gRecipeBridgeId = prefs.getString("bid", "");
-  const String json = prefs.getString("json", "[]");
+  String json;
+  const size_t len = prefs.isKey("jsonb") ? prefs.getBytesLength("jsonb") : 0;
+  if (len) {
+    char *buf = static_cast<char *>(malloc(len + 1));
+    if (buf) {
+      prefs.getBytes("jsonb", buf, len);
+      buf[len] = 0;
+      json = buf;
+      free(buf);
+    }
+  } else if (prefs.isKey("json")) {
+    // Firmware < 0.3.0 stored the bare recipes array as a string.
+    json = "{\"recipes\":" + prefs.getString("json", "[]") + "}";
+  }
   prefs.end();
-  gRecipeCount = 0;
-  uint8_t n = 0;
-  recipesParseArray(json.c_str(), &n);
-  gRecipeCount = n;
-  LOG("NVS recipes rev=%u count=%u\n", gRecipeRev, gRecipeCount);
+  recipesParseInto(json.c_str(), &gRecipeStage);
+  recipesLock();
+  recipesApply(gRecipeStage);
+  recipesUnlock();
+  LOG("NVS recipes rev=%u count=%u channels=%s\n", gRecipeRev, gRecipeCount,
+      gChannelsFromConsole ? "console" : "defaults");
 }
 
 // true if the bridgeid changed and recipes/rev were dropped (call BEFORE the poll).
@@ -298,15 +369,6 @@ inline bool recipesBindBridge(const String &bid) {
   return dropped;
 }
 
-inline void recipesReplace(uint32_t rev, const HueRecipe *list, uint8_t n) {
-  gRecipeRev = rev;
-  gRecipeCount = n > kMaxRecipes ? kMaxRecipes : n;
-  if (list && gRecipeCount) {
-    memcpy(gRecipes, list, sizeof(HueRecipe) * gRecipeCount);
-  }
-  recipesSave();
-}
-
 inline const HueRecipe *recipesFind(const char *channelId, const char *event) {
   if (!channelId || !event) {
     return nullptr;
@@ -317,4 +379,15 @@ inline const HueRecipe *recipesFind(const char *channelId, const char *event) {
     }
   }
   return nullptr;
+}
+
+// Channel kind from the console's channels[]. CHK_NONE: not configured (pin ignored).
+// Only meaningful when gChannelsFromConsole. Caller holds the lock.
+inline uint8_t recipesChannelKind(const char *channelId) {
+  for (uint8_t i = 0; i < gChannelSettingCount; i++) {
+    if (strcmp(gChannelSettings[i].id, channelId) == 0) {
+      return gChannelSettings[i].kind;
+    }
+  }
+  return CHK_NONE;
 }
