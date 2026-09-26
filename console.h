@@ -26,7 +26,8 @@ static const unsigned long kPollMaxSec = 3600UL;
 inline bool gConsoleRegistered = false;
 inline unsigned long gConsoleLastPollMs = 0;
 inline bool gConsolePolledBoot = false;
-// Delay the console asked for (X-Poll-Sec), or the maximum after a 401. 0 = the fallback above.
+// Delay the console last asked for (X-Poll-Sec), or the maximum after a 401. 0 = the fallback
+// above. Only 200, 204 and 401 change it; other errors keep it.
 inline unsigned long gConsolePollMs = 0;
 // NVS took a new rev: poll once more right away so the console sees it applied.
 inline bool gConsoleConfirmPoll = false;
@@ -276,9 +277,8 @@ inline void consoleFetchConfig() {
     gConsolePollMs = pollSec ? constrain(pollSec, kPollMinSec, kPollMaxSec) * 1000UL : 0;
   } else if (code == HTTP_CODE_UNAUTHORIZED) {
     gConsolePollMs = kPollMaxSec * 1000UL;
-  } else {
-    gConsolePollMs = 0;
   }
+  // Other errors (5xx, network) keep the last delay, so one failure does not push the next poll out.
   if (code == HTTP_CODE_NO_CONTENT) {
     return;  // Nothing newer than sentRev: keep NVS.
   }
