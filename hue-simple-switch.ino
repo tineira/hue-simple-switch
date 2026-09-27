@@ -47,6 +47,8 @@ static void afterWifiUp() {
   if (!consoleConfigured()) {
     LOGLN("console: no token/url in NVS — HUESET on USB");
   }
+  // The console task reads the Bridge from the published copy: publish before asking for a sync.
+  hueWorkerPublishCreds();
   gNeedConsoleSync = true;
 }
 
@@ -97,6 +99,7 @@ static void huePairApplySync() {
   if (recipesBindBridge(gHueBridgeId)) {
     gConsoleRegistered = false;
   }
+  hueWorkerPublishCreds();
   gNeedConsoleSync = true;
 }
 
@@ -104,7 +107,8 @@ void loop() {
   const unsigned long now = millis();
   usbPoll();
   huePairApplySync();
-  // Pairing and HUECLR (in usbPoll) change the Bridge IP and key: hand the Hue worker the new copy.
+  // Pairing and HUECLR (in usbPoll) change the Bridge IP and key: hand the Hue worker and the
+  // console task the new copy.
   hueWorkerPublishCreds();
   channelsPoll(now);
   const bool sta = ledPoll(now);

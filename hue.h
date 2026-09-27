@@ -16,11 +16,13 @@
 extern String gHueBridgeIp;
 extern String gHueAppKey;
 
-// Bridge address and application key for the Clip v2 calls below, copied out of the Strings
-// above: the Hue worker task uses its own copy while the loop re-pairs or clears them.
+// Bridge address, application key and Bridge id, copied out of the loop's Strings (these two
+// and gHueBridgeId): the Hue worker and console tasks use their own copy while the loop re-pairs
+// or clears them. The Clip v2 calls below need only the address and key.
 struct HueCreds {
   char ip[16];  // dotted IPv4, at most 15 characters
   char key[64];
+  char bid[40];  // Bridge id (16 hex characters on current Bridges)
 };
 
 inline bool hueCredsOk(const HueCreds &c) { return c.ip[0] && c.key[0]; }
@@ -117,12 +119,12 @@ inline int hueHttp(const String &url, const char *method, const char *body, Stri
   return hueHttpKey(url, method, body, response, withKey ? gHueAppKey.c_str() : nullptr, insecure);
 }
 
-inline int hueClipStream(const char *resource, JsonDataSink &sink) {
-  if (!gHueBridgeIp.length() || !gHueAppKey.length() || !resource) {
+inline int hueClipStream(const HueCreds &c, const char *resource, JsonDataSink &sink) {
+  if (!hueCredsOk(c) || !resource) {
     return -1;
   }
   String url = "https://";
-  url += gHueBridgeIp;
+  url += c.ip;
   url += "/clip/v2/resource/";
   url += resource;
   NetworkClientSecure client;
@@ -132,7 +134,7 @@ inline int hueClipStream(const char *resource, JsonDataSink &sink) {
     return -1;
   }
   http.setTimeout(20000);
-  http.addHeader("hue-application-key", gHueAppKey);
+  http.addHeader("hue-application-key", c.key);
   const int code = http.GET();
   String denied;
   const String *noted = nullptr;
