@@ -273,18 +273,20 @@ inline bool recipesParseConfig(const char *body, uint32_t *revOut) {
   return true;
 }
 
-// false if NVS did not take the rev or the recipes.
+// false if NVS did not take the recipes or the rev. The rev goes last and only after the
+// recipes saved: a failed write or a reset in between leaves the old rev, so the console
+// sends this config again instead of answering "up to date" to recipes we never stored.
 inline bool recipesSave() {
   const String json = recipesToJson();
   Preferences prefs;
   if (!prefs.begin("recipes", false)) {
     return false;
   }
-  bool ok = prefs.putUInt("rev", gRecipeRev) > 0;
-  prefs.putString("bid", gRecipeBridgeId);
   // A blob: scene lists can pass the 4000-byte limit of an NVS string.
-  ok = prefs.putBytes("jsonb", json.c_str(), json.length()) == json.length() && ok;
-  if (prefs.isKey("json")) {
+  bool ok = prefs.putBytes("jsonb", json.c_str(), json.length()) == json.length();
+  ok = ok && prefs.putString("bid", gRecipeBridgeId) == gRecipeBridgeId.length();
+  ok = ok && prefs.putUInt("rev", gRecipeRev) > 0;
+  if (ok && prefs.isKey("json")) {
     prefs.remove("json");
   }
   prefs.end();

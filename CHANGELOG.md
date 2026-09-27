@@ -2,6 +2,10 @@
 
 User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired buttons). One `### <version> — <YYYY-MM-DD>` heading per `FIRMWARE_VERSION`, newest first, written in the same commit that bumps `FIRMWARE_VERSION`, in the wording of the person using the switch. CI sends the entry for the current version to the console as the release notes.
 
+### 0.4.2 — 2026-09-27
+
+- If the switch loses power or runs out of storage while saving new settings from the console, it now gets those settings again on its next check-in. Before, it could keep its old settings while the console showed it as up to date.
+
 ### 0.4.1 — 2026-09-26
 
 - The console shows whether the switch has your latest settings.
