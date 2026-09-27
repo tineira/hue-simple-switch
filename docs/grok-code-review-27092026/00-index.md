@@ -1,26 +1,44 @@
 # Code review — hue-simple-switch
 
 **Fecha:** 2026-09-27  
-**Ref:** `main` @ `fb49517d`  
-**Firmware:** `FIRMWARE_VERSION` 0.4.1 (`console.h`)  
-**Chip:** XIAO ESP32-C6  
-**Regla:** no se tocó código ni secrets. Solo esta carpeta.
+**Repo:** `tineira/hue-simple-switch` @ `main`  
+**Firmware:** `0.4.1` (`console.h` `FIRMWARE_VERSION`)  
+**Hardware:** Seeed XIAO ESP32-C6, Arduino-ESP32 3.3.12, flash 4 MB `min_spiffs`  
+**Contrato:** `hue-switch-console` `docs/device-api.md` (SSOT; este repo no lo copia)  
+**Regla de esta entrega:** solo documentos. No se cambió firmware ni secretos.
+
+Relacionado: review de consola en `hue-switch-console/docs/grok-code-review-27092026/`.
+
+## Cómo leer
+
+Cada archivo es un concepto. Severidades:
+
+| Tag | Significado |
+| --- | --- |
+| CRIT | Explotable o pérdida de control del dispositivo / flota |
+| HIGH | Debe corregirse pronto; impacto real en uso o seguridad |
+| MED | Deuda o riesgo con condiciones |
+| LOW | Calidad, DX, hygiene |
+| GOOD | Vale la pena no romperlo |
 
 ## Archivos
 
-| Archivo | Tema |
-| --- | --- |
-| [security.md](./security.md) | Tokens NVS, TLS Bridge vs consola, USB |
-| [console-client.md](./console-client.md) | Register, poll, worker task |
-| [gpio-and-loop.md](./gpio-and-loop.md) | Canales, debounce, hold/dim, bloqueo Hue |
-| [hue-and-snapshot.md](./hue-and-snapshot.md) | Clip v2, snapshot, P4 |
-| [nvs.md](./nvs.md) | Recipes, rev, bridge bind |
-| [wifi-usb.md](./wifi-usb.md) | STA retry, Improv, HUESET |
-| [contract.md](./contract.md) | vs console device-api / problems.md |
-| [ci.md](./ci.md) | firmware.yml upload |
+1. [01-metodo.md](01-metodo.md) — método y límites
+2. [02-seguridad.md](02-seguridad.md) — tokens, TLS, NVS, superficie USB
+3. [03-usb-improv.md](03-usb-improv.md) — Improv, HUESET/GET/PAIR/CLR/BOOT
+4. [04-console-poll.md](04-console-poll.md) — register, GET config, task
+5. [05-gpio-hue.md](05-gpio-hue.md) — canales, dim, loop bloqueante, Clip v2
+6. [06-nvs-persistencia.md](06-nvs-persistencia.md) — recipes, rev, last scenes
+7. [07-rendimiento.md](07-rendimiento.md) — hot path GPIO, snapshot, heap
+8. [08-contrato.md](08-contrato.md) — vs device-api.md y problems de consola
+9. [09-funcionalidades-faltantes.md](09-funcionalidades-faltantes.md) — huecos de producto
+10. [10-testing-ops.md](10-testing-ops.md) — CI, changelog, observabilidad
+11. [11-lo-que-esta-bien.md](11-lo-que-esta-bien.md) — no romper
 
-## Prioridad
+## Prioridad sugerida
 
-1. Hue HTTP sigue en el loop GPIO (`channelFire`) — 8 s timeout, toggle hasta 16 s. Parte el double-click de 400 ms.
-2. Confirmar parser JSON vs pretty-print (espacio tras `:`).
-3. Contrato con consola: register ya manda `product:"simple"` y no pisa snapshot si Hue falla.
+1. Sacar HTTP Hue del `loop()` GPIO (`channelFire` / toggle / dim) — HIGH UX. Round ya lo resolvió con `hue_job`.
+2. Tests de parse de config (`recipesParseConfig`) y de “snapshot abort si stream ≠ 200” — HIGH deuda.
+3. No aceptar `http://` en `HUESET url` en builds de producto — MED.
+4. Limpiar `ls_*` al cambiar de Bridge (`recipesClear` deja last-scene keys) — MED.
+5. Documentar que P4 está mitigado **en este firmware** (no POSTea si Clip falla) pero sigue vivo en la consola si otro cliente manda `[]`.
