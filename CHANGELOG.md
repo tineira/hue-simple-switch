@@ -2,6 +2,12 @@
 
 User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired buttons). One `### <version> — <YYYY-MM-DD>` heading per `FIRMWARE_VERSION`, newest first, written in the same commit that bumps `FIRMWARE_VERSION`, in the wording of the person using the switch. CI sends the entry for the current version to the console as the release notes.
 
+### 0.4.3 — 2026-09-27
+
+- While one switch is waiting on a slow Hue Bridge, the other switches and buttons still respond right away.
+- Quick flicks of a switch are no longer missed while the Bridge is busy with another one: the lights end up matching where you left each switch.
+- A button press that could not reach the Bridge within about 10 seconds is dropped, instead of changing the lights long after you pressed it.
+
 ### 0.4.2 — 2026-09-27
 
 - If the switch loses power or runs out of storage while saving new settings from the console, it now gets those settings again on its next check-in. Before, it could keep its old settings while the console showed it as up to date.
