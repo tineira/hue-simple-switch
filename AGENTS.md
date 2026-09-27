@@ -19,6 +19,14 @@ Rules:
 - Read the console docs from its checkout (or GitHub); do not copy them into this tree.
 - The other switch firmwares (`hue-round-switch`, `hue-simple-switch`, and any later ones) implement the same contract. Do not edit them from this repo. If behavior both should share differs, say so.
 
+## Parallel sessions
+
+Several Claude sessions can work in this repo at once, and they share the checkout in the sketchbook. A branch switch there moves every session's work onto that branch.
+
+- Before every commit, run `git branch --show-current` and confirm it is the branch you mean.
+- Do not switch branches, reset or stash in the shared checkout. Do work on another branch in its own worktree, with the folder named like the sketch so arduino-cli still compiles: `git worktree add ../worktrees/<branch>/hue-simple-switch -b <branch> origin/main`. Remove it with `git worktree remove` once the branch is merged.
+- If you find commits on your branch that are not yours, do not push it. Tell the user.
+
 ## Hardware
 
 - Board: Seeed Studio XIAO ESP32-C6
