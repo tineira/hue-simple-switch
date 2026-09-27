@@ -87,6 +87,12 @@ A push to `main` **is a release**. `.github/workflows/firmware.yml` builds the p
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md). Bugs and ideas go in GitHub issues.
 
+## Sponsor
+
+The console and the switch firmwares are free and stay that way. If they are useful
+to you, you can [sponsor the project on GitHub](https://github.com/sponsors/tineira).
+Sponsorship helps pay for development and does not unlock anything.
+
 ## License
 
 Copyright (c) 2026 Tomas Neira and contributors. [MIT](LICENSE).
