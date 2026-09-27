@@ -9,6 +9,7 @@ This firmware is one of several switches for one console. The console repo [`hue
 - `docs/device-api.md`: endpoints, auth, payloads, error codes. Authoritative.
 - `docs/definitions.md`: product model (recipes, channels, pages).
 - `docs/changelog.md`: the console's own release notes. This firmware's notes live in this repo's `CHANGELOG.md`.
+- `CHANGELOG.md` (this repo): the release notes CI uploads. A bullet that starts with `Important: ` is shown first on the console's Setup before an update; use it only for something the person must know or do around the update (`docs/specs/finished/setup-update-notes.md`).
 - `docs/specs/`: cross-repo specs, each with a checklist per repo.
 
 Rules:
@@ -17,6 +18,14 @@ Rules:
 - When working from a cross-repo spec, do only this repo's checklist section and tick it. The console ships first and stays backward compatible, so boards already on the wall keep working.
 - Read the console docs from its checkout (or GitHub); do not copy them into this tree.
 - The other switch firmwares (`hue-round-switch`, `hue-simple-switch`, and any later ones) implement the same contract. Do not edit them from this repo. If behavior both should share differs, say so.
+
+## Parallel sessions
+
+Several Claude sessions can work in this repo at once, and they share the checkout in the sketchbook. A branch switch there moves every session's work onto that branch.
+
+- Before every commit, run `git branch --show-current` and confirm it is the branch you mean.
+- Do not switch branches, reset or stash in the shared checkout. Do work on another branch in its own worktree, with the folder named like the sketch so arduino-cli still compiles: `git worktree add ../worktrees/<branch>/hue-simple-switch -b <branch> origin/main`. Remove it with `git worktree remove` once the branch is merged.
+- If you find commits on your branch that are not yours, do not push it. Tell the user.
 
 ## Hardware
 
