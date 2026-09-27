@@ -4,6 +4,10 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 Start a bullet with `Important: ` when the person must know or do something before or right after updating (a button to press, a setting to redo). The console shows those first, with an Important label, when Setup offers the update. Do not use it for new features.
 
+### 0.4.4 — 2026-09-27
+
+- The switch no longer risks restarting when you pair it with the Hue Bridge again, or clear its settings, while it is checking in with the console.
+
 ### 0.4.3 — 2026-09-27
 
 - While one switch is waiting on a slow Hue Bridge, the other switches and buttons still respond right away.

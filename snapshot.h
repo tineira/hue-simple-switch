@@ -192,11 +192,11 @@ inline void snapshotOnScene(const char *obj, void *ctx) {
   s->count++;
 }
 
-inline bool hueStreamResource(const char *resource, JsonObjFn fn, void *ctx, int *countOut) {
+inline bool hueStreamResource(const HueCreds &c, const char *resource, JsonObjFn fn, void *ctx, int *countOut) {
   JsonDataSink sink;
   sink.onObject = fn;
   sink.ctx = ctx;
-  const int code = hueClipStream(resource, sink);
+  const int code = hueClipStream(c, resource, sink);
   if (countOut) {
     *countOut = sink.objects;
   }
@@ -211,7 +211,7 @@ inline bool hueStreamResource(const char *resource, JsonObjFn fn, void *ctx, int
   return true;
 }
 
-inline bool hueBuildSnapshot(String *lights, String *rooms, String *scenes) {
+inline bool hueBuildSnapshot(const HueCreds &c, String *lights, String *rooms, String *scenes) {
   if (!lights || !rooms || !scenes) {
     return false;
   }
@@ -221,24 +221,24 @@ inline bool hueBuildSnapshot(String *lights, String *rooms, String *scenes) {
   *scenes = "[";
 
   SnapBuild lightCtx{lights, nullptr, 0};
-  if (!hueStreamResource("light", snapshotOnLight, &lightCtx, nullptr)) {
+  if (!hueStreamResource(c, "light", snapshotOnLight, &lightCtx, nullptr)) {
     LOGLN("snapshot aborted: light stream failed");
     return false;
   }
 
   SnapBuild roomCtx{rooms, "room", 0};
-  if (!hueStreamResource("room", snapshotOnGroup, &roomCtx, nullptr)) {
+  if (!hueStreamResource(c, "room", snapshotOnGroup, &roomCtx, nullptr)) {
     LOGLN("snapshot aborted: room stream failed");
     return false;
   }
   SnapBuild zoneCtx{rooms, "zone", 0};
-  if (!hueStreamResource("zone", snapshotOnGroup, &zoneCtx, nullptr)) {
+  if (!hueStreamResource(c, "zone", snapshotOnGroup, &zoneCtx, nullptr)) {
     LOGLN("snapshot aborted: zone stream failed");
     return false;
   }
 
   SnapBuild sceneCtx{scenes, nullptr, 0};
-  if (!hueStreamResource("scene", snapshotOnScene, &sceneCtx, nullptr)) {
+  if (!hueStreamResource(c, "scene", snapshotOnScene, &sceneCtx, nullptr)) {
     LOGLN("snapshot aborted: scene stream failed");
     return false;
   }

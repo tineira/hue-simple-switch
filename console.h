@@ -13,7 +13,7 @@
 #include "snapshot.h"
 
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.4.3"
+#define FIRMWARE_VERSION "0.4.4"
 #endif
 
 // Fallback cadence when the console sends no X-Poll-Sec (older console).
@@ -209,17 +209,17 @@ inline int consoleHttp(const char *method, const String &path, const char *body,
   return code;
 }
 
-inline bool consoleRegister() {
+inline bool consoleRegister(const HueCreds &c) {
   if (!consoleConfigured()) {
     return false;
   }
-  if (!gHueBridgeId.length() || !gHueBridgeIp.length()) {
+  if (!c.bid[0] || !c.ip[0]) {
     LOGLN("console register skipped: no Bridge");
     return false;
   }
 
   String lights, rooms, scenes;
-  if (!hueBuildSnapshot(&lights, &rooms, &scenes)) {
+  if (!hueBuildSnapshot(c, &lights, &rooms, &scenes)) {
     LOGLN("console register skipped: snapshot failed (keep last good)");
     return false;
   }
@@ -231,9 +231,9 @@ inline bool consoleRegister() {
   payload += ",\"firmware\":";
   jsonAppendEscaped(payload, FIRMWARE_VERSION);
   payload += ",\"bridgeid\":";
-  jsonAppendEscaped(payload, gHueBridgeId.c_str());
+  jsonAppendEscaped(payload, c.bid);
   payload += ",\"bridge_ip\":";
-  jsonAppendEscaped(payload, gHueBridgeIp.c_str());
+  jsonAppendEscaped(payload, c.ip);
   payload += ",\"product\":\"simple\",\"source\":\"xiao\",\"channels\":";
   channelsAppendJson(payload);
   payload += ",\"lights\":";
@@ -324,15 +324,22 @@ inline void consoleFetchConfig() {
       gChannelsFromConsole ? "console" : "defaults");
 }
 
+// A Bridge id and a usable key in the loop's published copy.
+inline bool consoleBridgeKnown(const HueCreds &c) {
+  return c.bid[0] && hueLooksLikeKey(String(c.key));
+}
+
 inline void consoleDoSync() {
   const uint32_t epoch = gNvsEpoch;
   if (!consoleConfigured() || WiFi.status() != WL_CONNECTED) {
     return;
   }
-  if (gNvsEpoch != epoch || !gHueBridgeId.length() || !hueLooksLikeKey(gHueAppKey)) {
+  // The loop can re-pair or clear the Bridge meanwhile: this sync keeps the copy it started with.
+  const HueCreds creds = hueCredsCopy();
+  if (gNvsEpoch != epoch || !consoleBridgeKnown(creds)) {
     return;
   }
-  if (recipesBindBridge(gHueBridgeId)) {
+  if (recipesBindBridge(String(creds.bid))) {
     gConsoleRegistered = false;
   }
   if (gNvsEpoch != epoch) {
@@ -349,7 +356,7 @@ inline void consoleDoSync() {
   const unsigned long now = gConsoleLastPollMs;
   if (!gConsoleRegistered || (count > 0 && now - gConsoleLastRegisterMs >= kPollArmedMs)) {
     gConsoleLastRegisterMs = now;
-    consoleRegister();
+    consoleRegister(creds);
   }
   if (gNvsEpoch != epoch) {
     return;
@@ -368,8 +375,8 @@ inline void consoleWorkerTask(void *) {
     } else if (gConsoleConfirmPoll) {
       gConsoleConfirmPoll = false;
       run = true;
-    } else if (consoleConfigured() && WiFi.status() == WL_CONNECTED && gHueBridgeId.length() &&
-               hueLooksLikeKey(gHueAppKey)) {
+    } else if (consoleConfigured() && WiFi.status() == WL_CONNECTED &&
+               consoleBridgeKnown(hueCredsCopy())) {
       recipesLock();
       const uint8_t count = gRecipeCount;
       recipesUnlock();

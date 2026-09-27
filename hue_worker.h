@@ -20,8 +20,10 @@
 //
 // Shared state:
 //   - Recipes: looked up under gRecipesMux when the job runs (the console task swaps them).
-//   - Bridge IP / key: the loop is the only task that changes gHueBridgeIp / gHueAppKey. It
-//     publishes a copy (hueWorkerPublishCreds) under gHueJobMux; each job takes that copy.
+//   - Bridge IP / key / id: the loop is the only task that changes gHueBridgeIp / gHueAppKey /
+//     gHueBridgeId. It
+//     publishes a copy (hueWorkerPublishCreds) under gHueJobMux; each job takes that copy, and
+//     so does each console sync (hueCredsCopy).
 //   - HUECLR bumps gNvsEpoch: a job posted before it is dropped, the RAM scene cursors are reset,
 //     and the cursor is written to NVS only under gRecipesMux with the epoch unchanged, so a wipe
 //     is never undone.
@@ -110,8 +112,9 @@ inline const char *hueJobEventName(uint8_t ev) {
 
 // ---------------------------------------------------------------- loop side
 
-// Loop task only: it is the only writer of gHueBridgeIp / gHueAppKey. Call it each loop pass,
-// before posting jobs. A value too long for the copy publishes as empty (the calls then fail).
+// Loop task only: it is the only writer of gHueBridgeIp / gHueAppKey / gHueBridgeId. Call it
+// each loop pass, before posting jobs, and before setting gNeedConsoleSync. A value too long for
+// the copy publishes as empty (the calls then fail).
 inline void hueWorkerPublishCreds() {
   HueCreds c;
   memset(&c, 0, sizeof(c));
@@ -121,6 +124,9 @@ inline void hueWorkerPublishCreds() {
   if (gHueAppKey.length() < sizeof(c.key)) {
     memcpy(c.key, gHueAppKey.c_str(), gHueAppKey.length());
   }
+  if (gHueBridgeId.length() < sizeof(c.bid)) {
+    memcpy(c.bid, gHueBridgeId.c_str(), gHueBridgeId.length());
+  }
   if (memcmp(&c, &gHueCredsLoop, sizeof(c)) == 0) {
     return;
   }
@@ -128,6 +134,16 @@ inline void hueWorkerPublishCreds() {
   portENTER_CRITICAL(&gHueJobMux);
   gHueCredsShared = c;
   portEXIT_CRITICAL(&gHueJobMux);
+}
+
+// Any task: the last copy the loop published. The console task reads the Bridge through this,
+// never through the Strings, which the loop can free mid-read when it re-pairs or clears them.
+inline HueCreds hueCredsCopy() {
+  HueCreds c;
+  portENTER_CRITICAL(&gHueJobMux);
+  c = gHueCredsShared;
+  portEXIT_CRITICAL(&gHueJobMux);
+  return c;
 }
 
 inline void hueWorkerRunPending();
