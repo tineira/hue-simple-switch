@@ -9,7 +9,7 @@ This firmware is one of several switches for one console. The console repo [`hue
 - `docs/device-api.md`: endpoints, auth, payloads, error codes. Authoritative.
 - `docs/definitions.md`: product model (recipes, channels, pages).
 - `docs/changelog.md`: the console's own release notes. This firmware's notes live in this repo's `CHANGELOG.md`.
-- `CHANGELOG.md` (this repo): the release notes CI uploads. A bullet that starts with `Important: ` is shown first on the console's Setup before an update; use it only for something the person must know or do around the update (`docs/specs/setup-update-notes.md`).
+- `CHANGELOG.md` (this repo): the release notes CI uploads. A bullet that starts with `Important: ` is shown first on the console's Setup before an update; use it only for something the person must know or do around the update (`docs/specs/finished/setup-update-notes.md`).
 - `docs/specs/`: cross-repo specs, each with a checklist per repo.
 
 Rules:
