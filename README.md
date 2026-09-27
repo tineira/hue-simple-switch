@@ -83,6 +83,10 @@ A push to `main` **is a release**. `.github/workflows/firmware.yml` builds the p
 - Image layout and offsets: [`docs/firmware-artifacts.md`](docs/firmware-artifacts.md).
 - The pipeline needs the `FIRMWARE_UPLOAD_TOKEN` secret in this repo. Setup and troubleshooting: the console repo's `README.md`, "Firmware release pipeline".
 
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md). Bugs and ideas go in GitHub issues.
+
 ## License
 
 Copyright (c) 2026 Tomas Neira and contributors. [MIT](LICENSE).

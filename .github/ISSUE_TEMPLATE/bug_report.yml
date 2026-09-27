@@ -1,0 +1,55 @@
+name: Switch bug
+description: The Simple switch does something wrong.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Problems with the console web pages or Setup go in [hue-switch-console](https://github.com/tineira/hue-switch-console/issues/new/choose).
+        **Security problems:** do not open a public issue. Use "Report a vulnerability" on the Security tab.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what the switch did instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Firmware version
+      description: Shown on the switch's page in the console.
+      placeholder: 0.4.1
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How was it flashed
+      options:
+        - Console Setup page (USB installer)
+        - Built from source
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: Hardware
+      placeholder: XIAO ESP32-C6
+  - type: textarea
+    id: network
+    attributes:
+      label: Network and Bridge
+      description: Anything unusual (mesh Wi-Fi, VLANs, Bridge model or firmware).
+  - type: textarea
+    id: logs
+    attributes:
+      label: Serial log
+      description: With SERIAL_DEBUG set to 1, if you can. Remove tokens (hsw_…), Hue keys and Wi-Fi passwords.
+      render: text

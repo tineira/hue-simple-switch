@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/tineira/hue-simple-switch/security/advisories/new
+    about: Report privately. Please do not open a public issue.
+  - name: Console, Setup page or contract change
+    url: https://github.com/tineira/hue-switch-console/issues/new/choose
+    about: The web console, the USB installer, or anything switches and the console both depend on.

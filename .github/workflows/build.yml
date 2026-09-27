@@ -1,0 +1,24 @@
+name: build
+
+# Compile check for pull requests. Build only: no upload, no release, no secrets.
+# The release is firmware.yml, on push to main.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: arduino/setup-arduino-cli@v2
+
+      - name: Product config.h
+        run: cp config.product.h config.h
+
+      # Same size limit as the release: the min_spiffs app partition.
+      - name: Compile
+        run: arduino-cli compile --profile xiao-c6 --build-property upload.maximum_size=1966080 .

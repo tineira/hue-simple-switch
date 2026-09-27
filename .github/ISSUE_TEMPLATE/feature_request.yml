@@ -1,0 +1,20 @@
+name: Feature idea
+description: Suggest something the Simple switch should do.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If this needs the switch to send or receive something new from the console, it is a contract change. Open a "Contract change" issue in [hue-switch-console](https://github.com/tineira/hue-switch-console/issues/new/choose) instead.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you want to do
+      description: The situation and what gets in your way today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Proposed change
+      description: How it could work. Rough is fine.

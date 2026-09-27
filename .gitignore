@@ -28,3 +28,6 @@ docs/_review-*.md
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Machine-specific agent notes (local paths)
+AGENTS.local.md

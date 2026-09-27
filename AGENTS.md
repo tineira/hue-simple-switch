@@ -4,7 +4,7 @@ Wi-Fi wall switch firmware for Seeed XIAO ESP32-C6. Calls the Philips Hue local 
 
 ## Contract
 
-This firmware is one of several switches for one console. The console repo `C:\Users\tinei\hue-switch-console` owns the contract:
+This firmware is one of several switches for one console. The console repo [`hue-switch-console`](https://github.com/tineira/hue-switch-console) owns the contract. Local checkout paths on the maintainer's machine are in `AGENTS.local.md` (gitignored) when it exists; read it to find the sibling repos.
 
 - `docs/device-api.md`: endpoints, auth, payloads, error codes. Authoritative.
 - `docs/definitions.md`: product model (recipes, channels, pages).
@@ -15,19 +15,19 @@ Rules:
 
 - Do not change what this firmware sends to or expects from the console (endpoints, JSON fields, error handling, NVS keys the console writes over USB) unless `docs/device-api.md` or an approved spec in `docs/specs/` says so. If the work needs a protocol change, stop and propose it for the console repo; do not invent it here.
 - When working from a cross-repo spec, do only this repo's checklist section and tick it. The console ships first and stays backward compatible, so boards already on the wall keep working.
-- Read the console docs from that path; do not copy them into this tree.
-- The other switch firmwares (`C:\Users\tinei\Arduino\hue-round-switch`, `hue-simple-switch`, and any later ones) implement the same contract. Do not edit them from this repo. If behavior both should share differs, say so.
+- Read the console docs from its checkout (or GitHub); do not copy them into this tree.
+- The other switch firmwares (`hue-round-switch`, `hue-simple-switch`, and any later ones) implement the same contract. Do not edit them from this repo. If behavior both should share differs, say so.
 
 ## Hardware
 
 - Board: Seeed Studio XIAO ESP32-C6
 - Arduino IDE board name: `XIAO_ESP32C6`
 - FQBN: `esp32:esp32:XIAO_ESP32C6`
-- Core: Arduino-ESP32 **3.3.12** (already installed in `%LOCALAPPDATA%\Arduino15`)
+- Core: Arduino-ESP32 **3.3.12** (pinned by the `sketch.yaml` profile)
 - Flash: 4 MB, `partitions.csv` = **min_spiffs** (~1.9 MB APP × 2 OTA, 128 KB SPIFFS). Not Zigbee. Not default 1.2 MB.
 - USB CDC on boot: Enabled (default for this board)
 
-This sketch lives in the Arduino IDE sketchbook (`directories.user` = `C:\Users\tinei\Arduino`). The parent folder is **not** a git repo. GigaDash stays in `OneDrive\Documents\Arduino`.
+This sketch lives in the Arduino IDE sketchbook (`arduino-cli config get directories.user`). The sketchbook folder itself is **not** a git repo.
 
 ## Secrets
 
