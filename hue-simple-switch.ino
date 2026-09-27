@@ -70,6 +70,8 @@ void setup() {
   recipesLoad();
   hueLoadStore();
   channelsBegin();
+  hueWorkerPublishCreds();
+  hueWorkerBegin();
   consoleWorkerBegin();
   usbPoll();
 
@@ -102,6 +104,8 @@ void loop() {
   const unsigned long now = millis();
   usbPoll();
   huePairApplySync();
+  // Pairing and HUECLR (in usbPoll) change the Bridge IP and key: hand the Hue worker the new copy.
+  hueWorkerPublishCreds();
   channelsPoll(now);
   const bool sta = ledPoll(now);
 
