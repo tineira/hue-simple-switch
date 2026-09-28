@@ -4,6 +4,10 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 Start a bullet with `Important: ` when the person must know or do something before or right after updating (a button to press, a setting to redo). The console shows those first, with an Important label, when Setup offers the update. Do not use it for new features.
 
+### 0.6.1 — 2026-09-28
+
+- Nothing changes in how the switch works. This is the first version sent over Wi-Fi, to check that updates from the Switches page arrive.
+
 ### 0.6.0 — 2026-09-28
 
 - After this update, the switch can get new versions over Wi-Fi: press Update next to it on the Switches page, and it updates itself at its next check-in, without leaving the wall. This update itself still goes over USB.
