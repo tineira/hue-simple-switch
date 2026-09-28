@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Preferences.h>
+#include <nvs.h>
 #include <string.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
@@ -8,8 +9,10 @@
 
 // Recipes and channel settings in NVS: the GPIO only reads this, never Vercel.
 
-static const uint8_t kMaxRecipes = 16;
+// 7 channels (BOOT, D0-D5) x at most 3 recipes each: the console never builds more.
+static const uint8_t kMaxRecipes = 21;
 static const uint8_t kMaxSceneTargets = 8;
+// At least the channel count (7).
 static const uint8_t kMaxChannelSettings = 8;
 
 struct HueRecipe {
@@ -273,11 +276,38 @@ inline bool recipesParseConfig(const char *body, uint32_t *revOut) {
   return true;
 }
 
+// Debug builds: NVS entry use around a config save. The worst case (7 channels x 3 recipes,
+// one 8-scene list per channel) is a ~6.1 KB blob, ~192 entries, and a rewrite holds the old
+// and new copies at once. Check on a board that such a config saves twice in a row.
+#if SERIAL_DEBUG
+inline void recipesLogNvsStats(const char *when, size_t blobLen) {
+  nvs_stats_t st;
+  if (nvs_get_stats(nullptr, &st) != ESP_OK) {
+    LOG("NVS %s: stats failed\n", when);
+    return;
+  }
+  size_t ns = 0;
+  nvs_handle_t h;
+  if (nvs_open("recipes", NVS_READONLY, &h) == ESP_OK) {
+    nvs_get_used_entry_count(h, &ns);
+    nvs_close(h);
+  }
+  LOG("NVS %s save (blob %u bytes): used %u, available %u, free %u, total %u, namespaces %u; recipes ns %u\n",
+      when, static_cast<unsigned>(blobLen), static_cast<unsigned>(st.used_entries),
+      static_cast<unsigned>(st.available_entries), static_cast<unsigned>(st.free_entries),
+      static_cast<unsigned>(st.total_entries), static_cast<unsigned>(st.namespace_count),
+      static_cast<unsigned>(ns));
+}
+#else
+inline void recipesLogNvsStats(const char *, size_t) {}
+#endif
+
 // false if NVS did not take the recipes or the rev. The rev goes last and only after the
 // recipes saved: a failed write or a reset in between leaves the old rev, so the console
 // sends this config again instead of answering "up to date" to recipes we never stored.
 inline bool recipesSave() {
   const String json = recipesToJson();
+  recipesLogNvsStats("before", json.length());
   Preferences prefs;
   if (!prefs.begin("recipes", false)) {
     return false;
@@ -290,6 +320,7 @@ inline bool recipesSave() {
     prefs.remove("json");
   }
   prefs.end();
+  recipesLogNvsStats(ok ? "after" : "after FAILED", json.length());
   return ok;
 }
 

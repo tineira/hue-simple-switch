@@ -73,7 +73,7 @@ Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` hea
 ## Product
 
 - `product`: always `"simple"` on `POST /api/device/register` (plus GPIO `channels[]`, `source: xiao`)
-- Channels v1: `boot` GPIO9 momentary (short = recipe, hold 3 s = Hue re-pair); `d0`/`d1`/`d2` GPIO 0/1/2 maintained (`on` / `off` / `double_click`)
+- Channels: `boot` GPIO9 momentary (short = recipe, hold 3 s = Hue re-pair); `d0`–`d5` GPIO 0/1/2/21/22/23 (since 0.5.0; older firmware has `d0`–`d2`). The console picks each kind; on the old payload (no `channels[]`) `d0`–`d2` default to maintained (`on` / `off` / `double_click`) and `d3`–`d5` do nothing. At most 7 channels and 21 recipes (`kMaxRecipes`)
 - USB commands (ASCII lines, besides Improv): `HUESET`, `HUEGET`, `HUEPAIR`, `HUECLR`, `HUEBOOT` (answers `HUEOK boot`, then restarts into the ROM bootloader so Devices can flash without the BOOT button; RESET is still pressed once after the write). Anything else answers `HUEERR unknown`. See the console `docs/specs/finished/devices.md` §6
 - Console: URL + token from NVS `console` (`HUESET` over USB). Register + `GET /api/device/config`. Poll at boot, then as often as the console says (`X-Poll-Sec`, clamped 30 s to 1 h); without it, ~1 min if no recipes and 1 h if any (console `docs/specs/finished/config-sync.md`). GPIO loop never waits on that HTTP (console FreeRTOS task)
 - Hue gestures: the GPIO loop only posts (channel, event); the Hue worker task (`hue_worker.h`) looks up the recipe and calls the Bridge. One short queue per channel, served round-robin; queue rules are in that file's header
