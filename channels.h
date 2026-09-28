@@ -59,6 +59,9 @@ inline bool gChModeValid = false;
 // A hold was posted and its release is not yet: the release goes to the Hue worker, which
 // stops the dim ramp if the hold started one (GPIO loop only).
 inline bool gHoldOpen[kChannelCount];
+// A gesture is under way on some pin (pressed, bouncing, in a double-click window or a hold).
+// Written by the loop each pass; an update does not start while it is set (ota.h).
+inline volatile bool gInputsBusy = false;
 
 // Register lists the pins only; the console picks each channel's kind.
 inline void channelsAppendJson(String &out) {
@@ -275,9 +278,16 @@ inline void channelMomentary(size_t i, unsigned long now) {
 
 inline void channelsPoll(unsigned long now) {
   channelsResolveModes();
+  bool busy = false;
   for (size_t i = 0; i < kChannelCount; i++) {
     if (!gCh[i].primed) {
       continue;
+    }
+    const ChannelRuntime &st = gCh[i];
+    if (gChMode[i].kind != CHK_NONE &&
+        (st.lastReading != st.stable || st.waitOff || gHoldOpen[i] ||
+         (gChMode[i].kind == CHK_MOMENTARY && st.stable == LOW))) {
+      busy = true;
     }
     if (gChMode[i].kind == CHK_MAINTAINED) {
       channelMaintained(i, now);
@@ -290,4 +300,5 @@ inline void channelsPoll(unsigned long now) {
       channelPost(i, HJ_RELEASE);
     }
   }
+  gInputsBusy = busy;
 }

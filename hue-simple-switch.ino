@@ -17,6 +17,11 @@ String gHueAppKey;
 #include "usb.h"
 #include "led.h"
 
+// The core would confirm a freshly updated image at startup; this firmware confirms it after
+// its first successful console poll instead (ota.h), so a new image that cannot get that far
+// goes back to the previous one on the next restart.
+extern "C" bool verifyRollbackLater() { return true; }
+
 static bool gWifiWasUp = false;
 static bool gWifiBootTried = false;
 static unsigned long gWifiLastTryMs = 0;
@@ -69,6 +74,7 @@ void setup() {
   gOnHueWait = []() { usbPoll(); };
 
   consoleLoadNvs();
+  otaBootCheck();
   recipesLoad();
   hueLoadStore();
   channelsBegin();
