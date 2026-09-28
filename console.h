@@ -13,7 +13,7 @@
 #include "snapshot.h"
 
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.5.0"
+#define FIRMWARE_VERSION "0.6.0"
 #endif
 
 // Fallback cadence when the console sends no X-Poll-Sec (older console).
@@ -209,6 +209,8 @@ inline int consoleHttp(const char *method, const String &path, const char *body,
   return code;
 }
 
+#include "ota.h"
+
 inline bool consoleRegister(const HueCreds &c) {
   if (!consoleConfigured()) {
     return false;
@@ -270,6 +272,7 @@ inline void consoleFetchConfig() {
   path += deviceMacHex();
   path += "&rev=";
   path += sentRev;
+  otaAppendQuery(path);
   String body;
   unsigned long pollSec = 0;
   const int code = consoleHttp("GET", path, nullptr, &body, &pollSec);
@@ -277,6 +280,7 @@ inline void consoleFetchConfig() {
   if (code == HTTP_CODE_OK || code == HTTP_CODE_NO_CONTENT) {
     // No header (older console): back to the fallback cadence.
     gConsolePollMs = pollSec ? constrain(pollSec, kPollMinSec, kPollMaxSec) * 1000UL : 0;
+    otaPollAccepted();
   } else if (code == HTTP_CODE_UNAUTHORIZED) {
     gConsolePollMs = kPollMaxSec * 1000UL;
   }
@@ -297,6 +301,8 @@ inline void consoleFetchConfig() {
   if (gNvsEpoch != epoch) {
     return;
   }
+  // Whatever the rev: while an update is offered the console answers 200 with an unchanged rev.
+  otaParseOffer(body.c_str());
   // Parse into the stage buffer (only this task writes it), then swap under the lock.
   uint32_t rev = 0;
   if (!recipesParseConfig(body.c_str(), &rev)) {
@@ -364,6 +370,11 @@ inline void consoleDoSync() {
     return;
   }
   consoleFetchConfig();
+  // The poll's connection is closed and its body freed: the download runs alone (spec §4.1).
+  if (gNvsEpoch == epoch && consoleConfigured()) {
+    otaMaybeApply();
+  }
+  gOtaOfferValid = false;
 }
 
 inline void consoleWorkerTask(void *) {

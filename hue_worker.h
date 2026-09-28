@@ -92,6 +92,8 @@ inline DimRuntime gDim[kChannelCount];
 inline char gLastScene[kChannelCount][40];
 inline HueRecipe gHueJobRecipe;  // the running job's recipe, off the task stack
 inline uint32_t gHueJobEpoch = 0;
+// A job is running (worker task). With a queued job it keeps an update from starting (ota.h).
+inline volatile bool gHueJobRunning = false;
 
 inline const char *hueJobEventName(uint8_t ev) {
   switch (ev) {
@@ -396,6 +398,7 @@ inline bool hueJobTake(size_t *next, size_t *ch, HueJobEntry *job, HueCreds *cre
     *ch = i;
     *next = (i + 1) % kChannelCount;
     *creds = gHueCredsShared;
+    gHueJobRunning = true;  // under the lock: the job is never both dequeued and not running
     found = true;
     break;
   }
@@ -412,6 +415,18 @@ inline void hueWorkerRunPending() {
   while (hueJobTake(&gHueJobNext, &ch, &job, &creds)) {
     hueJobRun(ch, job, creds);
   }
+  gHueJobRunning = false;
+}
+
+// Any task: nothing queued and nothing running.
+inline bool hueWorkerIdle() {
+  bool queued = false;
+  portENTER_CRITICAL(&gHueJobMux);
+  for (size_t i = 0; i < kChannelCount && !queued; i++) {
+    queued = gHueJobs[i].n > 0;
+  }
+  portEXIT_CRITICAL(&gHueJobMux);
+  return !queued && !gHueJobRunning;
 }
 
 inline void hueWorkerTask(void *) {
@@ -419,6 +434,7 @@ inline void hueWorkerTask(void *) {
     size_t ch = 0;
     HueJobEntry job;
     HueCreds creds;
+    gHueJobRunning = false;
     if (!hueJobTake(&gHueJobNext, &ch, &job, &creds)) {
       ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
       continue;

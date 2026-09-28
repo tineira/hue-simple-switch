@@ -4,6 +4,13 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 Start a bullet with `Important: ` when the person must know or do something before or right after updating (a button to press, a setting to redo). The console shows those first, with an Important label, when Setup offers the update. Do not use it for new features.
 
+### 0.6.0 — 2026-09-28
+
+- After this update, the switch can get new versions over Wi-Fi: press Update next to it on the Switches page, and it updates itself at its next check-in, without leaving the wall. This update itself still goes over USB.
+- The Switches page shows the version each switch is running, refreshed every time the switch checks in.
+- If an update over Wi-Fi fails or the new version does not start properly, the switch keeps running the version it had, and the Switches page tells you the update failed.
+- Your settings, Wi-Fi network and Hue pairing are kept through every update.
+
 ### 0.5.0 — 2026-09-28
 
 - You can now wire up to six switches or buttons to one board, on pins D0 to D5.
