@@ -4,6 +4,10 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 Start a bullet with `Important: ` when the person must know or do something before or right after updating (a button to press, a setting to redo). The console shows those first, with an Important label, when Setup offers the update. Do not use it for new features.
 
+### 0.6.2 — 2026-09-28
+
+- Nothing changes in how the switch works. This version is sent over Wi-Fi to check that an update cut off by a power cut is reported and then completes.
+
 ### 0.6.1 — 2026-09-28
 
 - If the switch loses power or restarts in the middle of an update over Wi-Fi, the Switches page now shows that the update failed, and the switch tries again about an hour later. Before, it tried again right away without telling you.
