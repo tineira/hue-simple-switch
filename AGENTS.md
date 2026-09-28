@@ -79,6 +79,7 @@ Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` hea
 - Hue gestures: the GPIO loop only posts (channel, event); the Hue worker task (`hue_worker.h`) looks up the recipe and calls the Bridge. One short queue per channel, served round-robin; queue rules are in that file's header
 - Last **good** Hue snapshot wins: do not POST empty `[]` if a Clip stream is not 200
 - On `bridgeid` change: clear NVS recipes/`rev` **before** the next poll
+- NVS `recipes` (since 0.5.0): one blob per channel, `c_<id>` (its setting and recipes in the wire shape, without scene names), a `channels` string listing those ids with the mode (`console` or `defaults`), `rev` written last, `bid`, and the scene cursors `ls_<id>`. A save drops `rev` before its first change, rewrites only the blobs that changed, erases blobs of channels that are gone, then writes `channels` and `rev`; a failed or interrupted save leaves no `rev`, so the console resends. The first boot after an update from < 0.5.0 migrates the single `jsonb` blob (parse into RAM, erase `jsonb` and `rev`, write the channel blobs, `channels`, `rev`): the 20 KB `nvs` partition cannot hold both copies of a worst-case config. Do not grow the partition (that needs a USB reflash).
 
 ## Code conventions
 

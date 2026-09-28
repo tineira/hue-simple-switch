@@ -25,7 +25,7 @@ Each channel has recipes per event, derived by the console:
 - BOOT without a `hold` recipe: a 3 s press re-pairs with the Bridge. With one, the button never re-pairs (USB install only).
 - A scene list (`recall_scene` with `targets[]`) cycles from the last scene the channel set (kept in NVS), wraps, skips scenes that answer 404, and starts over at the first scene after an `off` on the channel.
 
-The GPIO runs NVS → Bridge; it doesn't wait for Vercel.
+The GPIO runs NVS → Bridge; it doesn't wait for Vercel. Since 0.5.0 the config is stored as one NVS blob per channel, so saving the largest config (seven channels with scene lists) needs only one channel's worth of free space; the first boot after the update converts the older single blob.
 
 Wiring for up to six wall switches or buttons on D0–D5: [`docs/wiring-switches.svg`](docs/wiring-switches.svg). Wire only the inputs you use.
 
