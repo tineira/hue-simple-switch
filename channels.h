@@ -8,7 +8,9 @@
 
 // Channels: closed = GPIO to GND (INPUT_PULLUP). The console picks each channel's kind
 // (config channels[]); a pin it does not list does nothing. The old config payload has no
-// channels[]: every pin runs with its compiled default kind below.
+// channels[]: every pin runs with its compiled default kind below. D3-D5 (since 0.5.0) default
+// to CHK_NONE, so a pin nobody wired never acts on the old payload either.
+// D3-D5 are GPIO 21-23: no strapping pins, and this firmware has no I2C on D4/D5.
 
 struct ChannelDef {
   const char *id;
@@ -22,6 +24,9 @@ static const ChannelDef kChannels[] = {
     {"d0", 0, "D0", CHK_MAINTAINED},
     {"d1", 1, "D1", CHK_MAINTAINED},
     {"d2", 2, "D2", CHK_MAINTAINED},
+    {"d3", 21, "D3", CHK_NONE},
+    {"d4", 22, "D4", CHK_NONE},
+    {"d5", 23, "D5", CHK_NONE},
 };
 
 static const size_t kChannelCount = sizeof(kChannels) / sizeof(kChannels[0]);

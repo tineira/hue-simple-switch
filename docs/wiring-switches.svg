@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 590" width="900" height="590">
+  <rect width="900" height="590" fill="#f4f1ea"/>
+  <text x="450" y="32" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#1a1a1a">Up to 6 switches → XIAO ESP32-C6</text>
+  <text x="450" y="54" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" fill="#555">3.3 V only. Hue bulbs are wired separately, always on 220 V (not through these switches).</text>
+
+  <!-- Board -->
+  <rect x="40" y="88" width="210" height="440" rx="14" fill="#24302a"/>
+  <text x="145" y="118" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#eef6f0">XIAO ESP32-C6</text>
+  <text x="145" y="138" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="11" fill="#9db5a6">side headers</text>
+
+  <g font-family="ui-monospace, Consolas, monospace" font-size="13">
+    <circle cx="240" cy="160" r="7" fill="#c45c26"/>
+    <text x="228" y="165" text-anchor="end" fill="#f0d9cc">3V3</text>
+    <circle cx="240" cy="200" r="7" fill="#3d8bfd"/>
+    <text x="228" y="205" text-anchor="end" fill="#cfe0ff">D0</text>
+    <circle cx="240" cy="250" r="7" fill="#2a9d8f"/>
+    <text x="228" y="255" text-anchor="end" fill="#c8efe8">D1</text>
+    <circle cx="240" cy="300" r="7" fill="#8b5cf6"/>
+    <text x="228" y="305" text-anchor="end" fill="#e4d7ff">D2</text>
+    <circle cx="240" cy="350" r="7" fill="#d6336c"/>
+    <text x="228" y="355" text-anchor="end" fill="#ffd6e4">D3</text>
+    <circle cx="240" cy="400" r="7" fill="#e0a100"/>
+    <text x="228" y="405" text-anchor="end" fill="#fff0c2">D4</text>
+    <circle cx="240" cy="450" r="7" fill="#4f8a2b"/>
+    <text x="228" y="455" text-anchor="end" fill="#d7efc6">D5</text>
+    <circle cx="240" cy="510" r="7" fill="#111"/>
+    <text x="228" y="515" text-anchor="end" fill="#ddd">GND</text>
+  </g>
+
+  <!-- buses -->
+  <path d="M247 160 H300 V92 H590" fill="none" stroke="#c45c26" stroke-width="3"/>
+  <text x="330" y="84" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#c45c26" font-weight="600">+3.3 V — only feeds the resistors (does not go to the wall)</text>
+  <path d="M247 510 H870" fill="none" stroke="#111" stroke-width="3"/>
+  <text x="420" y="532" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#111" font-weight="600">GND — the other terminal of every switch</text>
+
+  <!-- GPIO runs -->
+  <path d="M247 200 H640" fill="none" stroke="#3d8bfd" stroke-width="3"/>
+  <path d="M247 250 H640" fill="none" stroke="#2a9d8f" stroke-width="3"/>
+  <path d="M247 300 H640" fill="none" stroke="#8b5cf6" stroke-width="3"/>
+  <path d="M247 350 H640" fill="none" stroke="#d6336c" stroke-width="3"/>
+  <path d="M247 400 H640" fill="none" stroke="#e0a100" stroke-width="3"/>
+  <path d="M247 450 H640" fill="none" stroke="#4f8a2b" stroke-width="3"/>
+
+  <!-- pull-up 10k, one per input -->
+  <g font-family="ui-monospace, Consolas, monospace" font-size="11" fill="#7a3a16">
+    <path d="M340 92 V168" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <rect x="328" y="168" width="24" height="22" rx="2" fill="#f4f1ea" stroke="#c45c26" stroke-width="2"/>
+    <path d="M340 190 V200" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <circle cx="340" cy="200" r="3.5" fill="#c45c26"/>
+    <text x="356" y="184">10k</text>
+    <path d="M390 92 V218" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <rect x="378" y="218" width="24" height="22" rx="2" fill="#f4f1ea" stroke="#c45c26" stroke-width="2"/>
+    <path d="M390 240 V250" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <circle cx="390" cy="250" r="3.5" fill="#c45c26"/>
+    <text x="406" y="234">10k</text>
+    <path d="M440 92 V268" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <rect x="428" y="268" width="24" height="22" rx="2" fill="#f4f1ea" stroke="#c45c26" stroke-width="2"/>
+    <path d="M440 290 V300" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <circle cx="440" cy="300" r="3.5" fill="#c45c26"/>
+    <text x="456" y="284">10k</text>
+    <path d="M490 92 V318" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <rect x="478" y="318" width="24" height="22" rx="2" fill="#f4f1ea" stroke="#c45c26" stroke-width="2"/>
+    <path d="M490 340 V350" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <circle cx="490" cy="350" r="3.5" fill="#c45c26"/>
+    <text x="506" y="334">10k</text>
+    <path d="M540 92 V368" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <rect x="528" y="368" width="24" height="22" rx="2" fill="#f4f1ea" stroke="#c45c26" stroke-width="2"/>
+    <path d="M540 390 V400" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <circle cx="540" cy="400" r="3.5" fill="#c45c26"/>
+    <text x="556" y="384">10k</text>
+    <path d="M590 92 V418" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <rect x="578" y="418" width="24" height="22" rx="2" fill="#f4f1ea" stroke="#c45c26" stroke-width="2"/>
+    <path d="M590 440 V450" fill="none" stroke="#c45c26" stroke-width="2"/>
+    <circle cx="590" cy="450" r="3.5" fill="#c45c26"/>
+    <text x="606" y="434">10k</text>
+  </g>
+
+  <!-- SW1 -->
+  <g>
+    <text x="670" y="174" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#3d8bfd">SW1 · D0</text>
+    <circle cx="640" cy="200" r="6" fill="#3d8bfd"/>
+    <line x1="640" y1="200" x2="692" y2="182" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="700" cy="200" r="6" fill="#111"/>
+    <path d="M706 200 H860 V510" fill="none" stroke="#111" stroke-width="3"/>
+    <circle cx="860" cy="510" r="4" fill="#111"/>
+  </g>
+
+  <!-- SW2 -->
+  <g>
+    <text x="670" y="224" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#2a9d8f">SW2 · D1</text>
+    <circle cx="640" cy="250" r="6" fill="#2a9d8f"/>
+    <line x1="640" y1="250" x2="692" y2="232" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="700" cy="250" r="6" fill="#111"/>
+    <path d="M706 250 H840 V510" fill="none" stroke="#111" stroke-width="3"/>
+    <circle cx="840" cy="510" r="4" fill="#111"/>
+  </g>
+
+  <!-- SW3 -->
+  <g>
+    <text x="670" y="274" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#8b5cf6">SW3 · D2</text>
+    <circle cx="640" cy="300" r="6" fill="#8b5cf6"/>
+    <line x1="640" y1="300" x2="692" y2="282" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="700" cy="300" r="6" fill="#111"/>
+    <path d="M706 300 H820 V510" fill="none" stroke="#111" stroke-width="3"/>
+    <circle cx="820" cy="510" r="4" fill="#111"/>
+  </g>
+
+  <!-- SW4 -->
+  <g>
+    <text x="670" y="324" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#d6336c">SW4 · D3</text>
+    <circle cx="640" cy="350" r="6" fill="#d6336c"/>
+    <line x1="640" y1="350" x2="692" y2="332" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="700" cy="350" r="6" fill="#111"/>
+    <path d="M706 350 H800 V510" fill="none" stroke="#111" stroke-width="3"/>
+    <circle cx="800" cy="510" r="4" fill="#111"/>
+  </g>
+
+  <!-- SW5 -->
+  <g>
+    <text x="670" y="374" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#e0a100">SW5 · D4</text>
+    <circle cx="640" cy="400" r="6" fill="#e0a100"/>
+    <line x1="640" y1="400" x2="692" y2="382" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="700" cy="400" r="6" fill="#111"/>
+    <path d="M706 400 H780 V510" fill="none" stroke="#111" stroke-width="3"/>
+    <circle cx="780" cy="510" r="4" fill="#111"/>
+  </g>
+
+  <!-- SW6 -->
+  <g>
+    <text x="670" y="424" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#4f8a2b">SW6 · D5</text>
+    <circle cx="640" cy="450" r="6" fill="#4f8a2b"/>
+    <line x1="640" y1="450" x2="692" y2="432" stroke="#1a1a1a" stroke-width="3"/>
+    <circle cx="700" cy="450" r="6" fill="#111"/>
+    <path d="M706 450 H760 V510" fill="none" stroke="#111" stroke-width="3"/>
+    <circle cx="760" cy="510" r="4" fill="#111"/>
+  </g>
+
+  <text x="40" y="560" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#444">Each switch or button: 2 wires. Terminal A = its pin (D0–D5). Terminal B = GND. Closed = ON.</text>
+  <text x="40" y="578" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="12" fill="#444">Wire only the inputs you need, then set each one up in the console (toggle switch or push button).</text>
+</svg>

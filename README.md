@@ -10,8 +10,13 @@ GPIO channels (closed = pin to GND, `INPUT_PULLUP`):
 | `d0` | 0 | `maintained` | D0 |
 | `d1` | 1 | `maintained` | D1 |
 | `d2` | 2 | `maintained` | D2 |
+| `d3` | 21 | none | D3 |
+| `d4` | 22 | none | D4 |
+| `d5` | 23 | none | D5 |
 
-Since 0.3.0 the console picks each channel's kind (`maintained` = toggle switch, `momentary` = push button) and sends it in the config's `channels[]`; a pin it does not list does nothing. BOOT is always a push button. The default kinds above apply only to the old config payload (no `channels[]`), from a console that predates channel types.
+D3–D5 (GPIO 21–23) are channels since 0.5.0, so one board takes up to six wall switches or buttons on D0–D5, plus BOOT. None of D3–D5 is a strapping pin, and this firmware has no I2C on D4/D5. D6–D10 stay unused (D6 is the chip's serial TX at boot).
+
+Since 0.3.0 the console picks each channel's kind (`maintained` = toggle switch, `momentary` = push button) and sends it in the config's `channels[]`; a pin it does not list does nothing. BOOT is always a push button. The default kinds above apply only to the old config payload (no `channels[]`), from a console that predates channel types; there D3–D5 do nothing, so an unwired pin never acts.
 
 Each channel has recipes per event, derived by the console:
 
@@ -20,9 +25,9 @@ Each channel has recipes per event, derived by the console:
 - BOOT without a `hold` recipe: a 3 s press re-pairs with the Bridge. With one, the button never re-pairs (USB install only).
 - A scene list (`recall_scene` with `targets[]`) cycles from the last scene the channel set (kept in NVS), wraps, skips scenes that answer 404, and starts over at the first scene after an `off` on the channel.
 
-The GPIO runs NVS → Bridge; it doesn't wait for Vercel.
+The GPIO runs NVS → Bridge; it doesn't wait for Vercel. Since 0.5.0 the config is stored as one NVS blob per channel, so saving the largest config (seven channels with scene lists) needs only one channel's worth of free space; the first boot after the update converts the older single blob.
 
-Wiring for three wall switches: [`docs/wiring-3-switches.svg`](docs/wiring-3-switches.svg).
+Wiring for up to six wall switches or buttons on D0–D5: [`docs/wiring-switches.svg`](docs/wiring-switches.svg). Wire only the inputs you use.
 
 **BOOT** (GPIO9) and **RST** (CHIP_PU) are **buttons**, not LEDs. The board has two lights:
 

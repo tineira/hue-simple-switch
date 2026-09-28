@@ -4,6 +4,11 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 Start a bullet with `Important: ` when the person must know or do something before or right after updating (a button to press, a setting to redo). The console shows those first, with an Important label, when Setup offers the update. Do not use it for new features.
 
+### 0.5.0 — 2026-09-28
+
+- You can now wire up to six switches or buttons to one board, on pins D0 to D5.
+- The new inputs D3, D4 and D5 do nothing until you set each one up in the console, as a toggle switch or a push button. Your settings for D0, D1 and D2 are kept.
+
 ### 0.4.4 — 2026-09-27
 
 - The switch no longer risks restarting when you pair it with the Hue Bridge again, or clear its settings, while it is checking in with the console.

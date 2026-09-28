@@ -73,12 +73,13 @@ Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` hea
 ## Product
 
 - `product`: always `"simple"` on `POST /api/device/register` (plus GPIO `channels[]`, `source: xiao`)
-- Channels v1: `boot` GPIO9 momentary (short = recipe, hold 3 s = Hue re-pair); `d0`/`d1`/`d2` GPIO 0/1/2 maintained (`on` / `off` / `double_click`)
+- Channels: `boot` GPIO9 momentary (short = recipe, hold 3 s = Hue re-pair); `d0`–`d5` GPIO 0/1/2/21/22/23 (since 0.5.0; older firmware has `d0`–`d2`). The console picks each kind; on the old payload (no `channels[]`) `d0`–`d2` default to maintained (`on` / `off` / `double_click`) and `d3`–`d5` do nothing. At most 7 channels and 21 recipes (`kMaxRecipes`)
 - USB commands (ASCII lines, besides Improv): `HUESET`, `HUEGET`, `HUEPAIR`, `HUECLR`, `HUEBOOT` (answers `HUEOK boot`, then restarts into the ROM bootloader so Devices can flash without the BOOT button; RESET is still pressed once after the write). Anything else answers `HUEERR unknown`. See the console `docs/specs/finished/devices.md` §6
 - Console: URL + token from NVS `console` (`HUESET` over USB). Register + `GET /api/device/config`. Poll at boot, then as often as the console says (`X-Poll-Sec`, clamped 30 s to 1 h); without it, ~1 min if no recipes and 1 h if any (console `docs/specs/finished/config-sync.md`). GPIO loop never waits on that HTTP (console FreeRTOS task)
 - Hue gestures: the GPIO loop only posts (channel, event); the Hue worker task (`hue_worker.h`) looks up the recipe and calls the Bridge. One short queue per channel, served round-robin; queue rules are in that file's header
 - Last **good** Hue snapshot wins: do not POST empty `[]` if a Clip stream is not 200
 - On `bridgeid` change: clear NVS recipes/`rev` **before** the next poll
+- NVS `recipes` (since 0.5.0): one blob per channel, `c_<id>` (its setting and recipes in the wire shape, without scene names), a `channels` string listing those ids with the mode (`console` or `defaults`), `rev` written last, `bid`, and the scene cursors `ls_<id>`. A save drops `rev` before its first change, rewrites only the blobs that changed, erases blobs of channels that are gone, then writes `channels` and `rev`; a failed or interrupted save leaves no `rev`, so the console resends. The first boot after an update from < 0.5.0 migrates the single `jsonb` blob (parse into RAM, erase `jsonb` and `rev`, write the channel blobs, `channels`, `rev`): the 20 KB `nvs` partition cannot hold both copies of a worst-case config. Do not grow the partition (that needs a USB reflash).
 
 ## Code conventions
 

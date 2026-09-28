@@ -13,7 +13,7 @@
 #include "snapshot.h"
 
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.4.4"
+#define FIRMWARE_VERSION "0.5.0"
 #endif
 
 // Fallback cadence when the console sends no X-Poll-Sec (older console).
@@ -225,7 +225,9 @@ inline bool consoleRegister(const HueCreds &c) {
   }
 
   String payload;
-  payload.reserve(lights.length() + rooms.length() + scenes.length() + 256);
+  // Fixed part: ~150 bytes of ids plus ~40 per channel (7 channels), with room to spare, so the
+  // big snapshot String is not reallocated while it is appended.
+  payload.reserve(lights.length() + rooms.length() + scenes.length() + 512);
   payload += "{\"mac\":";
   jsonAppendEscaped(payload, deviceMacHex().c_str());
   payload += ",\"firmware\":";

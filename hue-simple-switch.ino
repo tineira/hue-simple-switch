@@ -88,7 +88,7 @@ void setup() {
   }
 
   channelsPrime();
-  LOGLN("GPIO: kinds from console channels[] (defaults: boot push button, d0/d1/d2 toggle switch)");
+  LOGLN("GPIO: kinds from console channels[] (defaults: boot push button, d0-d2 toggle switch, d3-d5 unused)");
 }
 
 static void huePairApplySync() {
