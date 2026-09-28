@@ -6,7 +6,7 @@ Start a bullet with `Important: ` when the person must know or do something befo
 
 ### 0.6.1 — 2026-09-28
 
-- Nothing changes in how the switch works. This is the first version sent over Wi-Fi, to check that updates from the Switches page arrive.
+- If the switch loses power or restarts in the middle of an update over Wi-Fi, the Switches page now shows that the update failed, and the switch tries again about an hour later. Before, it tried again right away without telling you.
 
 ### 0.6.0 — 2026-09-28
 

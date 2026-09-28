@@ -15,6 +15,11 @@
 // before the restart until it confirms; the old app finds it with the last invalid partition set
 // and reports ota_error=boot once.
 //
+// Interrupted download: NVS ota/dl holds the version from just before the slot is first written
+// until the attempt ends either way. Found at boot (power cut, crash or reset mid-download), it is
+// reported as ota_error=size (fewer bytes than ota.size) and retried after an hour, like a stream
+// that ended early.
+//
 // Heap: measured with a Hue call in flight during the download (spec §6): the largest free block
 // stayed at 118 KB or more, and one TLS session needs about 50 KB.
 
@@ -57,24 +62,50 @@ inline void otaFail(const char *version, const char *code, bool block) {
   }
 }
 
-// Setup: a restart before the new image confirmed itself sent the bootloader back here.
+inline void otaMarkDownload(const char *version) {
+  Preferences p;
+  if (p.begin("ota", false)) {
+    if (version) {
+      p.putString("dl", version);
+    } else if (p.isKey("dl")) {
+      p.remove("dl");
+    }
+    p.end();
+  }
+}
+
+// Setup: a download cut off by a restart, or a restart before the new image confirmed itself
+// (the bootloader then went back to this one).
 inline void otaBootCheck() {
   Preferences p;
   if (!p.begin("ota", true)) {
     return;  // namespace never written: no update tried
   }
+  const String dl = p.getString("dl", "");
   const String tried = p.getString("try", "");
   p.end();
-  if (!tried.length() || tried == FIRMWARE_VERSION) {
-    return;  // nothing tried, or this is the new image (it clears the key once it confirms)
+  // tried == FIRMWARE_VERSION: this is the new image; it clears the key once it confirms.
+  const bool rolledBack = tried.length() && tried != FIRMWARE_VERSION;
+  if (!dl.length() && !rolledBack) {
+    return;
   }
-  if (esp_ota_get_last_invalid_partition()) {
-    otaFail(tried.c_str(), "boot", false);
-  } else {
-    LOG("ota %s: another image runs now, not a rollback\n", tried.c_str());
+  if (dl.length()) {
+    otaFail(dl.c_str(), "size", false);
+  }
+  if (rolledBack) {
+    if (esp_ota_get_last_invalid_partition()) {
+      otaFail(tried.c_str(), "boot", false);
+    } else {
+      LOG("ota %s: another image runs now, not a rollback\n", tried.c_str());
+    }
   }
   if (p.begin("ota", false)) {
-    p.remove("try");
+    if (dl.length()) {
+      p.remove("dl");
+    }
+    if (rolledBack) {
+      p.remove("try");
+    }
     p.end();
   }
 }
@@ -261,7 +292,9 @@ inline bool otaDownload(const OtaOffer &o) {
     otaFail(o.version, "heap", false);
     return false;
   }
+  otaMarkDownload(o.version);
   if (!Update.begin(o.size, U_FLASH)) {
+    otaMarkDownload(nullptr);
     LOG("ota Update.begin error %u\n", Update.getError());
     free(buf);
     http.end();
@@ -311,6 +344,7 @@ inline bool otaDownload(const OtaOffer &o) {
   mbedtls_sha256_free(&sha);
   free(buf);
   http.end();
+  otaMarkDownload(nullptr);
   LOG("ota %u of %u bytes in %lu ms\n", static_cast<unsigned>(got), static_cast<unsigned>(o.size), millis() - t0);
   if (writeFailed) {
     Update.abort();
