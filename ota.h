@@ -20,6 +20,8 @@
 // reported as ota_error=size (fewer bytes than ota.size) and retried after an hour, like a stream
 // that ended early.
 //
+// The `ota` block itself is parsed in ota_offer.h (no device includes, covered by test/host).
+//
 // Heap: measured with a Hue call in flight during the download (spec §6): the largest free block
 // stayed at 118 KB or more, and one TLS session needs about 50 KB.
 
