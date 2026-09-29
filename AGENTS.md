@@ -82,6 +82,15 @@ Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` hea
 - On `bridgeid` change: clear NVS recipes/`rev` **before** the next poll
 - NVS `recipes` (since 0.5.0): one blob per channel, `c_<id>` (its setting and recipes in the wire shape, without scene names), a `channels` string listing those ids with the mode (`console` or `defaults`), `rev` written last, `bid`, and the scene cursors `ls_<id>`. A save drops `rev` before its first change, rewrites only the blobs that changed, erases blobs of channels that are gone, then writes `channels` and `rev`; a failed or interrupted save leaves no `rev`, so the console resends. The first boot after an update from < 0.5.0 migrates the single `jsonb` blob (parse into RAM, erase `jsonb` and `rev`, write the channel blobs, `channels`, `rev`): the 20 KB `nvs` partition cannot hold both copies of a worst-case config. Do not grow the partition (that needs a USB reflash).
 
+## Hardware (`hardware/`)
+
+Mains carrier board (XIAO + Hi-Link HLK-PM01 in a wall box) and its printable enclosure. See `hardware/README.md`.
+
+- Everything in `hardware/kicad`, `hardware/fab`, `hardware/images` and the STLs is generated. Edit `hardware/scripts/design.py` (parts, nets, LCSC numbers) and `hardware/scripts/layout.py` (placement, copper), or `hardware/enclosure/enclosure.scad`, then run `build_all.py` with KiCad 10's Python (`%LOCALAPPDATA%/Programs/KiCad/10.0/bin/python.exe hardware/scripts/build_all.py`). It stops on any ERC or DRC error (DRC runs with schematic parity).
+- Keep the board's pin map equal to the firmware's (D0–D5 = GPIO 0, 1, 2, 21, 22, 23). A pin change is a firmware change first.
+- Mains nets (`AC_*`, net class `Mains`) keep >= 6 mm clearance and creepage to everything else (`kicad/*.kicad_dru`). Do not relax it.
+- It is an uncertified, AI-assisted mains design; keep the safety notes in `hardware/README.md` when editing it.
+
 ## Code conventions
 
 - Arduino `.ino` + small `.h` files; no PlatformIO for this project
