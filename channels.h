@@ -57,7 +57,7 @@ inline ChannelMode gChMode[kChannelCount];
 inline uint32_t gChModeGen = 0;
 inline bool gChModeValid = false;
 // A hold was posted and its release is not yet: the release goes to the Hue worker, which
-// stops the dim ramp if the hold started one (GPIO loop only).
+// stops the dim cycle if the hold started one (GPIO loop only).
 inline bool gHoldOpen[kChannelCount];
 // A gesture is under way on some pin (pressed, bouncing, in a double-click window or a hold).
 // Written by the loop each pass; an update does not start while it is set (ota.h).
@@ -300,5 +300,6 @@ inline void channelsPoll(unsigned long now) {
       channelPost(i, HJ_RELEASE);
     }
   }
+  hueWorkerLoopPoll();  // no Hue task: dim turn-arounds run here
   gInputsBusy = busy;
 }
