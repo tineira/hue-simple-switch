@@ -94,8 +94,8 @@ metal box, Wi-Fi range drops a lot; plastic boxes are better.
    [`fab/hue-simple-switch-mains-cpl.csv`](fab/hue-simple-switch-mains-cpl.csv) is
    included; check the part rotations in JLCPCB's preview if you do).
 
-Buy the XIAO ESP32-C6 from Seeed or a distributor. J2 is two 2-way 3.5 mm blocks
-slid together (or any 4-way 3.5 mm block with the same footprint).
+Buy the XIAO ESP32-C6 from Seeed or a distributor. J2 is one 4-way 3.5 mm block
+(XY350V-3.5-4P); any 4-way 3.5 mm side-entry block with the same footprint fits.
 
 ## Solder it
 

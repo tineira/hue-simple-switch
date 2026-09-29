@@ -91,7 +91,7 @@ for i, name in enumerate(INPUTS):
 part("J2", "D0 D1 D2 D3", "Connector:Screw_Terminal_01x04",
      "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-4-3.5-H_1x04_P3.50mm_Horizontal",
      {"1": "IN_D0", "2": "IN_D1", "3": "IN_D2", "4": "IN_D3"}, "bottom", (0, 0),
-     lcsc="C474892 x2", mpn="KF350-3.5-2P x2, slid together (Cixi Kefa)")
+     lcsc="C557656", mpn="XY350V-3.5-4P (Ningbo Xinlaiya)")
 part("J3", "D4 D5 GND", "Connector:Screw_Terminal_01x03",
      "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-3-3.5-H_1x03_P3.50mm_Horizontal",
      {"1": "IN_D4", "2": "IN_D5", "3": "GND"}, "bottom", (0, 0),

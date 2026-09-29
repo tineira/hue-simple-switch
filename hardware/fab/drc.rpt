@@ -1,5 +1,5 @@
 ** Drc report for hue-simple-switch-mains.kicad_pcb **
-** Created on 2026-09-28T23:21:51 **
+** Created on 2026-09-28T23:53:36 **
 ** Report includes: Errors, Warnings, Exclusions **
 
 ** Found 29 DRC violations **
@@ -11,6 +11,14 @@
     Rule: board setup constraints silk; warning
     @(79.0000 mm, 115.3297 mm): Segment on Edge.Cuts
     @(79.3630 mm, 107.3050 mm): Segment of U1 on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(121.0000 mm, 84.6703 mm): Segment on Edge.Cuts
+    @(111.0850 mm, 94.9950 mm): Segment of J1 on B.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(100.0000 mm, 100.0000 mm): Arc on Edge.Cuts
+    @(121.1250 mm, 84.5950 mm): Segment of J1 on B.Silkscreen
 [silk_edge_clearance]: Silkscreen clipped by board edge
     Rule: board setup constraints silk; warning
     @(100.0000 mm, 100.0000 mm): Arc on Edge.Cuts
@@ -27,46 +35,10 @@
     Rule: board setup constraints silk; warning
     @(121.0000 mm, 84.6703 mm): Segment on Edge.Cuts
     @(120.5200 mm, 101.0000 mm): Polygon of J2 on B.Silkscreen
-[silk_edge_clearance]: Silkscreen clipped by board edge
-    Rule: board setup constraints silk; warning
-    @(121.0000 mm, 84.6703 mm): Segment on Edge.Cuts
-    @(111.0850 mm, 94.9950 mm): Segment of J1 on B.Silkscreen
-[silk_edge_clearance]: Silkscreen clipped by board edge
-    Rule: board setup constraints silk; warning
-    @(100.0000 mm, 100.0000 mm): Arc on Edge.Cuts
-    @(121.1250 mm, 84.5950 mm): Segment of J1 on B.Silkscreen
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(98.4130 mm, 109.7950 mm): Arc of U1 on F.Silkscreen
-    @(97.5200 mm, 110.8650 mm): Pad 7 [unconnected-(U1-D6-Pad7)] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(94.9800 mm, 110.8650 mm): Pad 6 [D5] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(97.5200 mm, 110.8650 mm): Pad 7 [unconnected-(U1-D6-Pad7)] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(82.2800 mm, 110.8650 mm): Pad 1 [D0] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(84.8200 mm, 110.8650 mm): Pad 2 [D1] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(87.3600 mm, 110.8650 mm): Pad 3 [D2] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(89.9000 mm, 110.8650 mm): Pad 4 [D3] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(92.4400 mm, 110.8650 mm): Pad 5 [D4] of U1 on F.Cu
+    @(81.2680 mm, 95.8250 mm): Arc of U1 on F.Silkscreen
+    @(82.2800 mm, 94.7000 mm): Pad 14 [+5V] of U1 on F.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
     @(98.4130 mm, 93.9200 mm): Segment of U1 on F.Silkscreen
@@ -97,28 +69,56 @@
     @(92.4400 mm, 94.7000 mm): Pad 10 [unconnected-(U1-D9-Pad10)] of U1 on F.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(81.2680 mm, 95.8250 mm): Arc of U1 on F.Silkscreen
-    @(82.2800 mm, 94.7000 mm): Pad 14 [+5V] of U1 on F.Cu
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(94.9800 mm, 110.8650 mm): Pad 6 [D5] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(97.5200 mm, 110.8650 mm): Pad 7 [unconnected-(U1-D6-Pad7)] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(82.2800 mm, 110.8650 mm): Pad 1 [D0] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(84.8200 mm, 110.8650 mm): Pad 2 [D1] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(87.3600 mm, 110.8650 mm): Pad 3 [D2] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(89.9000 mm, 110.8650 mm): Pad 4 [D3] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(92.4400 mm, 110.8650 mm): Pad 5 [D4] of U1 on F.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
     @(98.4130 mm, 95.8250 mm): Arc of U1 on F.Silkscreen
     @(97.5200 mm, 94.7000 mm): Pad 8 [unconnected-(U1-D7-Pad8)] of U1 on F.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
+    @(98.4130 mm, 109.7950 mm): Arc of U1 on F.Silkscreen
+    @(97.5200 mm, 110.8650 mm): Pad 7 [unconnected-(U1-D6-Pad7)] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
     @(81.2640 mm, 109.7950 mm): Arc of U1 on F.Silkscreen
     @(82.2800 mm, 110.8650 mm): Pad 1 [D0] of U1 on F.Cu
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
-    @(113.5000 mm, 99.1000 mm): PCB text 'D0' on B.Silkscreen
     @(120.5200 mm, 99.1300 mm): Segment of J2 on B.Silkscreen
+    @(113.5000 mm, 99.1000 mm): PCB text 'D0' on B.Silkscreen
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
-    @(119.0050 mm, 84.5950 mm): Segment of J1 on B.Silkscreen
     @(119.4000 mm, 87.2500 mm): PCB text 'L' on B.Silkscreen
+    @(119.0050 mm, 84.5950 mm): Segment of J1 on B.Silkscreen
 [silk_overlap]: Silkscreen clearance
     Rule: board setup constraints silk; warning
-    @(119.0050 mm, 84.5950 mm): Segment of J1 on B.Silkscreen
     @(119.4000 mm, 92.3300 mm): PCB text 'N' on B.Silkscreen
+    @(119.0050 mm, 84.5950 mm): Segment of J1 on B.Silkscreen
 
 ** Found 0 unconnected pads **
 
