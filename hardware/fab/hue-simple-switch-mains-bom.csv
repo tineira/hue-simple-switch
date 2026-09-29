@@ -1,0 +1,13 @@
+Comment,Designator,Footprint,LCSC Part #,Qty,Manufacturer part,Side,Notes
+22uF 25V,"C1,C2",C_0805_2012Metric,C45783,2,CL21A226MAQNNNE,top,
+10nF,"C11,C12,C13,C14,C15,C16",C_0603_1608Metric,C57112,6,0603B103K500NT,top,"with the 1k, filters noise picked up by the wall wiring"
+SS34,D1,D_SMA,C8678,1,SS34,top,blocks USB back-feed into the power module
+T500mA 250V,F1,Fuse_Littelfuse_372_D8.50mm,C142835,1,"Littelfuse 37205000001 (TR5 372, time-lag)",bottom,
+MAINS L/N,J1,"TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal",C474952,1,KF128-5.08-2P (Cixi Kefa),bottom,"300 V, 5.08 mm pitch, up to 2.5 mm2"
+D0 D1 D2 D3,J2,"TerminalBlock_Phoenix_PT-1,5-4-3.5-H_1x04_P3.50mm_Horizontal",C474892 x2,1,"KF350-3.5-2P x2, slid together (Cixi Kefa)",bottom,
+D4 D5 GND,J3,"TerminalBlock_Phoenix_PT-1,5-3-3.5-H_1x03_P3.50mm_Horizontal",C474893,1,KF350-3.5-3P (Cixi Kefa),bottom,
+HLK-PM01,PS1,Converter_ACDC_Hi-Link_HLK-PMxx,C209903,1,"Hi-Link HLK-PM01, 5 V 0.6 A, 3 kVAC isolation",bottom,
+10k,"R1,R2,R3,R4,R5,R6",R_0603_1608Metric,C25804,6,0603WAF1002T5E,top,"pull-up, next to the pin"
+1k,"R11,R12,R13,R14,R15,R16",R_0603_1608Metric,C21190,6,0603WAF1001T5E,bottom,"series, limits surge current into the pin"
+275VAC,RV1,R_1210_3225Metric,C211106,1,"TDK SIOV B72650M0271K072 (CU3225K275G2), 275 VAC, SMD 3225",top,"across the module input, after the fuse"
+XIAO ESP32-C6,U1,XIAO-ESP32-C6-SMD-EdgePads,,1,Seeed Studio XIAO ESP32-C6 (113991254),top,soldered flat by its castellated edge

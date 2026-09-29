@@ -29,6 +29,8 @@ The GPIO runs NVS → Bridge; it doesn't wait for Vercel. Since 0.5.0 the config
 
 Wiring for up to six wall switches or buttons on D0–D5: [`docs/wiring-switches.svg`](docs/wiring-switches.svg). Wire only the inputs you use.
 
+To power the switch from the mains inside a wall box, behind the existing switch, there is a carrier board (KiCad, Gerbers for JLCPCB, BOM) and a printable enclosure in [`hardware/`](hardware/README.md). It keeps the same pins and firmware. It is an uncertified mains design: read its safety notes and have an electrician install it.
+
 **BOOT** (GPIO9) and **RST** (CHIP_PU) are **buttons**, not LEDs. The board has two lights:
 
 The orange LED's alphabet is **implemented** in firmware 0.2.7: `docs/specs/finished/led-status.md`.

@@ -1,0 +1,15 @@
+(version 1)
+
+# Mains (L, N, fused L) to anything else: reinforced isolation for 250 V,
+# pollution degree 2, with margin. The switch wires on J2/J3 are touchable.
+(rule "Mains to low voltage clearance"
+  (constraint clearance (min 6.0mm))
+  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains'"))
+
+(rule "Mains to low voltage creepage"
+  (constraint creepage (min 6.0mm))
+  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains'"))
+
+(rule "Mains to board edge and slot"
+  (constraint edge_clearance (min 1.0mm))
+  (condition "A.NetClass == 'Mains'"))
