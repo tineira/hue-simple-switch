@@ -4,6 +4,13 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 Start a bullet with `Important: ` when the person must know or do something before or right after updating (a button to press, a setting to redo). The console shows those first, with an Important label, when Setup offers the update. Do not use it for new features.
 
+### 0.7.0 — 2026-09-29
+
+- Hold to dim now goes down and up in a loop until you let go, pausing briefly at full and at the lowest level, so you no longer let go and hold again to change direction.
+- Hold to dim moves at the same speed from any level: a light near full gets there right away instead of creeping for several seconds.
+- A hold brightens a light that is off or below about a third, and dims it otherwise, the same way every time.
+- If the button stays held for more than 30 seconds, dimming stops by itself.
+
 ### 0.6.4 — 2026-09-29
 
 - Scenes with many lights no longer go missing from the scene list in the console. Before, a scene that set a lot of lights at once was too large for the switch to read, and it was left out.

@@ -16,6 +16,12 @@
 //     none may be merged). One that waited more than kHueJobStaleMs for the Bridge is dropped.
 //   - Release: queued after the hold it ends, so a dim stop always follows its start. It has a
 //     slot of its own and never expires.
+// Hold to dim cycle (console docs/specs/simple-dim-cycle.md): the hold job reads the target
+// once and starts the first leg; gDim records when the next leg is due. The task waits for its
+// next job or for the earliest due turn-around, whichever comes first, and runs a due
+// turn-around as one PUT between jobs, so a cycle never blocks other channels and they delay it
+// by at most one job. A turn-around is skipped while its channel has a release queued: the
+// release cancels it and sends the stop. Without a task, the loop runs due turn-arounds.
 // A full channel drops the new event (and the loop does not open a hold for it).
 //
 // Shared state:
@@ -71,11 +77,15 @@ struct HueJobQueue {
   uint8_t n;
 };
 
-// Hold to dim (RAM only). active: a ramp was started and needs its stop on release; the
-// target is kept so the stop goes where the start went, even if recipes change mid-hold.
+// Hold to dim (RAM only). active: a leg was sent and needs its stop on release; the target is
+// kept so the turn-arounds and the stop go where the start went, even if recipes change
+// mid-hold. cycling: the next leg is due at nextMs (end of the running leg plus the dwell).
 struct DimRuntime {
   bool active;
-  bool lastUp;  // false at boot: the first mid-level hold ramps up
+  bool cycling;
+  bool up;          // direction of the running leg
+  uint32_t holdMs;  // when the hold was detected: the cycle stops kDimMaxHoldMs after it
+  uint32_t nextMs;
   char rtype[16];
   char rid[40];
 };
@@ -260,40 +270,58 @@ inline bool channelRecallNextScene(size_t i, const HueRecipe &r, const HueCreds 
   return false;
 }
 
-// Hold with dim: one GET, maybe turn on at the minimum, then start the ramp. Off → up;
-// ≥ 95 % → down; ≤ 5 % → up; otherwise the other way from the last ramp. A failed GET
-// flips direction without turning the light on. Never turns the light off.
-inline bool channelDimStart(size_t i, const HueRecipe &r, const HueCreds &c) {
+// Hold with dim: one GET (the only read in the gesture), maybe turn on at the minimum, then
+// start the first leg, timed from the distance left. Off -> on at the minimum, up; below
+// kDimUpBelow -> up; otherwise, or when the GET failed or gave no brightness -> down, as a
+// full sweep. Never turns the light off. holdMs: when the hold was detected (start of the cap).
+inline bool channelDimStart(size_t i, const HueRecipe &r, const HueCreds &c, uint32_t holdMs) {
   DimRuntime &d = gDim[i];
-  bool up = !d.lastUp;
+  d.active = false;
+  d.cycling = false;
+  bool up = false;
   bool on = false;
   float bri = -1;
   if (!hueGetOn(c, r.rtype, r.rid, &on, &bri)) {
-    LOGLN("Dim: GET failed, ramping the other way");
+    LOGLN("Dim: GET failed, going down with a full sweep");
+    bri = -1;
   } else if (!on) {
     if (!hueDimFromOff(c, r.rtype, r.rid)) {
       return false;
     }
+    bri = kDimMinBrightness;
     up = true;
-  } else if (bri >= 95) {
-    up = false;
-  } else if (bri >= 0 && bri <= 5) {
+  } else if (bri >= 0 && bri < kDimUpBelow) {
     up = true;
   }
-  d.lastUp = up;
-  if (!hueDimStart(c, r.rtype, r.rid, up)) {
-    return false;
-  }
+  const float distance = bri < 0 ? 100.0f : (up ? 100.0f - bri : bri - kDimMinBrightness);
+  const unsigned long legMs = hueDimLegMs(distance);
   recipeCopyField(d.rtype, sizeof(d.rtype), r.rtype);
   recipeCopyField(d.rid, sizeof(d.rid), r.rid);
+  d.up = up;
+  d.holdMs = holdMs;
+  // The release sends its stop even when this PUT fails: it may have reached the Bridge.
   d.active = true;
+  if (!hueDimStart(c, r.rtype, r.rid, up, legMs)) {
+    LOGLN("Dim: start failed, no cycle");
+    return false;
+  }
+  d.nextMs = millis() + legMs + kDimDwellMs;
+  d.cycling = true;
   return true;
 }
 
-// Release (or the channel stopped being a push button). A failed stop is not retried: the
-// ramp ends on its own at full or at the minimum.
+// When the channel's cycle next needs a call: the turn-around, or the cap if it comes first.
+inline uint32_t channelDimDueMs(const DimRuntime &d) {
+  const uint32_t cap = d.holdMs + kDimMaxHoldMs;
+  return static_cast<int32_t>(d.nextMs - cap) < 0 ? d.nextMs : cap;
+}
+
+// Release (or the channel stopped being a push button): cancels any pending turn-around and
+// stops the running leg. A failed stop is not retried: the leg ends on its own at full or at
+// the minimum.
 inline void channelDimStop(size_t i, const HueCreds &c) {
   DimRuntime &d = gDim[i];
+  d.cycling = false;
   if (!d.active) {
     return;
   }
@@ -305,6 +333,48 @@ inline void channelDimStop(size_t i, const HueCreds &c) {
   if (!hueDimStop(c, d.rtype, d.rid)) {
     LOGLN("Hue dim stop failed");
   }
+}
+
+// HUECLR wiped NVS: forget the cursors and dim state it no longer backs.
+inline void hueWorkerSyncEpoch() {
+  const uint32_t epoch = gNvsEpoch;
+  if (epoch != gHueJobEpoch) {
+    gHueJobEpoch = epoch;
+    for (size_t k = 0; k < kChannelCount; k++) {
+      gLastScene[k][0] = 0;
+      gDim[k].active = false;
+      gDim[k].cycling = false;
+    }
+  }
+}
+
+// A due turn-around (or the cap) on a channel still held. The switch keeps its own estimate
+// of where the light is: after a turn-around the leg is a full sweep, with no GET. A failed
+// PUT stops the cycle; the release still sends its stop.
+inline void channelDimTurn(size_t i, const HueCreds &c) {
+  hueWorkerSyncEpoch();
+  DimRuntime &d = gDim[i];
+  if (!d.cycling) {
+    return;
+  }
+  if (static_cast<int32_t>(millis() - (d.holdMs + kDimMaxHoldMs)) >= 0) {
+    // A stuck button or a noisy pin must not cycle forever: stop, and ignore the rest of the hold.
+    LOG("%s dim: held %lu s, stopping\n", kChannels[i].id, kDimMaxHoldMs / 1000);
+    channelDimStop(i, c);
+    return;
+  }
+  if (WiFi.status() != WL_CONNECTED) {
+    LOG("%s dim turn-around skipped: WiFi down, cycle stopped\n", kChannels[i].id);
+    d.cycling = false;
+    return;
+  }
+  d.up = !d.up;
+  if (!hueDimStart(c, d.rtype, d.rid, d.up, kDimSweepMs)) {
+    LOGLN("Dim: turn-around failed, cycle stopped");
+    d.cycling = false;
+    return;
+  }
+  d.nextMs = millis() + kDimSweepMs + kDimDwellMs;
 }
 
 // Copies the (channel, event) recipe into gHueJobRecipe. false: none.
@@ -321,15 +391,8 @@ inline bool hueJobFindRecipe(const char *channelId, const char *event) {
 inline void hueJobRun(size_t i, const HueJobEntry &job, const HueCreds &c) {
   const char *channelId = kChannels[i].id;
   const char *event = hueJobEventName(job.event);
-  // HUECLR wiped NVS: forget the cursors and dim state it no longer backs.
-  const uint32_t epoch = gNvsEpoch;
-  if (epoch != gHueJobEpoch) {
-    gHueJobEpoch = epoch;
-    for (size_t k = 0; k < kChannelCount; k++) {
-      gLastScene[k][0] = 0;
-      gDim[k].active = false;
-    }
-  }
+  hueWorkerSyncEpoch();
+  const uint32_t epoch = gHueJobEpoch;
   if (job.epoch != epoch) {
     LOG("%s %s dropped: settings cleared since\n", channelId, event);
     return;
@@ -367,7 +430,7 @@ inline void hueJobRun(size_t i, const HueJobEntry &job, const HueCreds &c) {
     ok = channelRecallNextScene(i, r, c, job.epoch);
   } else if (strcmp(r.action, "dim") == 0) {
     LOG("%s %s -> dim %s/%s\n", channelId, event, r.rtype, r.rid);
-    ok = channelDimStart(i, r, c);
+    ok = channelDimStart(i, r, c, job.atMs);
   } else {
     LOG("%s %s -> %s %s/%s\n", channelId, event, r.action, r.rtype, r.rid);
     ok = hueExecute(c, r.action, r.rtype, r.rid);
@@ -406,16 +469,72 @@ inline bool hueJobTake(size_t *next, size_t *ch, HueJobEntry *job, HueCreds *cre
   return found;
 }
 
+// Picks a channel whose dim turn-around (or cap) is due and that has no release queued, with
+// the current Bridge credentials. *waitMs: time until the earliest turn-around still to come
+// (UINT32_MAX when none), for the task's wait.
+inline bool hueDimTakeDue(size_t *ch, HueCreds *creds, uint32_t *waitMs) {
+  const uint32_t now = millis();
+  uint32_t wait = UINT32_MAX;
+  bool found = false;
+  portENTER_CRITICAL(&gHueJobMux);
+  for (size_t i = 0; i < kChannelCount; i++) {
+    const DimRuntime &d = gDim[i];
+    if (!d.cycling) {
+      continue;
+    }
+    bool released = false;
+    const HueJobQueue &q = gHueJobs[i];
+    for (uint8_t k = 0; k < q.n && !released; k++) {
+      released = q.e[k].event == HJ_RELEASE;
+    }
+    if (released) {
+      continue;  // the release runs first and cancels the turn-around
+    }
+    const int32_t left = static_cast<int32_t>(channelDimDueMs(d) - now);
+    if (left > 0) {
+      if (static_cast<uint32_t>(left) < wait) {
+        wait = static_cast<uint32_t>(left);
+      }
+      continue;
+    }
+    if (!found) {
+      *ch = i;
+      *creds = gHueCredsShared;
+      gHueJobRunning = true;  // under the lock, as in hueJobTake
+      found = true;
+    }
+  }
+  portEXIT_CRITICAL(&gHueJobMux);
+  *waitMs = wait;
+  return found;
+}
+
 inline size_t gHueJobNext = 0;  // the task, or the loop when there is no task
 
+// No task: runs from hueJobPost, and from the loop each pass for the turn-arounds.
 inline void hueWorkerRunPending() {
   size_t ch = 0;
   HueJobEntry job;
   HueCreds creds;
-  while (hueJobTake(&gHueJobNext, &ch, &job, &creds)) {
+  uint32_t wait = 0;
+  for (;;) {
+    if (hueDimTakeDue(&ch, &creds, &wait)) {
+      channelDimTurn(ch, creds);
+      continue;
+    }
+    if (!hueJobTake(&gHueJobNext, &ch, &job, &creds)) {
+      break;
+    }
     hueJobRun(ch, job, creds);
   }
   gHueJobRunning = false;
+}
+
+// Loop task, each pass: without a Hue task, due turn-arounds run here.
+inline void hueWorkerLoopPoll() {
+  if (!gHueTask) {
+    hueWorkerRunPending();
+  }
 }
 
 // Any task: nothing queued and nothing running.
@@ -434,9 +553,16 @@ inline void hueWorkerTask(void *) {
     size_t ch = 0;
     HueJobEntry job;
     HueCreds creds;
+    uint32_t wait = UINT32_MAX;
     gHueJobRunning = false;
+    // A due turn-around first: it is one PUT, and that channel's next one is a leg away.
+    if (hueDimTakeDue(&ch, &creds, &wait)) {
+      channelDimTurn(ch, creds);
+      continue;
+    }
     if (!hueJobTake(&gHueJobNext, &ch, &job, &creds)) {
-      ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+      // Sleep until the next job (every post notifies) or the next turn-around.
+      ulTaskNotifyTake(pdTRUE, wait == UINT32_MAX ? portMAX_DELAY : pdMS_TO_TICKS(wait) + 1);
       continue;
     }
     hueJobRun(ch, job, creds);

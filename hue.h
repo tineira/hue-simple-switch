@@ -206,10 +206,27 @@ inline bool hueSetOn(const HueCreds &c, const char *rtype, const char *rid, bool
   return huePut(c, rtype, rid, on ? "{\"on\":{\"on\":true}}" : "{\"on\":{\"on\":false}}", on ? "on" : "off");
 }
 
-// Hold to dim: the Bridge runs the ramp (dimming_delta over dynamics.duration); the switch
-// only starts and stops it.
-static const unsigned long kDimSweepMs = 5000;  // 0 → 100 %
-static const int kDimMinBrightness = 1;         // start level when the target was off
+// Hold to dim: the Bridge runs each leg (dimming_delta over dynamics.duration); the switch
+// starts the legs, turns around at the ends while the button is held, and stops on release
+// (console docs/specs/simple-dim-cycle.md). Tunable after testing on the wall.
+static const unsigned long kDimSweepMs = 3000;    // full sweep, minimum -> 100 %
+static const unsigned long kDimMinLegMs = 150;    // shortest leg, however little distance is left
+static const unsigned long kDimDwellMs = 400;     // pause at each end before turning around
+static const unsigned long kDimMaxHoldMs = 30000; // continuous hold after which the cycle stops
+static const int kDimMinBrightness = 1;           // start level when the target was off
+static const int kDimUpBelow = 30;                // below this brightness (%) the first leg goes up
+
+// Leg duration for the distance left (brightness points): same speed from any level.
+inline unsigned long hueDimLegMs(float distance) {
+  if (distance < 0) {
+    distance = 0;
+  }
+  if (distance > 100) {
+    distance = 100;
+  }
+  const unsigned long ms = static_cast<unsigned long>(kDimSweepMs * distance / 100.0f);
+  return ms < kDimMinLegMs ? kDimMinLegMs : ms;
+}
 
 inline bool hueDimFromOff(const HueCreds &c, const char *rtype, const char *rid) {
   char payload[64];
@@ -217,11 +234,11 @@ inline bool hueDimFromOff(const HueCreds &c, const char *rtype, const char *rid)
   return huePut(c, rtype, rid, payload, "on at minimum");
 }
 
-inline bool hueDimStart(const HueCreds &c, const char *rtype, const char *rid, bool up) {
+inline bool hueDimStart(const HueCreds &c, const char *rtype, const char *rid, bool up, unsigned long durationMs) {
   char payload[128];
   snprintf(payload, sizeof(payload),
            "{\"dimming_delta\":{\"action\":\"%s\",\"brightness_delta\":100},\"dynamics\":{\"duration\":%lu}}",
-           up ? "up" : "down", kDimSweepMs);
+           up ? "up" : "down", durationMs);
   return huePut(c, rtype, rid, payload, up ? "dim up" : "dim down");
 }
 
