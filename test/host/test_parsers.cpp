@@ -306,6 +306,29 @@ static void testSinkOversizedObjectDropped() {
   if (got.size() == 1) {
     CHECK_STR(got[0].id, "after");
   }
+  // The flag outlives the dropped object, so the caller can log it after the stream.
+  CHECK(sink.overflow);
+  CHECK(sink.dropped == 1);
+}
+
+static void testSinkOverflowCountsEachDrop() {
+  const std::string filler(JsonDataSink::kMaxObj + 1, 'x');
+  const std::string huge = "{\"id\":\"huge\",\"blob\":\"" + filler + "\"}";
+  const std::string body = "{\"data\":[" + huge + ",{\"id\":\"a\"}," + huge + "," + huge + ",{\"id\":\"b\"}]}";
+  for (size_t step : {size_t(1), size_t(4096)}) {
+    JsonDataSink sink;
+    const std::vector<SinkObj> got = sinkRun(body, step, &sink);
+    CHECK(got.size() == 2);
+    CHECK(sink.objects == 2);
+    CHECK(sink.overflow);
+    CHECK(sink.dropped == 3);
+  }
+  // Nothing dropped: no flag.
+  JsonDataSink sink;
+  sinkRun("{\"data\":[{\"id\":\"a\"},{\"id\":\"b\"}]}", 0, &sink);
+  CHECK(sink.objects == 2);
+  CHECK(!sink.overflow);
+  CHECK(sink.dropped == 0);
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -505,6 +528,7 @@ int main() {
   testSinkSceneWithHugeActions();
   testSinkActionsPrimitive();
   testSinkOversizedObjectDropped();
+  testSinkOverflowCountsEachDrop();
   testParseConfig();
   testParseConfigRejects();
   testParseOldPayload();

@@ -340,7 +340,10 @@ class JsonDataSink : public Stream {
   JsonObjFn onObject = nullptr;
   void *ctx = nullptr;
   int objects = 0;
+  // Set once any object did not fit kMaxObj (or the buffer could not be allocated) and stays set
+  // for the rest of the stream; `dropped` counts the objects skipped for size.
   bool overflow = false;
+  int dropped = 0;
 
   JsonDataSink() { buf_ = static_cast<char *>(malloc(kMaxObj)); }
 
@@ -375,6 +378,7 @@ class JsonDataSink : public Stream {
   bool escape_ = false;
   State state_ = kSeekData;
   uint8_t match_ = 0;
+  bool objOverflow_ = false;  // the current object did not fit
   // Clip v2 scene.actions can exceed kMaxObj; we don't copy it. The key is matched without its
   // terminating NUL (test/host/test_parsers.cpp covers a scene larger than kMaxObj).
   static constexpr const char kActionsKey[] = "\"actions\":";
@@ -519,6 +523,7 @@ class JsonDataSink : public Stream {
           depth_ = 1;
           len_ = 1;
           buf_[0] = '{';
+          objOverflow_ = false;
           inString_ = false;
           escape_ = false;
           skippingActions_ = false;
@@ -536,7 +541,7 @@ class JsonDataSink : public Stream {
         if (buf_ && len_ + 1 < kMaxObj) {
           buf_[len_++] = c;
         } else {
-          overflow = true;
+          objOverflow_ = true;
         }
         if (escape_) {
           escape_ = false;
@@ -569,12 +574,15 @@ class JsonDataSink : public Stream {
         } else if (c == '}') {
           depth_--;
           if (depth_ == 0) {
-            if (buf_ && !overflow && onObject) {
+            if (objOverflow_) {
+              overflow = true;
+              dropped++;
+            } else if (buf_ && onObject) {
               buf_[len_] = 0;
               onObject(buf_, ctx);
               objects++;
             }
-            overflow = false;
+            objOverflow_ = false;
             skippingActions_ = false;
             state_ = kScan;
             len_ = 0;
