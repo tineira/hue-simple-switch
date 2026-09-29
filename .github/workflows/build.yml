@@ -14,6 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Plain C++ on the runner (g++, no board), with AddressSanitizer and UBSan: the JSON
+      # helpers and the config-poll parsers. Inside this job so the required check stays `compile`.
+      - name: Host tests
+        run: SANITIZE=1 test/host/run.sh
+
       - uses: arduino/setup-arduino-cli@v2
 
       - name: Product config.h

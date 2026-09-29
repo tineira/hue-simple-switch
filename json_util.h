@@ -375,7 +375,10 @@ class JsonDataSink : public Stream {
   bool escape_ = false;
   State state_ = kSeekData;
   uint8_t match_ = 0;
-  // Clip v2 scene.actions can exceed kMaxObj; we don't copy it.
+  // Clip v2 scene.actions can exceed kMaxObj; we don't copy it. The key is matched without its
+  // terminating NUL (test/host/test_parsers.cpp covers a scene larger than kMaxObj).
+  static constexpr const char kActionsKey[] = "\"actions\":";
+  static constexpr size_t kActionsKeyLen = sizeof(kActionsKey) - 1;
   bool skippingActions_ = false;
   bool skipStarted_ = false;
   bool skipPrim_ = false;
@@ -551,7 +554,8 @@ class JsonDataSink : public Stream {
           inString_ = true;
           break;
         }
-        if (c == ':' && len_ >= 11 && memcmp(buf_ + len_ - 11, "\"actions\":", 11) == 0) {
+        if (c == ':' && len_ >= kActionsKeyLen &&
+            memcmp(buf_ + len_ - kActionsKeyLen, kActionsKey, kActionsKeyLen) == 0) {
           skippingActions_ = true;
           skipStarted_ = false;
           skipPrim_ = false;
