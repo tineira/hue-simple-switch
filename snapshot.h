@@ -205,7 +205,8 @@ inline bool hueStreamResource(const HueCreds &c, const char *resource, JsonObjFn
     return false;
   }
   if (sink.overflow) {
-    LOG("Hue stream %s: object overflow\n", resource);
+    LOG("Hue stream %s: object overflow, %d dropped (over %u bytes)\n", resource, sink.dropped,
+        static_cast<unsigned>(JsonDataSink::kMaxObj));
   }
   LOG("Hue stream %s ok objects=%d\n", resource, sink.objects);
   return true;
