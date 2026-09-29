@@ -1,4 +1,5 @@
-// Host tests for the JSON helpers (json_util.h) and the config-poll parsers (recipes.h).
+// Host tests for the JSON helpers (json_util.h), the config-poll parsers (recipes.h) and the
+// update offer (ota_offer.h).
 // Plain C++ against the stubs in test/host/stubs; no board. Run with test/host/run.sh.
 
 #define LOG(...) ((void)0)
@@ -7,6 +8,7 @@
 
 #include "json_util.h"
 #include "recipes.h"
+#include "ota_offer.h"
 
 #include <algorithm>
 #include <string>
@@ -332,6 +334,114 @@ static void testSinkOverflowCountsEachDrop() {
 }
 
 // ---------------------------------------------------------------------------------------------
+// ota_offer.h: the `ota` block of a 200 config body
+
+static const char *kSha = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+
+static std::string otaBlock(const std::string &version, const std::string &url, const std::string &sha,
+                            const std::string &size) {
+  return "{\"version\":\"" + version + "\",\"url\":\"" + url + "\",\"sha256\":\"" + sha + "\",\"size\":" + size +
+         "}";
+}
+
+static std::string otaBody(const std::string &block) { return "{\"rev\":3,\"ota\":" + block + ",\"recipes\":[]}"; }
+
+// Parses `body`; an earlier valid offer must not survive a bad one.
+static bool otaParses(const std::string &body) {
+  gOtaOfferValid = true;
+  otaParseOffer(body.c_str());
+  return gOtaOfferValid;
+}
+
+static void testOtaOfferValid() {
+  const std::string block = otaBlock("0.8.0", "/firmware/simple/0.8.0/firmware.bin", kSha, "1234567");
+  CHECK(otaParses(otaBody(block)));
+  CHECK_STR(gOtaOffer.version, "0.8.0");
+  CHECK_STR(gOtaOffer.url, "/firmware/simple/0.8.0/firmware.bin");
+  CHECK_STR(gOtaOffer.sha256, kSha);
+  CHECK(gOtaOffer.size == 1234567u);
+  // Fields in another order, with spaces and newlines around the object and inside it.
+  CHECK(otaParses("{\"rev\":3,\"ota\": \r\n\t{ \"size\": 42,\n \"sha256\": \"" + std::string(kSha) +
+                  "\", \"url\": \"/f.bin\", \"version\": \"10.20.30\" }\n}"));
+  CHECK_STR(gOtaOffer.version, "10.20.30");
+  CHECK_STR(gOtaOffer.url, "/f.bin");
+  CHECK(gOtaOffer.size == 42u);
+  // The last field of the body.
+  CHECK(otaParses("{\"rev\":3,\"ota\":" + block + "}"));
+}
+
+static void testOtaOfferAbsent() {
+  CHECK(!otaParses("{\"rev\":3,\"recipes\":[]}"));
+  CHECK(!otaParses(otaBody("null")));
+  CHECK(!otaParses(otaBody("\"0.8.0\"")));
+  CHECK(!otaParses(""));
+  gOtaOfferValid = true;
+  otaParseOffer(nullptr);
+  CHECK(!gOtaOfferValid);
+}
+
+static void testOtaOfferBadVersion() {
+  const std::string url = "/firmware/simple/x/firmware.bin";
+  CHECK(!otaParses(otaBody(otaBlock("", url, kSha, "100"))));
+  CHECK(!otaParses(otaBody(otaBlock("0.8", url, kSha, "100"))));
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0.1", url, kSha, "100"))));
+  CHECK(!otaParses(otaBody(otaBlock("v0.8.0", url, kSha, "100"))));
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0-rc1", url, kSha, "100"))));
+  CHECK(!otaParses(otaBody("{\"version\":80,\"url\":\"" + url + "\",\"sha256\":\"" + kSha + "\",\"size\":100}")));
+  CHECK(!otaParses(otaBody("{\"url\":\"" + url + "\",\"sha256\":\"" + kSha + "\",\"size\":100}")));
+}
+
+static void testOtaOfferBadSha() {
+  const std::string url = "/f.bin";
+  const std::string sha(kSha);
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", url, sha.substr(0, 63), "100"))));   // 63 chars
+  // Longer strings are cut to their buffer (64 hex chars here) before the check; a wrong hash
+  // then fails the download's sha256 check, so this is accepted.
+  CHECK(otaParses(otaBody(otaBlock("0.8.0", url, sha + "0", "100"))));
+  CHECK_STR(gOtaOffer.sha256, kSha);
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", url, "ABCDEF" + sha.substr(6), "100"))));  // uppercase
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", url, "g" + sha.substr(1), "100"))));       // not hex
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", url, "", "100"))));
+  CHECK(!otaParses(otaBody("{\"version\":\"0.8.0\",\"url\":\"/f.bin\",\"size\":100}")));
+}
+
+static void testOtaOfferUrl() {
+  // Only a path on the console the board already talks to; never an absolute URL.
+  CHECK(otaParses(otaBody(otaBlock("0.8.0", "/f.bin", kSha, "100"))));
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", "https://evil.example/f.bin", kSha, "100"))));
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", "firmware.bin", kSha, "100"))));
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", "", kSha, "100"))));
+  CHECK(!otaParses(otaBody("{\"version\":\"0.8.0\",\"sha256\":\"" + std::string(kSha) + "\",\"size\":100}")));
+}
+
+static void testOtaOfferSizeLimits() {
+  const std::string url = "/f.bin";
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", url, kSha, "0"))));
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", url, kSha, "-5"))));
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", url, kSha, "\"100\""))));
+  CHECK(!otaParses(otaBody(otaBlock("0.8.0", url, kSha, "null"))));
+  CHECK(!otaParses(otaBody("{\"version\":\"0.8.0\",\"url\":\"/f.bin\",\"sha256\":\"" + std::string(kSha) + "\"}")));
+  CHECK(otaParses(otaBody(otaBlock("0.8.0", url, kSha, "1"))));
+  CHECK(gOtaOffer.size == 1u);
+  CHECK(otaParses(otaBody(otaBlock("0.8.0", url, kSha, "1966080"))));  // the whole app slot
+  CHECK(gOtaOffer.size == 1966080u);
+
+  // The block, from '{' to the first '}', is at most 401 bytes (the '}' at most 400 bytes after
+  // the '{'). Padding sits in the url.
+  const std::string base = otaBlock("0.8.0", "/", kSha, "100");
+  const std::string fits = otaBlock("0.8.0", "/" + std::string(401 - base.size(), 'a'), kSha, "100");
+  CHECK(fits.size() == 401);
+  // A url over 127 chars is cut to its buffer, like the sha above; the download then fails.
+  CHECK(otaParses(otaBody(fits)));
+  CHECK(strlen(gOtaOffer.url) == sizeof(gOtaOffer.url) - 1);
+  const std::string over = otaBlock("0.8.0", "/" + std::string(402 - base.size(), 'a'), kSha, "100");
+  CHECK(over.size() == 402);
+  CHECK(!otaParses(otaBody(over)));
+  // No closing brace at all.
+  CHECK(!otaParses("{\"rev\":3,\"ota\":{\"version\":\"0.8.0\""));
+}
+
+// ---------------------------------------------------------------------------------------------
 // recipes.h: GET /api/device/config body
 
 static const char *kConfigBody =
@@ -534,6 +644,12 @@ int main() {
   testParseOldPayload();
   testParseLimits();
   testChannelBlobRoundTrip();
+  testOtaOfferValid();
+  testOtaOfferAbsent();
+  testOtaOfferBadVersion();
+  testOtaOfferBadSha();
+  testOtaOfferUrl();
+  testOtaOfferSizeLimits();
   if (gFailures) {
     fprintf(stderr, "%d of %d checks failed\n", gFailures, gChecks);
     return 1;
