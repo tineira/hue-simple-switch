@@ -91,6 +91,17 @@ A push to `main` **is a release**. `.github/workflows/firmware.yml` builds the p
 - Image layout and offsets: [`docs/firmware-artifacts.md`](docs/firmware-artifacts.md).
 - The pipeline needs the `FIRMWARE_UPLOAD_TOKEN` secret in this repo. Setup and troubleshooting: the console repo's `README.md`, "Firmware release pipeline".
 
+### Build and upload from a fork
+
+A fork builds the same image on every push to its `main`, and can upload it to your own console instead of hue.tineira.com (self-hosting: the console repo's `docs/self-hosting.md`).
+
+- **Build only (default).** With no `FIRMWARE_UPLOAD_TOKEN` secret, the workflow builds, skips the upload with a notice and stays green. The four installer parts are in the run's `usb-installer-simple` artifact and in the fork's `usb-installer` GitHub Release.
+- **Upload to your console.** In the fork's **Settings → Secrets and variables → Actions**:
+  1. Add the repository **variable** `CONSOLE_UPLOAD_URL` with your console's origin, for example `https://hue.example.com` (no path, no trailing slash). Without it, the upload goes to `https://hue.tineira.com`, which rejects a fork's token.
+  2. Add the repository **secret** `FIRMWARE_UPLOAD_TOKEN` with the value of `FIRMWARE_UPLOAD_TOKEN` on your console.
+  3. Push to `main` (or run the workflow by hand). The release waits in your console's `/admin` until you make it current; Setup then flashes it.
+- Bump `FIRMWARE_VERSION` in `console.h` and add its `CHANGELOG.md` entry for each build you want boards to get, as above: your console keeps the first bins it received for a version.
+
 ## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md). Bugs and ideas go in GitHub issues.

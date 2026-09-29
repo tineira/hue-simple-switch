@@ -56,15 +56,25 @@ jobs:
           if-no-files-found: error
 
       - name: Upload to console
+        # A fork uploads to its own console: set the CONSOLE_UPLOAD_URL repository variable
+        # (origin only, e.g. https://hue.example.com) and the FIRMWARE_UPLOAD_TOKEN secret.
         env:
           FIRMWARE_UPLOAD_TOKEN: ${{ secrets.FIRMWARE_UPLOAD_TOKEN }}
+          CONSOLE_UPLOAD_URL: ${{ vars.CONSOLE_UPLOAD_URL || 'https://hue.tineira.com' }}
+          UPSTREAM: ${{ github.repository == 'tineira/hue-simple-switch' }}
         run: |
           # errexit off so every failure below reaches its ::error:: line.
           set +e -uo pipefail
           if [ -z "${FIRMWARE_UPLOAD_TOKEN}" ]; then
-            echo "::error::FIRMWARE_UPLOAD_TOKEN secret missing; cannot upload the release to the console."
-            exit 1
+            if [ "${UPSTREAM}" = "true" ]; then
+              echo "::error::FIRMWARE_UPLOAD_TOKEN secret missing; cannot upload the release to the console."
+              exit 1
+            fi
+            echo "::notice::No FIRMWARE_UPLOAD_TOKEN secret in this fork; skipped the console upload. The build is in the usb-installer-simple artifact. README.md, \"Build and upload from a fork\", sets up your own console."
+            exit 0
           fi
+          CONSOLE_UPLOAD_URL="${CONSOLE_UPLOAD_URL%/}"
+          echo "Console: ${CONSOLE_UPLOAD_URL}"
           if [ ! -f CHANGELOG.md ]; then
             echo "::error::CHANGELOG.md missing; a release must have notes."
             exit 1
@@ -87,7 +97,7 @@ jobs:
           cat notes.md
           D=dist/installer
           rm -f resp.json
-          CODE=$(curl -sS -o resp.json -w '%{http_code}' -X POST "https://hue.tineira.com/api/firmware/simple" \
+          CODE=$(curl -sS -o resp.json -w '%{http_code}' -X POST "${CONSOLE_UPLOAD_URL}/api/firmware/simple" \
             -H "Authorization: Bearer ${FIRMWARE_UPLOAD_TOKEN}" \
             -F "version=${VERSION}" \
             -F "commit=${GITHUB_SHA}" \
