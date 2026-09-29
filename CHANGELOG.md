@@ -4,6 +4,10 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 Start a bullet with `Important: ` when the person must know or do something before or right after updating (a button to press, a setting to redo). The console shows those first, with an Important label, when Setup offers the update. Do not use it for new features.
 
+### 0.6.4 — 2026-09-29
+
+- Scenes with many lights no longer go missing from the scene list in the console. Before, a scene that set a lot of lights at once was too large for the switch to read, and it was left out.
+
 ### 0.6.3 — 2026-09-29
 
 - After a restart, the switch sends its lights, rooms and scenes to the console once instead of twice, so it asks less of the Hue Bridge and the console while starting up.

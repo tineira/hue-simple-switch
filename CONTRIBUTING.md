@@ -24,6 +24,12 @@ arduino-cli compile --profile xiao-c6 .
 arduino-cli upload --profile xiao-c6 -p <port> .
 ```
 
+Host tests for the JSON and config parsers run on your PC, no board needed (a C++17 compiler; `CXX` picks it, default `g++`):
+
+```bash
+test/host/run.sh
+```
+
 Provision the board once from the console's **Setup** page in Chrome or Edge. `arduino-cli upload` doesn't erase NVS, so Wi-Fi and the token survive later flashes. Set `SERIAL_DEBUG` to `1` in `config.h` for USB logs.
 
 Hardware: Seeed XIAO ESP32-C6. Channels are GPIO contacts to GND (see the README table).
@@ -34,7 +40,7 @@ Hardware: Seeed XIAO ESP32-C6. Channels are GPIO contacts to GND (see the README
 
 1. For anything bigger than a small fix, open or comment on an issue first.
 2. Keep a PR to one change, and match the style of the surrounding code.
-3. It must compile with `arduino-cli compile --profile xiao-c6 .`.
+3. It must compile with `arduino-cli compile --profile xiao-c6 .` and pass `test/host/run.sh`. If you change a parser in `json_util.h` or `recipes.h`, add a case to `test/host/test_parsers.cpp`.
 4. Leave `FIRMWARE_VERSION` (in `console.h`) and `CHANGELOG.md` alone: the maintainer bumps them when releasing. Describe the user-visible change in the PR instead.
 5. If you add or upgrade the core or a library, update `sketch.yaml` and [`THIRD_PARTY.json`](THIRD_PARTY.json) in the same PR. Every component must have an MIT-compatible license.
 6. Say which board you tested on and what you checked.

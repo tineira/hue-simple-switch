@@ -13,7 +13,7 @@
 #include "snapshot.h"
 
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.6.3"
+#define FIRMWARE_VERSION "0.6.4"
 #endif
 
 // Fallback cadence when the console sends no X-Poll-Sec (older console).
