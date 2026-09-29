@@ -42,7 +42,7 @@ Hardware: Seeed XIAO ESP32-C6. Channels are GPIO contacts to GND (see the README
 2. Keep a PR to one change, and match the style of the surrounding code.
 3. It must compile with `arduino-cli compile --profile xiao-c6 .` and pass `test/host/run.sh`. If you change a parser in `json_util.h` or `recipes.h`, add a case to `test/host/test_parsers.cpp`.
 4. Leave `FIRMWARE_VERSION` (in `console.h`) and `CHANGELOG.md` alone: the maintainer bumps them when releasing. Describe the user-visible change in the PR instead.
-5. If you add or upgrade the core or a library, update `sketch.yaml` and [`THIRD_PARTY.json`](THIRD_PARTY.json) in the same PR. Every component must have an MIT-compatible license.
+5. If you add or upgrade the core or a library, update `sketch.yaml` and [`THIRD_PARTY.json`](THIRD_PARTY.json) in the same PR (CI runs `python3 scripts/check-credits.py` and fails otherwise). Every component must have an MIT-compatible license.
 6. Say which board you tested on and what you checked.
 
 ## License

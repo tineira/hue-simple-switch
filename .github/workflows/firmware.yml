@@ -14,6 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # THIRD_PARTY.json is sent as the release credits: it must match sketch.yaml.
+      - name: Credits match sketch.yaml
+        run: python3 scripts/check-credits.py
+
       - name: Setup Arduino CLI
         uses: arduino/setup-arduino-cli@v2
 
@@ -81,63 +85,6 @@ jobs:
           fi
           echo "Notes for ${VERSION}:"
           cat notes.md
-          # Credits: THIRD_PARTY.json must be valid and list every platform and
-          # library pinned in sketch.yaml at the same version.
-          python3 - <<'PY'
-          import json, re, sys
-          def fail(msg):
-              print(f"::error::{msg}")
-              sys.exit(1)
-          try:
-              with open("THIRD_PARTY.json", encoding="utf-8") as f:
-                  credits = json.load(f)
-          except FileNotFoundError:
-              fail("THIRD_PARTY.json missing; a release must list its third-party components.")
-          except ValueError as e:
-              fail(f"THIRD_PARTY.json is not valid JSON: {e}")
-          if not isinstance(credits, list) or not credits:
-              fail("THIRD_PARTY.json must be a non-empty JSON array.")
-          for i, c in enumerate(credits):
-              if not isinstance(c, dict) or not all(
-                  isinstance(c.get(k), str) and c[k].strip() for k in ("name", "version", "license", "url")
-              ):
-                  fail(f"THIRD_PARTY.json entry {i} needs non-empty name, version, license and url strings.")
-          have = {c["name"]: c["version"] for c in credits}
-          # sketch.yaml platform IDs map to the names used in THIRD_PARTY.json.
-          platform_names = {"esp32:esp32": "Arduino-ESP32 core"}
-          pinned = []
-          section = None
-          with open("sketch.yaml", encoding="utf-8") as f:
-              for line in f:
-                  line = line.split("#", 1)[0].rstrip()
-                  if not line.strip():
-                      continue
-                  key = re.match(r"^\s*([A-Za-z_]+):\s*$", line)
-                  if key:
-                      section = key.group(1)
-                      continue
-                  plat = re.match(r"^\s*-\s*platform:\s*(\S+)\s*\(([^)]+)\)\s*$", line)
-                  if plat:
-                      pid, ver = plat.groups()
-                      if pid not in platform_names:
-                          fail(f"sketch.yaml platform {pid} ({ver}) has no THIRD_PARTY.json name mapping in firmware.yml.")
-                      pinned.append((f"platform {pid}", platform_names[pid], ver))
-                      continue
-                  lib = re.match(r"^\s*-\s*(.+?)\s*\(([^)]+)\)\s*$", line)
-                  if lib and section == "libraries":
-                      pinned.append((f"library {lib.group(1)}", lib.group(1), lib.group(2)))
-          if not pinned:
-              fail("No platform found in sketch.yaml; cannot check THIRD_PARTY.json.")
-          for what, name, ver in pinned:
-              if name not in have:
-                  fail(f"sketch.yaml {what} ({ver}) is not listed in THIRD_PARTY.json as \"{name}\".")
-              if have[name] != ver:
-                  fail(f"sketch.yaml {what} is {ver} but THIRD_PARTY.json \"{name}\" says {have[name]}.")
-              print(f"Credits OK: {name} {ver}")
-          PY
-          if [ $? -ne 0 ]; then
-            exit 1
-          fi
           D=dist/installer
           rm -f resp.json
           CODE=$(curl -sS -o resp.json -w '%{http_code}' -X POST "https://hue.tineira.com/api/firmware/simple" \

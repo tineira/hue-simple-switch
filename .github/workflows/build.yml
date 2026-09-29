@@ -14,6 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # A core or library bump must update THIRD_PARTY.json in the same PR (release credits).
+      - name: Credits match sketch.yaml
+        run: python3 scripts/check-credits.py
+
       # Plain C++ on the runner (g++, no board), with AddressSanitizer and UBSan: the JSON
       # helpers and the config-poll parsers. Inside this job so the required check stays `compile`.
       - name: Host tests
