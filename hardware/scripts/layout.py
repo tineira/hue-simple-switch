@@ -21,10 +21,10 @@ PLACE = {
     "J3": dict(side="bottom", at=(7.85, 18.2), rot=180, anchor="body"),
     # top (XIAO side)
     "RV1": dict(side="top", at=(-9.5, -18.0), rot=0, anchor="body"),
-    "U1": dict(side="top", at=(-10.1, 2.8), rot=90, anchor="body"),
+    "U1": dict(side="top", at=(-10.1, 2.8), rot=90, anchor="body", ref_at=(-10.0, 14.2)),
     "D1": dict(side="top", at=(-9.4, 17.4), rot=0, anchor="body"),
     "C1": dict(side="top", at=(-3.9, 20.4), rot=0, anchor="body"),
-    "C2": dict(side="top", at=(-14.2, 18.6), rot=270, anchor="body"),
+    "C2": dict(side="top", at=(-14.2, 18.6), rot=270, anchor="body", ref_at=(-16.4, 18.6)),
 }
 
 # One row per input D0..D5, shared by the top and bottom parts of that line:
@@ -147,22 +147,22 @@ def decorate(board, fps, nets, b):
 
     # ------------------------------------------------------------ silkscreen
     txt = b["text"]
-    txt(board, "MAINS 100-240V~", (-9.5, -21.0), pcbnew.B_SilkS, 0.9, bold=True)
+    txt(board, "MAINS 100-240V~", (-7.0, -20.2), pcbnew.B_SilkS, 0.8, bold=True)
     txt(board, "L", (19.4, -12.75), pcbnew.B_SilkS, 1.2, bold=True)
     txt(board, "N", (19.4, -7.67), pcbnew.B_SilkS, 1.2, bold=True)
-    txt(board, "LOW VOLTAGE ONLY", (10.3, 10.0), pcbnew.B_SilkS, 0.8, rot=90)
+    txt(board, "LOW VOLTAGE ONLY", (10.3, 6.3), pcbnew.B_SilkS, 0.8, rot=90)
     for n, name in enumerate(["D0", "D1", "D2", "D3"]):
         at = P("J2", str(n + 1))
         txt(board, name, (at[0] - 2.4, at[1] - 1.9), pcbnew.B_SilkS, 0.8)
     for n, name in enumerate(["D4", "D5", "G"]):
         at = P("J3", str(n + 1))
         txt(board, name, (at[0], at[1] - 2.3), pcbnew.B_SilkS, 0.8)
-    txt(board, "hue-simple-switch", (-9.5, -24.2), pcbnew.F_SilkS, 0.8)
+    txt(board, "hue-simple-switch", (3.0, -13.2), pcbnew.F_SilkS, 0.8)
     # legends for the rows of small parts (top to bottom = D0..D5)
-    txt(board, "R1-6", (2.2, -2.3), pcbnew.F_SilkS, 0.8)
-    txt(board, "C11-16", (6.2, -2.3), pcbnew.F_SilkS, 0.8)
+    txt(board, "R1-6", (2.5, -2.3), pcbnew.F_SilkS, 0.8)
+    txt(board, "C11-16", (7.4, -2.3), pcbnew.F_SilkS, 0.8)
     txt(board, "D0", (9.0, ROWS[0]), pcbnew.F_SilkS, 0.8)
     txt(board, "D5", (9.0, ROWS[-1]), pcbnew.F_SilkS, 0.8)
     txt(board, "R11-16", (6.0, -2.3), pcbnew.B_SilkS, 0.8)
-    txt(board, "NO USB ON MAINS", (-6.5, 23.3), pcbnew.F_SilkS, 0.8, bold=True)
+    txt(board, "NO USB ON MAINS", (-6.0, 22.2), pcbnew.F_SilkS, 0.8, bold=True)
     txt(board, "!", (-3.0, -16.0), pcbnew.F_SilkS, 2.0, bold=True)
