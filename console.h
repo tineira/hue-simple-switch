@@ -13,7 +13,7 @@
 #include "snapshot.h"
 
 #ifndef FIRMWARE_VERSION
-#define FIRMWARE_VERSION "0.6.2"
+#define FIRMWARE_VERSION "0.6.3"
 #endif
 
 // Fallback cadence when the console sends no X-Poll-Sec (older console).
@@ -26,6 +26,11 @@ static const unsigned long kPollMaxSec = 3600UL;
 inline bool gConsoleRegistered = false;
 inline unsigned long gConsoleLastPollMs = 0;
 inline bool gConsolePolledBoot = false;
+// The loop's boot sync after Wi-Fi came up (afterWifiUp) was asked for, or it gave up because the
+// Bridge did not answer. Until then polls fetch config only: the first poll runs while
+// afterWifiUp is still checking the Bridge, and a register there would be followed by a second
+// one from the sync that afterWifiUp asks for.
+inline volatile bool gConsoleBootSyncDone = false;
 // Delay the console last asked for (X-Poll-Sec), or the maximum after a 401. 0 = the fallback
 // above. Only 200, 204 and 401 change it; other errors keep it.
 inline unsigned long gConsolePollMs = 0;
@@ -362,7 +367,8 @@ inline void consoleDoSync() {
   // With recipes, refresh the topology at most hourly, however often the console asks for a poll.
   // Timed from the poll start, so the hourly fallback poll still registers every time.
   const unsigned long now = gConsoleLastPollMs;
-  if (!gConsoleRegistered || (count > 0 && now - gConsoleLastRegisterMs >= kPollArmedMs)) {
+  if (gConsoleBootSyncDone &&
+      (!gConsoleRegistered || (count > 0 && now - gConsoleLastRegisterMs >= kPollArmedMs))) {
     gConsoleLastRegisterMs = now;
     consoleRegister(creds);
   }
@@ -382,6 +388,7 @@ inline void consoleWorkerTask(void *) {
     bool run = false;
     if (gNeedConsoleSync) {
       gNeedConsoleSync = false;
+      gConsoleBootSyncDone = true;
       gConsoleRegistered = false;
       gConsoleConfirmPoll = false;
       run = true;
