@@ -4,6 +4,10 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 Start a bullet with `Important: ` when the person must know or do something before or right after updating (a button to press, a setting to redo). The console shows those first, with an Important label, when Setup offers the update. Do not use it for new features.
 
+### 0.7.1 — 2026-09-29
+
+- Hold to dim pauses for less time at full and at the lowest level before turning around.
+
 ### 0.7.0 — 2026-09-29
 
 - Hold to dim now goes down and up in a loop until you let go, pausing briefly at full and at the lowest level, so you no longer let go and hold again to change direction.
