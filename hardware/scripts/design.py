@@ -46,18 +46,19 @@ def part(ref, value, symbol, footprint, pins, side, at, rot=0, lcsc="", mpn="", 
 
 # ---------------------------------------------------------------- mains side
 part("J1", "MAINS L/N", "Connector:Screw_Terminal_01x02",
-     "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal",
+     "hue:TerminalBlock_Kefa_KF128-5.08_1x02",
      {"1": "AC_L_IN", "2": "AC_N"}, "bottom", (0, 0),
      lcsc="C474952", mpn="KF128-5.08-2P (Cixi Kefa)", note="300 V, 5.08 mm pitch, up to 2.5 mm2")
 part("F1", "T500mA 250V", "Device:Fuse", "Fuse:Fuse_Littelfuse_372_D8.50mm",
      {"1": "AC_L_IN", "2": "AC_L"}, "bottom", (0, 0),
      lcsc="C142835", mpn="Littelfuse 37205000001 (TR5 372, time-lag)")
-part("RV1", "275VAC", "Device:Varistor", "Resistor_SMD:R_1210_3225Metric",
+PARTS["F1"]["model"] = "${KIPRJMOD}/lib/3d/Littelfuse_TR5_372_box.step"
+part("RV1", "275VAC", "Device:Varistor", "hue:RV_TDK_SIOV_CU3225",
      {"1": "AC_L", "2": "AC_N"}, "top", (0, 0),
-     lcsc="C211106", mpn="TDK SIOV B72650M0271K072 (CU3225K275G2), 275 VAC, SMD 3225",
+     lcsc="C211106", mpn="TDK SIOV B72650M0271K072 (CU3225K275G2), 275 VAC, 8.0 x 6.3 x 4.5 mm",
      note="across the module input, after the fuse")
 part("PS1", "HLK-PM01", "Converter_ACDC:HLK-PM01",
-     "Converter_ACDC:Converter_ACDC_Hi-Link_HLK-PMxx",
+     "hue:HiLink_HLK-PM01",
      {"1": "AC_L", "2": "AC_N", "3": "GND", "4": "+5V_PSU"}, "bottom", (0, 0),
      lcsc="C209903", mpn="Hi-Link HLK-PM01, 5 V 0.6 A, 3 kVAC isolation")
 
@@ -89,11 +90,11 @@ for i, name in enumerate(INPUTS):
 
 # Wall-switch inputs, low voltage only. 3.5 mm pitch, 0.5 to 1.0 mm2 solid wire.
 part("J2", "D0 D1 D2 D3", "Connector:Screw_Terminal_01x04",
-     "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-4-3.5-H_1x04_P3.50mm_Horizontal",
+     "hue:TerminalBlock_Xinlaiya_XY350V-3.5_1x04",
      {"1": "IN_D0", "2": "IN_D1", "3": "IN_D2", "4": "IN_D3"}, "bottom", (0, 0),
      lcsc="C557656", mpn="XY350V-3.5-4P (Ningbo Xinlaiya)")
 part("J3", "D4 D5 GND", "Connector:Screw_Terminal_01x03",
-     "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-3-3.5-H_1x03_P3.50mm_Horizontal",
+     "hue:TerminalBlock_Kefa_KF350-3.5_1x03",
      {"1": "IN_D4", "2": "IN_D5", "3": "GND"}, "bottom", (0, 0),
      lcsc="C474893", mpn="KF350-3.5-3P (Cixi Kefa)")
 

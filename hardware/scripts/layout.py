@@ -5,7 +5,7 @@ Top = XIAO side, bottom = power-module side.
 
 Zones on the board:
   mains  y < -10 on the left (power-module AC pins), and the top-right corner
-         (L/N terminal J1, fuse F1); varistor RV1 on top between the AC pins.
+         (L/N terminal J1, fuse F1); varistor RV1 (8 x 6.3 x 4.5 mm) on top, above the AC pins.
   low V  everything below the isolation slot and left of J1.
 The custom rules in hue-simple-switch-mains.kicad_dru keep >= 6 mm clearance
 and creepage between the Mains net class and everything else.
@@ -15,12 +15,12 @@ and creepage between the Mains net class and everything else.
 PLACE = {
     # bottom (power-module side)
     "PS1": dict(side="bottom", at=(-9.5, 0.0), rot=270, anchor="body"),
-    "J1": dict(side="bottom", at=(16.1, -10.2), rot=270, anchor="body"),
+    "J1": dict(side="bottom", at=(15.85, -10.2), rot=270, anchor="body"),
     "F1": dict(side="bottom", at=(6.6, -18.6), rot=180, anchor="body"),
-    "J2": dict(side="bottom", at=(16.6, 6.25), rot=270, anchor="body"),
-    "J3": dict(side="bottom", at=(7.85, 18.2), rot=180, anchor="body"),
+    "J2": dict(side="bottom", at=(15.85, 6.25), rot=270, anchor="body"),
+    "J3": dict(side="bottom", at=(7.9, 17.45), rot=180, anchor="body"),
     # top (XIAO side)
-    "RV1": dict(side="top", at=(-9.5, -18.0), rot=0, anchor="body"),
+    "RV1": dict(side="top", at=(-8.0, -19.5), rot=0, anchor="body"),
     "U1": dict(side="top", at=(-10.1, 2.8), rot=90, anchor="body", ref_at=(-10.0, 14.2)),
     "D1": dict(side="top", at=(-9.4, 17.4), rot=0, anchor="body"),
     "C1": dict(side="top", at=(-3.9, 20.4), rot=0, anchor="body"),
@@ -64,13 +64,18 @@ def decorate(board, fps, nets, b):
     # ------------------------------------------------------------ mains
     T("AC_L_IN", [P("J1", "1"), P("F1", "1")], MAINS_W, B)          # L in -> fuse
     f2, l_pin, n_pin = P("F1", "2"), P("PS1", "1"), P("PS1", "2")
-    T("AC_L", [f2, (l_pin[0], f2[1]), l_pin], MAINS_W, B)          # fused L -> module
+    # fused L -> module, run 0.4 mm above the fuse pads so it clears the module's N pin
+    T("AC_L", [f2, (f2[0] - 0.4, f2[1] - 0.4), (l_pin[0] + 0.4, f2[1] - 0.4),
+               (l_pin[0], f2[1]), l_pin], MAINS_W, B)
     n_in = P("J1", "2")
-    T("AC_N", [n_in, (12.3, n_in[1]), (12.3, -19.9), (10.0, -22.2), (-4.7, -22.2),
-               (n_pin[0], -19.9), n_pin], MAINS_W, F)                  # N, round the fuse
     r1, r2 = P("RV1", "1"), P("RV1", "2")                          # varistor at the module
+    # N on top: left from J1, up between J1's L pin and the fuse, then along
+    # y = -13.3 (>= 6 mm from the XIAO's pads) to the module's N pin and the varistor
+    n_y = -13.3
+    T("AC_N", [n_in, (11.5, n_in[1]), (11.5, n_y), (-1.5, n_y), (r2[0], n_y - 2.85), r2],
+      MAINS_W, F)
+    T("AC_N", [(r2[0], n_y - 2.85), (n_pin[0] + 1.2, n_pin[1]), n_pin], MAINS_W, F)
     T("AC_L", [l_pin, (l_pin[0], r1[1] + 1.0), r1], MAINS_W, F)
-    T("AC_N", [r2, (n_pin[0], r2[1])], MAINS_W, F)
 
     # ------------------------------------------------------------ 5 V
     psu_p, psu_g = P("PS1", "4"), P("PS1", "3")
@@ -124,7 +129,10 @@ def decorate(board, fps, nets, b):
     term = [P("J2", "1"), P("J2", "2"), P("J2", "3"), P("J2", "4"), P("J3", "1"), P("J3", "2")]
     for i, name in enumerate(names):
         rin, tp = P(f"R{i + 11}", "1"), term[i]
-        if i < 4:   # right edge: run across, then 45 degrees into the pin
+        if i == 0:  # passes under J1's N pin: turn early to stay 6 mm from it
+            k = tp[1] - rin[1]
+            T("IN_" + name, [rin, (tp[0] - k - 1.5, rin[1]), (tp[0] - 1.5, tp[1]), tp], SIG_W, B)
+        elif i < 4:   # right edge: run across, then 45 degrees into the pin
             k = tp[1] - rin[1]
             T("IN_" + name, [rin, (tp[0] - k, rin[1]), tp], SIG_W, B)
         elif i == 4:

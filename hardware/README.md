@@ -25,7 +25,7 @@ at the left edge.
 | --- | --- |
 | J1, 2-way 5.08 mm screw terminal | Mains in: L and N (up to 2.5 mm²) |
 | F1, T500 mA TR5 fuse | Protects the wiring if the module or varistor fails |
-| RV1, 275 VAC SMD varistor | Clamps mains surges at the module input, after the fuse |
+| RV1, TDK SIOV CU3225 275 VAC SMD varistor (8.0 × 6.3 × 4.5 mm) | Clamps mains surges at the module input, after the fuse |
 | PS1, Hi-Link HLK-PM01 | Certified, sealed, isolated 100-240 V AC to 5 V DC module (3 kV AC isolation) |
 | D1, SS34 Schottky diode | Feeds the XIAO's 5V pin; stops a USB cable from powering the module backwards |
 | U1, XIAO ESP32-C6 | Soldered flat by its edge pads |
@@ -192,8 +192,11 @@ Layout of the enclosure, seen from the lid (XIAO side):
 ## Regenerate the files
 
 Everything in `kicad/`, `fab/`, `images/` and the STLs is generated from
-[`scripts/design.py`](scripts/design.py) (parts, nets) and
-[`scripts/layout.py`](scripts/layout.py) (placement, copper). Edit those, not
+[`scripts/design.py`](scripts/design.py) (parts, nets),
+[`scripts/layout.py`](scripts/layout.py) (placement, copper) and
+[`scripts/footprints.py`](scripts/footprints.py) (footprints and height models
+for the power module, varistor and terminal blocks, drawn from each
+manufacturer's datasheet; the numbers are quoted in the file). Edit those, not
 the KiCad files, then run with KiCad 10's own Python:
 
 ```bash
