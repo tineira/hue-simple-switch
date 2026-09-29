@@ -42,6 +42,8 @@ static void afterWifiUp() {
   if (!hueEnsureReady()) {
     LOGLN("Hue setup failed — press Bridge button if pairing, check Wi-Fi LAN");
     gHueReady = false;
+    // No sync follows: let the console task's own polls register, as they would without a Bridge check.
+    gConsoleBootSyncDone = true;
     return;
   }
   gHueReady = true;
