@@ -82,11 +82,11 @@ for i, name in enumerate(INPUTS):
          {"1": "+3V3", "2": name}, "top", (0, 0), lcsc="C25804", mpn="0603WAF1002T5E",
          note="pull-up, next to the pin")
     part(f"R{n + 10}", "1k", "Device:R", "Resistor_SMD:R_0603_1608Metric",
-         {"1": f"IN_{name}", "2": name}, "bottom", (0, 0), lcsc="C21190", mpn="0603WAF1001T5E",
+         {"1": f"IN_{name}", "2": name}, "top", (0, 0), lcsc="C21190", mpn="0603WAF1001T5E",
          note="series, limits surge current into the pin")
     part(f"C{n + 10}", "10nF", "Device:C", "Capacitor_SMD:C_0603_1608Metric",
-         {"1": name, "2": "GND"}, "top", (0, 0), lcsc="C57112", mpn="0603B103K500NT",
-         note="with the 1k, filters noise picked up by the wall wiring")
+         {"1": f"IN_{name}", "2": "GND"}, "top", (0, 0), lcsc="C57112", mpn="0603B103K500NT",
+         note="at the terminal side of the 1k: shunts noise picked up by the wall wiring")
 
 # Wall-switch inputs, low voltage only. 3.5 mm pitch, 0.5 to 1.0 mm2 solid wire.
 part("J2", "D0 D1 D2 D3", "Connector:Screw_Terminal_01x04",

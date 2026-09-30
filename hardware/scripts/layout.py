@@ -27,15 +27,16 @@ PLACE = {
     "C2": dict(side="top", at=(-14.2, 18.6), rot=270, anchor="body", ref_at=(-16.4, 18.6)),
 }
 
-# One row per input D0..D5, shared by the top and bottom parts of that line:
-# top    [10k pull-up: 3V3 | Dk]  via(Dk)  [10nF: Dk | GND]
-# bottom                           via(Dk)  [1k: Dk | IN] -> terminal
+# One row per input D0..D5, every SMD part on the top side (one-sided assembly):
+# [10k pull-up: 3V3 | Dk] via(Dk, lane from the XIAO) [1k: Dk | IN] via(IN) [10nF: IN | GND]
+# The IN via drops to the bottom layer, which runs to the terminal.
 ROWS = [-0.5, 2.1, 4.7, 7.3, 9.9, 12.5]
 VIA_X = 4.0
+VIA_IN_X = 7.6
 for i, y in enumerate(ROWS):
     PLACE[f"R{i + 1}"] = dict(side="top", at=(2.2, y), rot=0, anchor="body", hide_ref=True)
-    PLACE[f"C{i + 11}"] = dict(side="top", at=(5.8, y), rot=0, anchor="body", hide_ref=True)
-    PLACE[f"R{i + 11}"] = dict(side="bottom", at=(6.0, y), rot=180, anchor="body", hide_ref=True)
+    PLACE[f"R{i + 11}"] = dict(side="top", at=(5.8, y), rot=180, anchor="body", hide_ref=True)
+    PLACE[f"C{i + 11}"] = dict(side="top", at=(9.4, y), rot=0, anchor="body", hide_ref=True)
 
 MAINS_W = 0.8
 PWR_W = 0.5
@@ -124,11 +125,13 @@ def decorate(board, fps, nets, b):
         node = (VIA_X, y)
         T(name, [vx, (vx[0], y), node], SIG_W, B)    # lane under the module
         V(name, node)
-        T(name, [node, P(f"R{i + 11}", "2")], SIG_W, B)
-        T(name, [P(f"R{i + 1}", "2"), node, P(f"C{i + 11}", "1")], SIG_W, F)
+        T(name, [P(f"R{i + 1}", "2"), node, P(f"R{i + 11}", "2")], SIG_W, F)
+        vin = (VIA_IN_X, y)
+        T("IN_" + name, [P(f"R{i + 11}", "1"), vin, P(f"C{i + 11}", "1")], SIG_W, F)
+        V("IN_" + name, vin)
     term = [P("J2", "1"), P("J2", "2"), P("J2", "3"), P("J2", "4"), P("J3", "1"), P("J3", "2")]
     for i, name in enumerate(names):
-        rin, tp = P(f"R{i + 11}", "1"), term[i]
+        rin, tp = (VIA_IN_X, ROWS[i]), term[i]
         if i == 0:  # passes under J1's N pin: turn early to stay 6 mm from it
             k = tp[1] - rin[1]
             T("IN_" + name, [rin, (tp[0] - k - 1.5, rin[1]), (tp[0] - 1.5, tp[1]), tp], SIG_W, B)
@@ -167,10 +170,10 @@ def decorate(board, fps, nets, b):
         txt(board, name, (at[0], at[1] - 2.3), pcbnew.B_SilkS, 0.8)
     txt(board, "hue-simple-switch", (3.0, -13.2), pcbnew.F_SilkS, 0.8)
     # legends for the rows of small parts (top to bottom = D0..D5)
-    txt(board, "R1-6", (2.5, -2.3), pcbnew.F_SilkS, 0.8)
-    txt(board, "C11-16", (7.4, -2.3), pcbnew.F_SilkS, 0.8)
-    txt(board, "D0", (9.0, ROWS[0]), pcbnew.F_SilkS, 0.8)
-    txt(board, "D5", (9.0, ROWS[-1]), pcbnew.F_SilkS, 0.8)
-    txt(board, "R11-16", (6.0, -2.3), pcbnew.B_SilkS, 0.8)
+    txt(board, "R1-6", (2.2, -2.3), pcbnew.F_SilkS, 0.8)
+    txt(board, "R11-16", (5.9, -3.5), pcbnew.F_SilkS, 0.8)
+    txt(board, "C11-16", (10.2, -2.3), pcbnew.F_SilkS, 0.8)
+    txt(board, "D0", (12.2, ROWS[0]), pcbnew.F_SilkS, 0.8)
+    txt(board, "D5", (12.2, ROWS[-1]), pcbnew.F_SilkS, 0.8)
     txt(board, "NO USB ON MAINS", (-6.0, 22.2), pcbnew.F_SilkS, 0.8, bold=True)
     txt(board, "!", (-3.0, -16.0), pcbnew.F_SilkS, 2.0, bold=True)

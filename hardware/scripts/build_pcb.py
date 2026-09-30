@@ -280,22 +280,28 @@ DRU = """(version 1)
 # pollution degree 2, with margin. The switch wires on J2/J3 are touchable.
 (rule "Mains to low voltage clearance"
   (constraint clearance (min 6.0mm))
-  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains'"))
+  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains' && B.Pad_Type != 'NPTH, mechanical'"))
 
 (rule "Mains to low voltage creepage"
   (constraint creepage (min 6.0mm))
-  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains'"))
+  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains' && B.Pad_Type != 'NPTH, mechanical'"))
 
+# Unplated holes (the panel's mouse bites) become board edge once the boards
+# are snapped out: same margin as the edge.
 (rule "Mains to board edge and slot"
   (constraint edge_clearance (min 1.0mm))
   (condition "A.NetClass == 'Mains'"))
+
+(rule "Mains to unplated holes"
+  (constraint hole_clearance (min 1.0mm))
+  (condition "A.NetClass == 'Mains' && B.Pad_Type == 'NPTH, mechanical'"))
 """
 
 
-def write_project_rules():
+def write_project_rules(pcb_path):
     """Net classes in the .kicad_pro and the custom rules next to the board."""
     import json
-    pro = PCB_PATH[:-len(".kicad_pcb")] + ".kicad_pro"
+    pro = pcb_path[:-len(".kicad_pcb")] + ".kicad_pro"
     with open(pro, encoding="utf8") as f:
         d = json.load(f)
     ns = d["net_settings"]
@@ -309,14 +315,14 @@ def write_project_rules():
     ns["netclass_patterns"] = [
         {"netclass": "Mains", "pattern": "AC_*"},
         {"netclass": "Power", "pattern": "+5V*"},
-        {"netclass": "Power", "pattern": "+3V3"},
-        {"netclass": "Power", "pattern": "GND"},
+        {"netclass": "Power", "pattern": "+3V3*"},
+        {"netclass": "Power", "pattern": "GND*"},
     ]
     d.setdefault("meta", {})["filename"] = os.path.basename(pro)
     with open(pro, "w", encoding="utf8", newline="\n") as f:
         json.dump(d, f, indent=2)
         f.write("\n")
-    with open(PCB_PATH[:-len(".kicad_pcb")] + ".kicad_dru", "w", encoding="utf8", newline="\n") as f:
+    with open(pcb_path[:-len(".kicad_pcb")] + ".kicad_dru", "w", encoding="utf8", newline="\n") as f:
         f.write(DRU)
     # project library table: stock KiCad libraries plus the local XIAO footprint
     libs = sorted({p["footprint"].split(":")[0] for p in design.PARTS.values()})
@@ -329,7 +335,7 @@ def write_project_rules():
         f.write("(fp_lib_table\n  (version 7)\n" + "\n".join(rows) + "\n)\n")
 
 
-def build(save=True):
+def new_board():
     board = pcbnew.CreateEmptyBoard() if hasattr(pcbnew, "CreateEmptyBoard") else pcbnew.BOARD()
     ds = board.GetDesignSettings()
     ds.SetCopperLayerCount(2)
@@ -343,22 +349,53 @@ def build(save=True):
     ds.m_HoleClearance = mm(0.25)
     ds.m_HoleToHoleMin = mm(0.5)
     ds.m_SolderMaskExpansion = mm(0.05)
-
-    netnames = sorted({n for p in design.PARTS.values() for n in p["pins"].values()})
-    nets = {}
-    for n in netnames:
-        ni = pcbnew.NETINFO_ITEM(board, n)
-        board.Add(ni)
-        nets[n] = ni
-
-    board_outline(board)
-    fps = place(board, nets)
     ds.m_TentViasFront = True
     ds.m_TentViasBack = True
+    return board
+
+
+def populate(board, ox=100.0, oy=100.0, suffix="", outline=True):
+    """Add one complete board (parts, copper, slot, pours, silk) centred at (ox, oy).
+
+    suffix is appended to every net name, so copies on a panel stay separate."""
+    global OX, OY
+    OX, OY = ox, oy
+    netnames = sorted({n for p in design.PARTS.values() for n in p["pins"].values()})
+    nets = _SuffixNets(board, suffix)
+    for n in netnames:
+        nets[n]
+    if outline:
+        board_outline(board)
+    fps = place(board, nets)
     layout.decorate(board, fps, nets, globals())
+    return fps, nets
+
+
+class _SuffixNets(dict):
+    """net name -> NETINFO_ITEM, creating '<name><suffix>' on first use."""
+
+    def __init__(self, board, suffix):
+        super().__init__()
+        self.board, self.suffix = board, suffix
+
+    def __missing__(self, name):
+        ni = pcbnew.NETINFO_ITEM(self.board, name + self.suffix)
+        self.board.Add(ni)
+        self[name] = ni
+        return ni
+
+    def __contains__(self, name):
+        return True
+
+
+def build(save=True):
+    board = new_board()
+    fps, nets = populate(board)
+    # drill/place origin at the board's bottom-left corner, for Gerbers and the CPL
+    board.GetDesignSettings().SetAuxOrigin(pt(-design.BOARD_HALF_W, design.BOARD_R))
     if save:
         board.Save(PCB_PATH)
-        write_project_rules()
+        write_project_rules(PCB_PATH)
     return board, fps, nets
 
 
