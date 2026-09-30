@@ -51,17 +51,19 @@ echo(str("Outside: ", 2 * out_w, " x ", 2 * out_r, " mm, height ", z_top, " mm")
 
 // ---------------------------------------------------------------- features
 // Wire entries (x or y of the terminal pins, from the PCB), z below the board.
-j1_pins = [-12.75, -7.67];            // L, N at the right wall
+// Opening heights from the Kefa KF128-5.08 and KF350-3.5 drawings.
+j1_pins = [-12.74, -7.66];            // L, N at the right wall
 j2_pins = [1.0, 4.5, 8.0, 11.5];      // D0..D3 at the right wall
 j3_pins = [11.4, 7.9, 4.4];           // D4, D5, GND at the bottom (y+) wall
-j1_hole = 3.6;  j1_z = z_bb - 3.9;
-jl_hole = 3.0;  jl_z = z_bb - 3.0;
+j1_hole = 3.6;  j1_z = z_bb - 4.2;
+jl_hole = 3.0;  jl_z = z_bb - 2.4;
 
-// Screw access in the floor: [x, y, length along the entry direction, width]
+// Screwdriver access in the floor, over each terminal screw (the screws sit
+// above the pins on these blocks): [x, y, length, width, angle]
 screws = concat(
-    [for (y = j1_pins) [17.4, y, 5.0, 4.2, 0]],
-    [for (y = j2_pins) [17.4, y, 4.0, 3.4, 0]],
-    [for (x = j3_pins) [x, 19.0, 4.0, 3.4, 90]]);
+    [for (y = j1_pins) [15.9, y, 3.6, 3.6, 0]],
+    [for (y = j2_pins) [15.9, y, 3.0, 3.0, 0]],
+    [for (x = j3_pins) [x, 17.5, 3.0, 3.0, 90]]);
 
 // Board supports, bottom side (free spots on the PCB)
 base_posts = [[-14.0, -21.0], [-4.0, -22.0], [-8.0, 21.8], [19.6, -2.9], [16.5, 17.8]];

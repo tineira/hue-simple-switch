@@ -370,4 +370,9 @@
 		(uuid "fd579d63-bbef-4609-9252-aad3f944a314")
 	)
 	(embedded_fonts no)
+	(model "${KIPRJMOD}/lib/3d/XIAO_ESP32C6_box.step"
+		(offset (xyz 0 0 0))
+		(scale (xyz 1 1 1))
+		(rotate (xyz 0 0 0))
+	)
 )

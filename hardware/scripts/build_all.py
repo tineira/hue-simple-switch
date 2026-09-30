@@ -21,6 +21,7 @@ sys.path.insert(0, HERE)
 import build_pcb  # noqa: E402
 import build_sch  # noqa: E402
 import design  # noqa: E402
+import footprints  # noqa: E402
 
 HW = os.path.normpath(os.path.join(HERE, ".."))
 KICAD = os.path.join(HW, "kicad")
@@ -54,6 +55,9 @@ def count_errors(report):
 
 def main():
     os.makedirs(FAB, exist_ok=True)
+
+    # 0. datasheet footprints and their 3D models
+    footprints.build()
 
     # 1. schematic + ERC
     build_sch.build()

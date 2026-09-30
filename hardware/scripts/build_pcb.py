@@ -18,7 +18,8 @@ KICAD_DIR = os.path.normpath(os.path.join(HERE, "..", "kicad"))
 PCB_PATH = os.path.join(KICAD_DIR, "hue-simple-switch-mains.kicad_pcb")
 FP_ROOT = os.environ.get("KICAD10_FOOTPRINT_DIR") or os.path.join(
     os.path.dirname(os.path.dirname(sys.executable)), "share", "kicad", "footprints")
-LOCAL_LIBS = {"XIAO": os.path.join(KICAD_DIR, "lib", "XIAO.pretty")}
+LOCAL_LIBS = {"XIAO": os.path.join(KICAD_DIR, "lib", "XIAO.pretty"),
+              "hue": os.path.join(KICAD_DIR, "lib", "hue.pretty")}
 
 OX, OY = 100.0, 100.0  # board centre on the KiCad sheet
 
@@ -139,6 +140,10 @@ def place(board, nets):
         fp.SetReference(ref)
         fp.SetValue(p["value"])
         fp.SetPath(pcbnew.KIID_PATH("/" + design.sym_uuid(ref)))
+        if p.get("model"):   # height model for a stock footprint that has none
+            m = pcbnew.FP_3DMODEL()
+            m.m_Filename = p["model"]
+            fp.Models().push_back(m)
         fp.SetSheetname("/")
         fp.SetSheetfile("hue-simple-switch-mains.kicad_sch")
         board.Add(fp)
