@@ -91,6 +91,8 @@ def main():
         raise SystemExit("panel DRC errors, see " + pdrc)
     export_gerbers(PANEL, os.path.join(JLC, NAME + "-panel-gerbers.zip"))
     write_bom(os.path.join(JLC, NAME + "-panel-bom.csv"), boards=build_panel.N, jlc=True)
+    # single board for JLCPCB assembly: same CPL as fab/, BOM without the XIAO
+    write_bom(os.path.join(JLC, NAME + "-single-bom.csv"), jlc=True)
     write_cpl(PANEL, os.path.join(JLC, NAME + "-panel-cpl.csv"), panel=True)
 
     # 5. PDFs: schematic, and one assembly page per side
