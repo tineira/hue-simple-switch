@@ -43,6 +43,8 @@ and creepage, checked by DRC) from everything else. A routed slot under the
 power module separates its AC pins from the XIAO. The only link between the two
 sides is the HLK-PM01 itself.
 
+The console's build guide has a short "can I use it?" check, a before-and-after wiring drawing and the installation order to show your electrician: [hue.tineira.com/how-to](https://hue.tineira.com/how-to?product=simple#in-wall).
+
 Schematic: [`fab/hue-simple-switch-mains-schematic.pdf`](fab/hue-simple-switch-mains-schematic.pdf).
 
 ## Does it fit my box?

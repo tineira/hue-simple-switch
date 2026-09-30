@@ -94,6 +94,7 @@ Mains carrier board (XIAO + Hi-Link HLK-PM01 in a wall box) and its printable en
 - Keep the board's pin map equal to the firmware's (D0–D5 = GPIO 0, 1, 2, 21, 22, 23). A pin change is a firmware change first.
 - Mains nets (`AC_*`, net class `Mains`) keep >= 6 mm clearance and creepage to everything else (`kicad/*.kicad_dru`). Do not relax it.
 - It is an uncertified, AI-assisted mains design; keep the safety notes in `hardware/README.md` when editing it.
+- The console's build guide (`/how-to`, text in `hue-switch-console/lib/how-to-build.ts`) quotes the input parts (10 kΩ pull-up, 1 kΩ series, 10 nF), the enclosure size, the terminal names and the install order. A change to any of them updates that file in the same change, through the console repo.
 
 ## Code conventions
 

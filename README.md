@@ -27,7 +27,7 @@ Each channel has recipes per event, derived by the console:
 
 The GPIO runs NVS → Bridge; it doesn't wait for Vercel. Since 0.5.0 the config is stored as one NVS blob per channel, so saving the largest config (seven channels with scene lists) needs only one channel's worth of free space; the first boot after the update converts the older single blob.
 
-Wiring for up to six wall switches or buttons on D0–D5: [`docs/wiring-switches.svg`](docs/wiring-switches.svg). Wire only the inputs you use.
+Wiring for up to six wall switches or buttons on D0–D5: [`docs/wiring-switches.svg`](docs/wiring-switches.svg). Wire only the inputs you use. The step-by-step build guide (what to buy, wiring one input at a time, what never to connect, and when you need the resistors) is at [hue.tineira.com/how-to](https://hue.tineira.com/how-to?product=simple#wire).
 
 To power the switch from the mains inside a wall box, behind the existing switch, there is a carrier board (KiCad, Gerbers for JLCPCB, BOM) and a printable enclosure in [`hardware/`](hardware/README.md). It keeps the same pins and firmware. It is an uncertified mains design: read its safety notes and have an electrician install it.
 
