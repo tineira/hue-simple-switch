@@ -106,7 +106,13 @@ and terminals are through-hole on the other side.
    the basic resistors and capacitors from its stock; for the varistor (an
    extended part) have a couple more than 15 in your parts inventory.
 
-For hand assembly instead, the single board is in
+To have JLCPCB assemble single boards instead of the panel, upload
+[`fab/hue-simple-switch-mains-gerbers.zip`](fab/hue-simple-switch-mains-gerbers.zip),
+[`fab/jlcpcb/hue-simple-switch-mains-single-bom.csv`](fab/jlcpcb/hue-simple-switch-mains-single-bom.csv)
+(no XIAO) and [`fab/hue-simple-switch-mains-cpl.csv`](fab/hue-simple-switch-mains-cpl.csv).
+The board is under JLCPCB's 70 × 70 mm minimum, so they add edge rails at extra cost.
+
+For hand assembly, the single board is in
 [`fab/hue-simple-switch-mains-gerbers.zip`](fab/hue-simple-switch-mains-gerbers.zip)
 with [`fab/hue-simple-switch-mains-bom.csv`](fab/hue-simple-switch-mains-bom.csv)
 and [`fab/hue-simple-switch-mains-cpl.csv`](fab/hue-simple-switch-mains-cpl.csv).
