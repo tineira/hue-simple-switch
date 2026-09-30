@@ -90,6 +90,7 @@ Mains carrier board (XIAO + Hi-Link HLK-PM01 in a wall box) and its printable en
 
 - Everything in `hardware/kicad`, `hardware/fab`, `hardware/images` and the STLs is generated. Edit `hardware/scripts/design.py` (parts, nets, LCSC numbers) and `hardware/scripts/layout.py` (placement, copper), or `hardware/enclosure/enclosure.scad`, then run `build_all.py` with KiCad 10's Python (`%LOCALAPPDATA%/Programs/KiCad/10.0/bin/python.exe hardware/scripts/build_all.py`). It stops on any ERC or DRC error (DRC runs with schematic parity).
 - Footprints come from the manufacturer's datasheet, never from a distributor's package label (LCSC listed the 8 x 6.3 mm TDK CU3225 varistor as "3.2x2.5mm"). Parts without a matching KiCad footprint are drawn in `hardware/scripts/footprints.py`, with the datasheet numbers quoted there.
+- JLCPCB assembly uses the 3-board panel (`hardware/scripts/build_panel.py`, files in `hardware/fab/jlcpcb/`). Keep every SMD part on the top (XIAO) side. The CPL gives each part's pad centre, not the footprint origin (KiCad puts through-hole origins on pin 1).
 - Keep the board's pin map equal to the firmware's (D0–D5 = GPIO 0, 1, 2, 21, 22, 23). A pin change is a firmware change first.
 - Mains nets (`AC_*`, net class `Mains`) keep >= 6 mm clearance and creepage to everything else (`kicad/*.kicad_dru`). Do not relax it.
 - It is an uncertified, AI-assisted mains design; keep the safety notes in `hardware/README.md` when editing it.

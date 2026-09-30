@@ -238,7 +238,7 @@ def build():
         (120.65, 30.48, "5 V from the certified, isolated HLK-PM01 (3 kV AC). D1 stops USB back-feeding it."),
         (20.32, 96.52, "XIAO ESP32-C6. Pin map fixed by the firmware: D0-D5 = GPIO 0, 1, 2, 21, 22, 23."),
         (20.32, 99.06, "D6-D10 unused. BOOT (GPIO9) and RESET are the buttons on the XIAO itself."),
-        (120.65, 96.52, "Each input: 10k pull-up at the pin, 1k series from the terminal, 10nF at the pin."),
+        (120.65, 96.52, "Each input: 10k pull-up at the pin, 1k series, 10nF at the terminal side."),
         (120.65, 99.06, "Closed wall switch = pin to GND = active. Terminals are LOW VOLTAGE ONLY (3.3 V)."),
         (20.32, 190.5, "NEVER connect USB while the board is on mains. Uncertified design: installation by an electrician."),
     ]
