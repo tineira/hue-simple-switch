@@ -33,6 +33,10 @@ CX, CY = 150.0, 100.0     # panel centre on the sheet
 # Chosen away from RV1, the terminals' wire entries and the mains copper.
 TABS_TOP = [-16.0, 13.0]
 TABS_BOTTOM = [-9.0, 9.0]
+# Side tabs across the straight sides, tying each board to its neighbour and the
+# outer boards to the side frame. y = -3 is the only free spot on the right edge
+# (between J1's and J2's bodies); on the left edge it is clear of the XIAO's pads.
+SIDE_TAB_Y = -3.0
 
 IN_X = N * PITCH / 2 - GAP / 2 + GAP          # inner frame edge, x
 IN_Y = design.BOARD_R + GAP                   # inner rail edge, y
@@ -70,6 +74,17 @@ def board_points(cx, cy, n=90):
             x, y = r * math.cos(a), r * math.sin(a)
             pts.append((cx + (x if sgn > 0 else -x), cy + y * sgn))
     return pts
+
+
+def side_gaps():
+    """(x_left, x_right) of each channel along the straight sides: frame-board,
+    board-board, board-frame."""
+    w = design.BOARD_HALF_W
+    xs = [bx for bx, _ in board_centres()]
+    gaps = [(-IN_X, xs[0] - w)]
+    gaps += [(a + w, b - w) for a, b in zip(xs, xs[1:])]
+    gaps.append((xs[-1] + w, IN_X))
+    return gaps
 
 
 def arc_y(x):
@@ -138,6 +153,9 @@ def build():
             y_edge = min(arc_y(x0 - bx), arc_y(x1 - bx)) - 0.5
             channel.BooleanSubtract(poly_from([(x0, sgn * y_edge), (x1, sgn * y_edge),
                                                (x1, sgn * (IN_Y + 0.5)), (x0, sgn * (IN_Y + 0.5))]))
+    y0, y1 = SIDE_TAB_Y - TAB_W / 2, SIDE_TAB_Y + TAB_W / 2
+    for xa, xb in side_gaps():
+        channel.BooleanSubtract(poly_from([(xa - 0.5, y0), (xb + 0.5, y0), (xb + 0.5, y1), (xa - 0.5, y1)]))
     frame.BooleanSubtract(channel)
     edge_cuts(board, frame)
 
@@ -152,6 +170,14 @@ def build():
                 y = sgn * (arc_y(x) + 0.1)   # hole centre just outside the board edge
                 k += 1
                 npth(board, bx + x, y, BITE_D, f"MB{k}")
+    # side tabs: a column of holes at every board edge the tab touches
+    w = design.BOARD_HALF_W
+    edges = [bx + s * (w + 0.1) for bx, _ in board_centres() for s in (-1, 1)]
+    nh = int(TAB_W / BITE_PITCH) + 1
+    for x in edges:
+        for j in range(nh):
+            k += 1
+            npth(board, x, SIDE_TAB_Y + (j - (nh - 1) / 2) * BITE_PITCH, BITE_D, f"MB{k}")
 
     # fiducials (3, asymmetric) and tooling holes (4) on the rails
     ry = IN_Y + RAIL / 2

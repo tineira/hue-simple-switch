@@ -1,5 +1,5 @@
 ** Drc report for hue-simple-switch-mains.kicad_pcb **
-** Created on 2026-09-29T21:43:56 **
+** Created on 2026-09-29T21:54:20 **
 ** Report includes: Errors, Warnings, Exclusions **
 
 ** Found 28 DRC violations **
@@ -37,48 +37,12 @@
     @(88.3500 mm, 80.5000 mm): Pad 1 [AC_L] of RV1 on F.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(98.4130 mm, 95.8250 mm): Arc of U1 on F.Silkscreen
-    @(97.5200 mm, 94.7000 mm): Pad 8 [unconnected-(U1-D7-Pad8)] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 109.7950 mm): Arc of U1 on F.Silkscreen
-    @(97.5200 mm, 110.8650 mm): Pad 7 [unconnected-(U1-D6-Pad7)] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(97.5200 mm, 110.8650 mm): Pad 7 [unconnected-(U1-D6-Pad7)] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(94.9800 mm, 110.8650 mm): Pad 6 [D5] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(82.2800 mm, 110.8650 mm): Pad 1 [D0] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(84.8200 mm, 110.8650 mm): Pad 2 [D1] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(87.3600 mm, 110.8650 mm): Pad 3 [D2] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(89.9000 mm, 110.8650 mm): Pad 4 [D3] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
-    @(92.4400 mm, 110.8650 mm): Pad 5 [D4] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(98.4130 mm, 93.9200 mm): Segment of U1 on F.Silkscreen
-    @(97.5200 mm, 94.7000 mm): Pad 8 [unconnected-(U1-D7-Pad8)] of U1 on F.Cu
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
     @(98.4130 mm, 93.9200 mm): Segment of U1 on F.Silkscreen
     @(94.9800 mm, 94.7000 mm): Pad 9 [unconnected-(U1-D8-Pad9)] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 93.9200 mm): Segment of U1 on F.Silkscreen
+    @(97.5200 mm, 94.7000 mm): Pad 8 [unconnected-(U1-D7-Pad8)] of U1 on F.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
     @(98.4130 mm, 93.9200 mm): Segment of U1 on F.Silkscreen
@@ -99,6 +63,42 @@
     Local override; warning
     @(98.4130 mm, 93.9200 mm): Segment of U1 on F.Silkscreen
     @(82.2800 mm, 94.7000 mm): Pad 14 [+5V] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(92.4400 mm, 110.8650 mm): Pad 5 [D4] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(94.9800 mm, 110.8650 mm): Pad 6 [D5] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(97.5200 mm, 110.8650 mm): Pad 7 [unconnected-(U1-D6-Pad7)] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(82.2800 mm, 110.8650 mm): Pad 1 [D0] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(84.8200 mm, 110.8650 mm): Pad 2 [D1] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(87.3600 mm, 110.8650 mm): Pad 3 [D2] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 111.7000 mm): Segment of U1 on F.Silkscreen
+    @(89.9000 mm, 110.8650 mm): Pad 4 [D3] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 95.8250 mm): Arc of U1 on F.Silkscreen
+    @(97.5200 mm, 94.7000 mm): Pad 8 [unconnected-(U1-D7-Pad8)] of U1 on F.Cu
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(98.4130 mm, 109.7950 mm): Arc of U1 on F.Silkscreen
+    @(97.5200 mm, 110.8650 mm): Pad 7 [unconnected-(U1-D6-Pad7)] of U1 on F.Cu
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
     @(81.2680 mm, 95.8250 mm): Arc of U1 on F.Silkscreen

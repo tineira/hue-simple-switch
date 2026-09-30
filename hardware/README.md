@@ -90,7 +90,8 @@ and terminals are through-hole on the other side.
 1. At jlcpcb.com, upload
    [`fab/jlcpcb/hue-simple-switch-mains-panel-gerbers.zip`](fab/jlcpcb/hue-simple-switch-mains-panel-gerbers.zip).
    The panel is 144 × 71 mm (three boards, a frame with fiducials and tooling
-   holes, boards held on tabs with mouse bites). Defaults: 2 layers, 1.6 mm FR-4,
+   holes; each board held on six tabs with mouse bites: two on each round end
+   and one on each straight side, so the row stays stiff during assembly). Defaults: 2 layers, 1.6 mm FR-4,
    1 oz copper, HASL. Choose **Panel by customer** (the frame is already there,
    so no edge rails or panelizing by JLCPCB) and quantity **5** = 15 boards.
 2. Turn on PCB Assembly, top side, and upload
