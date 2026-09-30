@@ -10,8 +10,8 @@ C16,30.400mm,13.500mm,Top,0
 D1,11.600mm,8.600mm,Top,0
 F1,27.601mm,44.600mm,Bottom,180
 J1,36.900mm,36.200mm,Bottom,270
-J2,36.900mm,19.750mm,Bottom,270
-J3,28.900mm,8.500mm,Bottom,180
+J2,36.900mm,19.750mm,Bottom,90
+J3,28.900mm,8.500mm,Bottom,0
 PS1,11.500mm,26.000mm,Bottom,270
 R1,23.200mm,26.500mm,Top,0
 R2,23.200mm,23.900mm,Top,0
