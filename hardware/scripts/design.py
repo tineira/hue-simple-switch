@@ -98,4 +98,11 @@ part("J3", "D4 D5 GND", "Connector:Screw_Terminal_01x03",
      {"1": "IN_D4", "2": "IN_D5", "3": "GND"}, "bottom", (0, 0),
      lcsc="C474893", mpn="KF350-3.5-3P (Cixi Kefa)")
 
+# JLCPCB's 3D models for these two terminal blocks have the wire entry on the
+# opposite side to KiCad's footprint convention (their KF128 model for J1
+# matches). Seen in JLCPCB's placement preview: J2 and J3 faced inwards.
+# build_all.py adds this to the CPL rotation.
+PARTS["J2"]["jlc_rot"] = 180
+PARTS["J3"]["jlc_rot"] = 180
+
 NO_CONNECT = {("U1", p) for p, n in XIAO_PADS.items() if n in UNUSED_XIAO}

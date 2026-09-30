@@ -204,7 +204,7 @@ def write_cpl(pcb, path, panel=False):
         if panel:
             i = min(range(len(centres)), key=lambda k: abs(centres[k] - cx))
             ref = f"{ref}_{i + 1}"
-        rot = fp.GetOrientationDegrees() % 360
+        rot = (fp.GetOrientationDegrees() + design.PARTS[fp.GetReference()].get("jlc_rot", 0)) % 360
         rows.append((ref, pcbnew.ToMM(cx - org.x), pcbnew.ToMM(org.y - cy),
                      "Bottom" if fp.IsFlipped() else "Top", rot))
     rows.sort(key=lambda r: refkey(r[0]))

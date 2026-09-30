@@ -119,7 +119,7 @@ Parts with a polarity or a direction that matters:
 | --- | --- |
 | D1, SS34 diode (top) | Cathode band towards pad 1, the left pad (towards C2 and the board's left edge). Reversed, the XIAO gets no power |
 | PS1, HLK-PM01 (bottom) | The two pins 5 mm apart (AC) at the mains end, next to the fuse and RV1; the two pins 15.4 mm apart (DC) at the other end. The pin pattern only fits one way, so if the preview shows pins off the holes, rotate it until all four land |
-| J1, J2, J3, screw terminals (bottom) | The wire openings face the board edge: J1 and J2 towards the straight right edge, J3 towards the round end. Turned 180° they still fit the holes but face inwards, so check this one by eye |
+| J1, J2, J3, screw terminals (bottom) | The wire openings face the board edge: J1 and J2 towards the straight right edge, J3 towards the round end. Turned 180° they still fit the holes but face inwards, so check this one by eye (tilt the 3D view: the side you see from the middle of the board must be the back, not the metal clamps). JLCPCB's models for J2 and J3 are drawn the other way round from KiCad's, so the CPL already adds 180° to those two |
 | U1, XIAO (you solder it) | Component side up, USB-C over the left board edge |
 
 Not polarised: every resistor, the 10 nF and 22 µF ceramic capacitors, the
