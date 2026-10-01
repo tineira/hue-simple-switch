@@ -12,6 +12,16 @@ is the same `hue-simple-switch`, with a different way to power and wire it.
 > Have a qualified electrician install it. Switch the circuit off at the
 > breaker before opening the box, and check it is dead with a tester.
 > Build and install it at your own risk.
+>
+> - **Status: experimental.** Designed, never built and installed. Expect mistakes.
+> - The maintainer is not an electrical engineer. This is a hobby design.
+> - Rules and wire colors differ by country and with the age of the wiring.
+>   Identify every conductor by testing it, never by its color. In some
+>   countries only a licensed electrician may change fixed wiring.
+> - An uncertified device in your home's wiring may affect your home insurance.
+>
+> Read the full [Safety notice](https://hue.tineira.com/safety) before you order
+> anything.
 
 ![Top (XIAO side)](images/board-iso-top.png)
 ![Bottom (power side)](images/board-iso-bottom.png)
@@ -257,4 +267,7 @@ around; changes made there are lost at the next regeneration.
   (CC BY-SA 4.0), reduced to the 14 edge pads in `kicad/lib/XIAO.pretty`.
 - Other symbols, footprints and 3D models: the KiCad libraries (CC BY-SA 4.0
   with the KiCad libraries exception).
-- The board design itself is MIT, like the rest of this repository.
+- The board design and enclosure (`kicad/`, `fab/`, `enclosure/`, `images/`)
+  are [CERN-OHL-P-2.0](LICENSE), a permissive open hardware license with a
+  disclaimer written for physical hardware. The generator scripts in `scripts/`
+  are software and stay MIT, like the rest of this repository.

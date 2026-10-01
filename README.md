@@ -29,7 +29,10 @@ The GPIO runs NVS → Bridge; it doesn't wait for Vercel. Since 0.5.0 the config
 
 Wiring for up to six wall switches or buttons on D0–D5: [`docs/wiring-switches.svg`](docs/wiring-switches.svg). Wire only the inputs you use. The step-by-step build guide (what to buy, wiring one input at a time, what never to connect, and when you need the resistors) is at [hue.tineira.com/how-to](https://hue.tineira.com/how-to?product=simple#wire).
 
-To power the switch from the mains inside a wall box, behind the existing switch, there is a carrier board (KiCad, Gerbers for JLCPCB, BOM) and a printable enclosure in [`hardware/`](hardware/README.md). It keeps the same pins and firmware. It is an uncertified mains design: read its safety notes and have an electrician install it.
+To power the switch from the mains inside a wall box, behind the existing switch, there is a carrier board (KiCad, Gerbers for JLCPCB, BOM) and a printable enclosure in [`hardware/`](hardware/README.md). It keeps the same pins and firmware. It is an uncertified, experimental mains design: read its safety notes and have an electrician install it.
+
+> [!WARNING]
+> **Safety.** Mains voltage can kill. The designs in this repository are uncertified and some are unproven, and the maintainer is not an electrical engineer. Rules and wire colors differ by country. Read the [Safety notice](https://hue.tineira.com/safety) before you build anything, and never connect any pin of a USB-powered build to anything that is or was on mains. Everything here is provided as is, without warranty, as the licenses say.
 
 **BOOT** (GPIO9) and **RST** (CHIP_PU) are **buttons**, not LEDs. The board has two lights:
 
@@ -114,7 +117,9 @@ Sponsorship helps pay for development and does not unlock anything.
 
 ## License
 
-Copyright (c) 2026 Tomas Neira and contributors. [MIT](LICENSE).
+Copyright (c) 2026 Tomas Neira and contributors. [MIT](LICENSE), except the
+carrier board and enclosure designs in `hardware/`, which are
+[CERN-OHL-P-2.0](hardware/LICENSE) (see [`hardware/README.md`](hardware/README.md)).
 
 The image also links open-source components under their own licenses, listed in
 [`THIRD_PARTY.json`](THIRD_PARTY.json). The Arduino-ESP32 core is LGPL-2.1-or-later:

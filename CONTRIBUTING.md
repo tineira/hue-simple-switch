@@ -47,4 +47,4 @@ Hardware: Seeed XIAO ESP32-C6. Channels are GPIO contacts to GND (see the README
 
 ## License
 
-There is no CLA and no sign-off. By contributing, you agree that your contribution is licensed under this repo's license, [MIT](LICENSE).
+There is no CLA and no sign-off. By contributing, you agree that your contribution is licensed under this repo's license, [MIT](LICENSE), or for the board and enclosure designs in `hardware/`, [CERN-OHL-P-2.0](hardware/LICENSE).
