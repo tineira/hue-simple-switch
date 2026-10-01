@@ -5,6 +5,7 @@
 #include "hue.h"
 #include "hue_discover.h"
 #include "recipes.h"
+#include "channel_input.h"
 
 // Channels: closed = GPIO to GND (INPUT_PULLUP). The console picks each channel's kind
 // (config channels[]); a pin it does not list does nothing. The old config payload has no
@@ -30,24 +31,11 @@ static const ChannelDef kChannels[] = {
 };
 
 static const size_t kChannelCount = sizeof(kChannels) / sizeof(kChannels[0]);
-static const unsigned long kDebounceMs = 50;
-static const unsigned long kDoubleClickMs = 400;
-static const unsigned long kHoldMs = 800;
-
-struct ChannelRuntime {
-  int lastReading;
-  int stable;  // HIGH = open, LOW = closed
-  unsigned long lastChangeMs;
-  bool primed;
-  bool waitOff;  // maintained: opened, waiting for off. momentary: released, waiting for a second press.
-  unsigned long waitStartMs;
-  unsigned long pressStartMs;
-  bool longPressHandled;
-};
 
 // Resolved from recipes + channels[] each time gRecipesGen changes (GPIO loop only).
 struct ChannelMode {
   uint8_t kind;  // CHK_NONE = ignored
+  bool flipToggle;  // toggle switch: each flip toggles (flip "toggle"); false = the lever sets on/off
   bool hasDoubleClick;
   bool hasHold;
 };
@@ -95,6 +83,7 @@ inline void channelPrime(size_t i) {
   gCh[i].lastChangeMs = millis();
   gCh[i].primed = true;
   gCh[i].waitOff = false;
+  gCh[i].waitEvent = HJ_OFF;
   gCh[i].waitStartMs = 0;
   gCh[i].pressStartMs = 0;
   gCh[i].longPressHandled = false;
@@ -106,7 +95,9 @@ inline void channelsPrime() {
   }
 }
 
-// A channel whose kind changed starts from the current pin state, without firing.
+// A channel whose kind or flip changed starts from the current pin state, without firing: in
+// toggle mode a flip posted at boot or on a config change would turn off lights that came back
+// on after a power cut.
 inline void channelsResolveModes() {
   if (gChModeValid && gRecipesGen == gChModeGen) {
     return;
@@ -120,10 +111,12 @@ inline void channelsResolveModes() {
     if (channelIsBoot(i)) {
       kind = CHK_MOMENTARY;
     }
-    if (gChModeValid && kind != gChMode[i].kind) {
+    const bool flipToggle = gChannelsFromConsole && kind == CHK_MAINTAINED && recipesChannelFlip(id) == CHF_TOGGLE;
+    if (gChModeValid && (kind != gChMode[i].kind || flipToggle != gChMode[i].flipToggle)) {
       channelPrime(i);
     }
     gChMode[i].kind = kind;
+    gChMode[i].flipToggle = flipToggle;
     gChMode[i].hasDoubleClick = recipesFind(id, "double_click") != nullptr;
     gChMode[i].hasHold = recipesFind(id, "hold") != nullptr;
   }
@@ -133,7 +126,10 @@ inline void channelsResolveModes() {
   for (size_t i = 0; i < kChannelCount; i++) {
     LOG("%s: %s%s%s\n", kChannels[i].id,
         gChMode[i].kind == CHK_NONE ? "not configured"
-                                     : (gChMode[i].kind == CHK_MOMENTARY ? "push button" : "toggle switch"),
+                                     : (gChMode[i].kind == CHK_MOMENTARY
+                                            ? "push button"
+                                            : (gChMode[i].flipToggle ? "toggle switch, each flip toggles"
+                                                                     : "toggle switch")),
         gChMode[i].hasDoubleClick ? ", double-click" : "", gChMode[i].hasHold ? ", hold" : "");
   }
 }
@@ -146,48 +142,14 @@ inline void channelsBegin() {
   channelsPrime();
 }
 
-// Toggle switch: closed = on; opened = off after the window; opened and closed again
-// inside the window = double_click (on when there is no double_click recipe).
+// Toggle switch: the rules for each flip setting are in channel_input.h (channelMaintainedStep).
 inline void channelMaintained(size_t i, unsigned long now) {
-  ChannelRuntime &st = gCh[i];
-  const ChannelDef &ch = kChannels[i];
-  const int reading = digitalRead(ch.gpio);
-
-  if (reading != st.lastReading) {
-    st.lastChangeMs = now;
-    st.lastReading = reading;
+  uint8_t event = 0;
+  uint8_t flags = 0;
+  if (channelMaintainedStep(gCh[i], digitalRead(kChannels[i].gpio), now, gChMode[i].flipToggle,
+                            gChMode[i].hasDoubleClick, &event, &flags)) {
+    channelPost(i, event, flags);
   }
-
-  if (st.waitOff && (now - st.waitStartMs) >= kDoubleClickMs && st.stable == HIGH &&
-      st.lastReading == HIGH) {
-    st.waitOff = false;
-    channelPost(i, HJ_OFF);
-  }
-
-  if ((now - st.lastChangeMs) < kDebounceMs) {
-    return;
-  }
-  if (reading == st.stable) {
-    return;
-  }
-
-  st.stable = reading;
-  const bool closed = (reading == LOW);
-
-  if (!closed) {
-    // Closed → open: don't fire off yet; start the double-click window.
-    st.waitOff = true;
-    st.waitStartMs = now;
-    return;
-  }
-
-  if (st.waitOff) {
-    st.waitOff = false;
-    // With no double_click recipe the worker runs on instead.
-    channelPost(i, HJ_DOUBLE, HJF_FALLBACK_ON);
-    return;
-  }
-  channelPost(i, HJ_ON);
 }
 
 inline void channelBootRePair() {

@@ -1,5 +1,6 @@
-// Host tests for the JSON helpers (json_util.h), the config-poll parsers (recipes.h) and the
-// update offer (ota_offer.h).
+// Host tests for the JSON helpers (json_util.h), the config-poll parsers (recipes.h), the
+// update offer (ota_offer.h), the toggle switch's event rules (channel_input.h) and the Hue job
+// queue rules (hue_jobs.h).
 // Plain C++ against the stubs in test/host/stubs; no board. Run with test/host/run.sh.
 
 #define LOG(...) ((void)0)
@@ -9,6 +10,8 @@
 #include "json_util.h"
 #include "recipes.h"
 #include "ota_offer.h"
+#include "channel_input.h"
+#include "hue_jobs.h"
 
 #include <algorithm>
 #include <string>
@@ -626,6 +629,222 @@ static void testChannelBlobRoundTrip() {
   CHECK(recipesChannelKind("d5") == CHK_NONE);
 }
 
+// Toggle switch flip setting: "toggle" on a maintained channel only; absent or unknown = set.
+static void testParseFlip() {
+  uint32_t rev = 0;
+  CHECK(recipesParseConfig(
+      "{\"rev\":5,\"channels\":["
+      "{\"id\":\"d0\",\"kind\":\"maintained\",\"flip\":\"toggle\",\"group\":{\"rtype\":\"room\",\"rid\":\"r1\"}},"
+      "{\"id\":\"d1\",\"kind\":\"maintained\",\"flip\":\"set\"},"
+      "{\"id\":\"d2\",\"kind\":\"maintained\"},"
+      "{\"id\":\"d3\",\"kind\":\"maintained\",\"flip\":\"sideways\"},"
+      "{\"id\":\"d4\",\"kind\":\"momentary\",\"flip\":\"toggle\"},"
+      "{\"id\":\"d5\",\"kind\":\"maintained\",\"flip\":true}],"
+      "\"recipes\":["
+      "{\"channelId\":\"d0\",\"event\":\"on\",\"action\":\"toggle\",\"target\":{\"rtype\":\"grouped_light\",\"rid\":\"G1\"}},"
+      "{\"channelId\":\"d0\",\"event\":\"off\",\"action\":\"toggle\",\"target\":{\"rtype\":\"grouped_light\",\"rid\":\"G1\"}}]}",
+      &rev));
+  const RecipeConfig &c = gRecipeStage;
+  CHECK(c.channelCount == 6);
+  if (c.channelCount != 6) {
+    return;
+  }
+  CHECK(c.channels[0].flip == CHF_TOGGLE);
+  CHECK(c.channels[1].flip == CHF_SET);
+  CHECK(c.channels[2].flip == CHF_SET);
+  CHECK(c.channels[3].flip == CHF_SET);
+  CHECK(c.channels[4].kind == CHK_MOMENTARY);
+  CHECK(c.channels[4].flip == CHF_SET);
+  CHECK(c.channels[5].flip == CHF_SET);
+  CHECK(c.recipeCount == 2);
+
+  // The NVS blob keeps the flip, and writes it only in toggle mode.
+  const RecipeConfig original = gRecipeStage;
+  recipesApply(original);
+  CHECK(recipesChannelFlip("d0") == CHF_TOGGLE);
+  CHECK(recipesChannelFlip("d2") == CHF_SET);
+  CHECK(recipesChannelFlip("boot") == CHF_SET);
+  const String blob0 = recipesChannelJson("d0");
+  const String blob2 = recipesChannelJson("d2");
+  CHECK(strstr(blob0.c_str(), "\"flip\":\"toggle\"") != nullptr);
+  CHECK(strstr(blob2.c_str(), "flip") == nullptr);
+  RecipeConfig back;
+  memset(&back, 0, sizeof(back));
+  back.fromConsole = true;
+  jsonEachArrayObject(blob0.c_str(), "channels", channelSettingParseOne, &back);
+  jsonEachArrayObject(blob2.c_str(), "channels", channelSettingParseOne, &back);
+  CHECK(back.channelCount == 2);
+  CHECK(back.channels[0].flip == CHF_TOGGLE);
+  CHECK(back.channels[1].flip == CHF_SET);
+}
+
+// ---------------------------------------------------------------------------------------------
+// channel_input.h: toggle switch events
+
+struct PostedEvent {
+  unsigned long atMs;
+  uint8_t event;
+  uint8_t flags;
+};
+
+// One toggle switch, primed at startReading (as at boot: nothing posted), driven through a pin
+// trace. hold() keeps the pin at `reading` for forMs, polled every ms.
+struct LeverSim {
+  ChannelRuntime st;
+  unsigned long now = 1000;
+  bool flipToggle;
+  bool hasDouble;
+  std::vector<PostedEvent> posted;
+
+  LeverSim(int startReading, bool toggle, bool dbl) : flipToggle(toggle), hasDouble(dbl) {
+    memset(&st, 0, sizeof(st));
+    st.lastReading = startReading;
+    st.stable = startReading;
+    st.lastChangeMs = now;
+    st.primed = true;
+  }
+  void hold(int reading, unsigned long forMs) {
+    for (unsigned long t = 0; t < forMs; t++, now++) {
+      uint8_t ev = 0xff;
+      uint8_t fl = 0xff;
+      if (channelMaintainedStep(st, reading, now, flipToggle, hasDouble, &ev, &fl)) {
+        posted.push_back({now, ev, fl});
+      }
+    }
+  }
+  bool is(size_t k, uint8_t ev, uint8_t fl) const {
+    return k < posted.size() && posted[k].event == ev && posted[k].flags == fl;
+  }
+};
+
+static const uint8_t kToggleFlags = HJF_TOGGLE | HJF_MAY_EXPIRE;
+
+// Flip set: unchanged from 0.7.x.
+static void testLeverSetMode() {
+  LeverSim s(HIGH, false, true);
+  s.hold(HIGH, 1000);  // primed: no event at startup
+  CHECK(s.posted.empty());
+  s.hold(LOW, 100);  // closed: on, after the debounce
+  CHECK(s.posted.size() == 1 && s.is(0, HJ_ON, 0));
+  s.hold(HIGH, 300);  // opened: off waits for the window
+  CHECK(s.posted.size() == 1);
+  s.hold(HIGH, 300);
+  CHECK(s.posted.size() == 2 && s.is(1, HJ_OFF, 0));
+  if (s.posted.size() == 2) {
+    CHECK(s.posted[1].atMs - s.posted[0].atMs >= 100 + kDoubleClickMs);
+  }
+  s.hold(LOW, 100);   // on
+  s.hold(HIGH, 150);  // flick open and back: double_click (on when there is no recipe)
+  s.hold(LOW, 1000);
+  CHECK(s.posted.size() == 4 && s.is(2, HJ_ON, 0) && s.is(3, HJ_DOUBLE, HJF_FALLBACK_ON));
+}
+
+// Flip toggle, no double_click recipe: each flip posts at once, both ways; a flick is two.
+static void testLeverToggleNoDouble() {
+  LeverSim s(HIGH, true, false);
+  s.hold(HIGH, 1000);
+  CHECK(s.posted.empty());
+  s.hold(LOW, 100);
+  CHECK(s.posted.size() == 1 && s.is(0, HJ_ON, kToggleFlags));
+  s.hold(HIGH, 100);
+  CHECK(s.posted.size() == 2 && s.is(1, HJ_OFF, kToggleFlags));
+  if (s.posted.size() == 2) {
+    CHECK(s.posted[1].atMs - s.posted[0].atMs == 100);  // no window on the way off
+  }
+  s.hold(LOW, 80);
+  s.hold(HIGH, 1000);
+  CHECK(s.posted.size() == 4 && s.is(2, HJ_ON, kToggleFlags) && s.is(3, HJ_OFF, kToggleFlags));
+  // A bouncing contact is one flip.
+  s.hold(LOW, 10);
+  s.hold(HIGH, 5);
+  s.hold(LOW, 1000);
+  CHECK(s.posted.size() == 5 && s.is(4, HJ_ON, kToggleFlags));
+}
+
+// Flip toggle with a double_click recipe: a flip either way waits for the window; a second
+// flip inside it is double_click from either lever position.
+static void testLeverToggleDouble() {
+  LeverSim s(LOW, true, true);
+  s.hold(LOW, 1000);
+  CHECK(s.posted.empty());
+  s.hold(HIGH, 300);  // flip open: waits
+  CHECK(s.posted.empty());
+  s.hold(HIGH, 300);  // window expired: the flip's own event
+  CHECK(s.posted.size() == 1 && s.is(0, HJ_OFF, kToggleFlags));
+  const unsigned long closedAt = s.now;
+  s.hold(LOW, 1000);  // flip closed: waits, then on
+  CHECK(s.posted.size() == 2 && s.is(1, HJ_ON, kToggleFlags));
+  if (s.posted.size() == 2) {
+    CHECK(s.posted[1].atMs - closedAt >= kDebounceMs + kDoubleClickMs);
+  }
+  // Quick flick from closed: double_click only.
+  s.hold(HIGH, 150);
+  s.hold(LOW, 1000);
+  CHECK(s.posted.size() == 3 && s.is(2, HJ_DOUBLE, HJF_MAY_EXPIRE));
+  // Quick flick from open: double_click only.
+  s.hold(HIGH, 1000);
+  CHECK(s.posted.size() == 4 && s.is(3, HJ_OFF, kToggleFlags));
+  s.hold(LOW, 150);
+  s.hold(HIGH, 1000);
+  CHECK(s.posted.size() == 5 && s.is(4, HJ_DOUBLE, HJF_MAY_EXPIRE));
+  // The next flip after a double-click starts a new window.
+  s.hold(LOW, 1000);
+  CHECK(s.posted.size() == 6 && s.is(5, HJ_ON, kToggleFlags));
+}
+
+// ---------------------------------------------------------------------------------------------
+// hue_jobs.h: one channel's queue
+
+static HueJobEntry job(uint8_t ev, uint8_t fl) { return HueJobEntry{ev, fl, 0, 0}; }
+
+static void testQueueSetModeLeverWins() {
+  HueJobQueue q;
+  memset(&q, 0, sizeof(q));
+  CHECK(hueJobQueuePush(q, job(HJ_ON, 0)));
+  CHECK(hueJobQueuePush(q, job(HJ_DOUBLE, HJF_FALLBACK_ON)));
+  CHECK(hueJobQueuePush(q, job(HJ_OFF, 0)));  // drops both, nothing to reset
+  CHECK(q.n == 1 && q.e[0].event == HJ_OFF && q.e[0].flags == 0);
+  CHECK(hueJobQueuePush(q, job(HJ_ON, 0)));  // drops the off, and inherits its scene reset
+  CHECK(q.n == 1 && q.e[0].event == HJ_ON && (q.e[0].flags & HJF_RESET_SCENE));
+  CHECK(hueJobQueuePush(q, job(HJ_DOUBLE, HJF_FALLBACK_ON)));
+  CHECK(hueJobQueuePush(q, job(HJ_ON, 0)));  // keeps the double, drops the on (and its reset)
+  CHECK(q.n == 2 && q.e[0].event == HJ_DOUBLE && q.e[1].event == HJ_ON &&
+        (q.e[1].flags & HJF_RESET_SCENE));
+}
+
+static void testQueueToggleModeInOrder() {
+  HueJobQueue q;
+  memset(&q, 0, sizeof(q));
+  CHECK(hueJobQueuePush(q, job(HJ_ON, kToggleFlags)));
+  CHECK(hueJobQueuePush(q, job(HJ_OFF, kToggleFlags)));
+  CHECK(hueJobQueuePush(q, job(HJ_ON, kToggleFlags)));
+  CHECK(q.n == 3);
+  CHECK(q.e[0].event == HJ_ON && q.e[1].event == HJ_OFF && q.e[2].event == HJ_ON);
+  for (uint8_t k = 0; k < q.n; k++) {
+    CHECK(q.e[k].flags == kToggleFlags);  // never a scene reset from merging
+  }
+  CHECK(!hueJobQueuePush(q, job(HJ_OFF, kToggleFlags)));  // full: the new one is dropped
+  CHECK(q.n == 3 && q.e[2].event == HJ_ON);
+  CHECK(hueJobQueuePush(q, job(HJ_RELEASE, 0)));  // the release slot stays free
+  CHECK(q.n == 4);
+
+  // Double-clicks queue among toggles.
+  memset(&q, 0, sizeof(q));
+  CHECK(hueJobQueuePush(q, job(HJ_OFF, kToggleFlags)));
+  CHECK(hueJobQueuePush(q, job(HJ_DOUBLE, HJF_MAY_EXPIRE)));
+  CHECK(hueJobQueuePush(q, job(HJ_OFF, kToggleFlags)));
+  CHECK(q.n == 3 && q.e[0].event == HJ_OFF && q.e[1].event == HJ_DOUBLE && q.e[2].event == HJ_OFF);
+
+  // A toggle-mode off left from before a flip change is not a lever off: a set-mode on keeps it
+  // and inherits no scene reset; a set-mode off drops it without one.
+  memset(&q, 0, sizeof(q));
+  CHECK(hueJobQueuePush(q, job(HJ_OFF, kToggleFlags)));
+  CHECK(hueJobQueuePush(q, job(HJ_ON, 0)));
+  CHECK(q.n == 2 && !(q.e[1].flags & HJF_RESET_SCENE));
+  CHECK(hueJobQueuePush(q, job(HJ_OFF, 0)));
+  CHECK(q.n == 1 && q.e[0].event == HJ_OFF && q.e[0].flags == 0);
+}
+
 int main() {
   testGetString();
   testGetInt();
@@ -644,6 +863,12 @@ int main() {
   testParseOldPayload();
   testParseLimits();
   testChannelBlobRoundTrip();
+  testParseFlip();
+  testLeverSetMode();
+  testLeverToggleNoDouble();
+  testLeverToggleDouble();
+  testQueueSetModeLeverWins();
+  testQueueToggleModeInOrder();
   testOtaOfferValid();
   testOtaOfferAbsent();
   testOtaOfferBadVersion();

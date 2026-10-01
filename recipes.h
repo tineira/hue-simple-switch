@@ -27,10 +27,14 @@ struct HueRecipe {
 };
 
 enum ChannelSettingKind : uint8_t { CHK_NONE = 0, CHK_MAINTAINED = 1, CHK_MOMENTARY = 2 };
+// Toggle switch only: CHF_SET = the lever sets on or off (no "flip", or a value this firmware
+// does not know); CHF_TOGGLE = each flip toggles ("flip": "toggle", since 0.8.0).
+enum ChannelSettingFlip : uint8_t { CHF_SET = 0, CHF_TOGGLE = 1 };
 
 struct ChannelSetting {
   char id[12];
   uint8_t kind;
+  uint8_t flip;
 };
 
 // One config: recipes plus channels[]. fromConsole false = the old payload (no channels[]):
@@ -128,6 +132,9 @@ inline String recipesChannelJson(const char *id) {
       jsonAppendEscaped(s, gChannelSettings[i].id);
       s += ",\"kind\":";
       jsonAppendEscaped(s, gChannelSettings[i].kind == CHK_MOMENTARY ? "momentary" : "maintained");
+      if (gChannelSettings[i].flip == CHF_TOGGLE) {
+        s += ",\"flip\":\"toggle\"";
+      }
       s += "}]";
       break;
     }
@@ -242,6 +249,7 @@ inline void channelSettingParseOne(const char *obj, void *ctx) {
     return;
   }
   ChannelSetting &c = cfg->channels[cfg->channelCount];
+  c.flip = CHF_SET;
   char kind[16];
   if (!jsonGetString(obj, "id", c.id, sizeof(c.id)) || !c.id[0]) {
     return;
@@ -251,6 +259,10 @@ inline void channelSettingParseOne(const char *obj, void *ctx) {
   }
   if (strcmp(kind, "maintained") == 0) {
     c.kind = CHK_MAINTAINED;
+    char flip[16];
+    if (jsonGetString(obj, "flip", flip, sizeof(flip)) && strcmp(flip, "toggle") == 0) {
+      c.flip = CHF_TOGGLE;
+    }
   } else if (strcmp(kind, "momentary") == 0) {
     c.kind = CHK_MOMENTARY;
   } else {
@@ -678,4 +690,15 @@ inline uint8_t recipesChannelKind(const char *channelId) {
     }
   }
   return CHK_NONE;
+}
+
+// Toggle switch flip setting from the console's channels[]. CHF_SET when the channel is not
+// listed. Caller holds the lock.
+inline uint8_t recipesChannelFlip(const char *channelId) {
+  for (uint8_t i = 0; i < gChannelSettingCount; i++) {
+    if (strcmp(gChannelSettings[i].id, channelId) == 0) {
+      return gChannelSettings[i].flip;
+    }
+  }
+  return CHF_SET;
 }

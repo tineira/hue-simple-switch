@@ -7,11 +7,16 @@
 //
 // Queue: one short FIFO per channel, served round-robin, so a slow call on one channel delays
 // another channel by at most one job, and an event on one channel never drops another's.
-// Per channel:
-//   - Toggle switch (maintained): the lever position wins. An `off` drops every pending event on
-//     the channel (they would be undone by it, and it restarts the scene cycle anyway). An `on`
-//     drops a pending `on`/`off`; a dropped `off` still restarts the scene cycle. Double-clicks
-//     queue in order. These events never expire: the lights follow the lever, even late.
+// Per channel (the rules themselves are in hue_jobs.h, so the host tests run them):
+//   - Toggle switch (maintained), flip set: the lever position wins. An `off` drops every pending
+//     event on the channel (they would be undone by it, and it restarts the scene cycle anyway).
+//     An `on` drops a pending `on`/`off`; a dropped `off` still restarts the scene cycle.
+//     Double-clicks queue in order. These events never expire: the lights follow the lever, even
+//     late.
+//   - Toggle switch, flip toggle (HJF_TOGGLE): each flip is a toggle, so none may be merged or
+//     dropped by the lever rule; `on` / `off` / double_click queue in order and expire like a
+//     push button's. The event name says which way the lever went, not what the lights do: a
+//     toggle restarts the scene cycle only when it turned the target off.
 //   - Push button (momentary): short / double_click / hold queue in order (a click is a toggle, so
 //     none may be merged). One that waited more than kHueJobStaleMs for the Bridge is dropped.
 //   - Release: queued after the hold it ends, so a dim stop always follows its start. It has a
@@ -41,41 +46,11 @@
 #include <freertos/task.h>
 #include "hue.h"
 #include "recipes.h"
+#include "hue_jobs.h"
 
-enum HueJobEvent : uint8_t {
-  HJ_ON = 0,
-  HJ_OFF,
-  HJ_DOUBLE,  // double_click
-  HJ_SHORT,
-  HJ_HOLD,
-  HJ_RELEASE,  // end of a hold: stops a dim ramp the hold started
-};
-
-enum : uint8_t {
-  HJF_RESET_SCENE = 1,  // restart the scene cycle before running (an `off` was dropped)
-  HJF_FALLBACK_ON = 2,  // toggle-switch double_click: run `on` when there is no double_click recipe
-  HJF_MAY_EXPIRE = 4,   // push-button gesture: drop it when stale
-};
-
-struct HueJobEntry {
-  uint8_t event;
-  uint8_t flags;
-  uint32_t atMs;
-  uint32_t epoch;
-};
-
-// Three events plus the release slot per channel.
-static const uint8_t kHueJobDepth = 4;
-// A push-button gesture that waited this long for the Bridge is dropped instead of acting late.
-static const unsigned long kHueJobStaleMs = 10000;
 // Same as the loop task's stack, which ran these calls up to 0.4.2 (TLS handshake included).
 // The recipe copy is a global, not on this stack. Debug builds log the free stack after each job.
 static const uint32_t kHueWorkerStack = 8192;
-
-struct HueJobQueue {
-  HueJobEntry e[kHueJobDepth];
-  uint8_t n;
-};
 
 // Hold to dim (RAM only). active: a leg was sent and needs its stop on release; the target is
 // kept so the turn-arounds and the stop go where the start went, even if recipes change
@@ -104,23 +79,6 @@ inline HueRecipe gHueJobRecipe;  // the running job's recipe, off the task stack
 inline uint32_t gHueJobEpoch = 0;
 // A job is running (worker task). With a queued job it keeps an update from starting (ota.h).
 inline volatile bool gHueJobRunning = false;
-
-inline const char *hueJobEventName(uint8_t ev) {
-  switch (ev) {
-    case HJ_ON:
-      return "on";
-    case HJ_OFF:
-      return "off";
-    case HJ_DOUBLE:
-      return "double_click";
-    case HJ_SHORT:
-      return "short";
-    case HJ_HOLD:
-      return "hold";
-    default:
-      return "release";
-  }
-}
 
 // ---------------------------------------------------------------- loop side
 
@@ -168,27 +126,7 @@ inline bool hueJobPost(size_t i, uint8_t event, uint8_t flags) {
   HueJobEntry e = {event, flags, millis(), gNvsEpoch};
   bool ok = false;
   portENTER_CRITICAL(&gHueJobMux);
-  HueJobQueue &q = gHueJobs[i];
-  if (event == HJ_OFF || event == HJ_ON) {
-    uint8_t kept = 0;
-    for (uint8_t k = 0; k < q.n; k++) {
-      const HueJobEntry &p = q.e[k];
-      const bool drop = (event == HJ_OFF) ? (p.event != HJ_RELEASE) : (p.event == HJ_ON || p.event == HJ_OFF);
-      if (drop) {
-        if (p.event == HJ_OFF || (p.flags & HJF_RESET_SCENE)) {
-          e.flags |= HJF_RESET_SCENE;
-        }
-        continue;
-      }
-      q.e[kept++] = p;
-    }
-    q.n = kept;
-  }
-  const uint8_t cap = (event == HJ_RELEASE) ? kHueJobDepth : kHueJobDepth - 1;
-  if (q.n < cap) {
-    q.e[q.n++] = e;
-    ok = true;
-  }
+  ok = hueJobQueuePush(gHueJobs[i], e);
   portEXIT_CRITICAL(&gHueJobMux);
   if (!ok) {
     LOG("%s %s dropped: Hue queue full\n", kChannels[i].id, hueJobEventName(event));
@@ -401,8 +339,9 @@ inline void hueJobRun(size_t i, const HueJobEntry &job, const HueCreds &c) {
     channelDimStop(i, c);
     return;
   }
-  // An off on the channel restarts its scene cycle, with or without an off recipe.
-  if (job.event == HJ_OFF || (job.flags & HJF_RESET_SCENE)) {
+  // An off on the channel restarts its scene cycle, with or without an off recipe. A toggle-mode
+  // `off` is only the lever opening: its toggle decides below.
+  if ((job.event == HJ_OFF && !(job.flags & HJF_TOGGLE)) || (job.flags & HJF_RESET_SCENE)) {
     channelSetLastScene(i, "", job.epoch);
   }
   if ((job.flags & HJF_MAY_EXPIRE) && (millis() - job.atMs) > kHueJobStaleMs) {
@@ -431,6 +370,14 @@ inline void hueJobRun(size_t i, const HueJobEntry &job, const HueCreds &c) {
   } else if (strcmp(r.action, "dim") == 0) {
     LOG("%s %s -> dim %s/%s\n", channelId, event, r.rtype, r.rid);
     ok = channelDimStart(i, r, c, job.atMs);
+  } else if ((job.flags & HJF_TOGGLE) && strcmp(r.action, "toggle") == 0) {
+    // Toggle mode: a toggle that turned the target off restarts the scene cycle, like an off.
+    LOG("%s %s -> toggle %s/%s\n", channelId, event, r.rtype, r.rid);
+    bool nowOn = true;
+    ok = hueToggle(c, r.rtype, r.rid, &nowOn);
+    if (ok && !nowOn) {
+      channelSetLastScene(i, "", job.epoch);
+    }
   } else {
     LOG("%s %s -> %s %s/%s\n", channelId, event, r.action, r.rtype, r.rid);
     ok = hueExecute(c, r.action, r.rtype, r.rid);

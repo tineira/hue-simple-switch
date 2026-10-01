@@ -20,10 +20,11 @@ Since 0.3.0 the console picks each channel's kind (`maintained` = toggle switch,
 
 Each channel has recipes per event, derived by the console:
 
-- Toggle switch: `on` (lever closes), `off` (lever opens, after the ~400 ms double-click window), `double_click` (opens and closes inside the window; runs `on` when there is no `double_click` recipe).
+- Toggle switch, flip set (the lever sets on or off; no `flip` in `channels[]`): `on` (lever closes), `off` (lever opens, after the ~400 ms double-click window), `double_click` (opens and closes inside the window; runs `on` when there is no `double_click` recipe).
+- Toggle switch, flip toggle (`"flip": "toggle"`, since 0.8.0; each flip toggles, the console sends `toggle` for both `on` and `off`): each flip posts `on` (lever closes) or `off` (lever opens) at once when there is no `double_click` recipe. With one, a flip either way waits ~400 ms: a second flip inside it is `double_click`, otherwise the first flip runs. No `on` fallback. A toggle that turned the lights off restarts the scene list. Boot, a config change or a change of the flip setting never toggles.
 - Push button: `short` on release, at once when the channel has no `double_click` recipe; with one, a second press inside ~400 ms is `double_click` and an expired window is `short`. `hold` fires once at ~800 ms while pressed, only when the channel has a `hold` recipe.
 - BOOT without a `hold` recipe: a 3 s press re-pairs with the Bridge. With one, the button never re-pairs (USB install only).
-- A scene list (`recall_scene` with `targets[]`) cycles from the last scene the channel set (kept in NVS), wraps, skips scenes that answer 404, and starts over at the first scene after an `off` on the channel.
+- A scene list (`recall_scene` with `targets[]`) cycles from the last scene the channel set (kept in NVS), wraps, skips scenes that answer 404, and starts over at the first scene after an `off` on the channel (in flip toggle mode, after a toggle that turned the target off).
 
 The GPIO runs NVS → Bridge; it doesn't wait for Vercel. Since 0.5.0 the config is stored as one NVS blob per channel, so saving the largest config (seven channels with scene lists) needs only one channel's worth of free space; the first boot after the update converts the older single blob.
 

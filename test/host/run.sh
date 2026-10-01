@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Host tests for the JSON and config-poll parsers: plain C++ built with the PC's compiler, no
+# Host tests for the JSON and config-poll parsers and the toggle switch / Hue queue rules: plain C++ built with the PC's compiler, no
 # board. CI (build.yml) runs this with SANITIZE=1. Locally: test/host/run.sh
 # (CXX picks the compiler, default g++).
 set -euo pipefail
