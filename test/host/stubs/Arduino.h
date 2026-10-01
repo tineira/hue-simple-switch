@@ -1,6 +1,6 @@
 #pragma once
 
-// Host stub of the Arduino core: only what json_util.h and recipes.h use.
+// Host stub of the Arduino core: only what json_util.h, recipes.h and channel_input.h use.
 
 #include <stdint.h>
 #include <stdio.h>
@@ -8,6 +8,9 @@
 #include <string.h>
 #include <strings.h>
 #include <string>
+
+#define LOW 0x0
+#define HIGH 0x1
 
 class String {
  public:

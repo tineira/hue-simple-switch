@@ -4,6 +4,12 @@ User-facing release notes for the Simple switch (XIAO ESP32-C6 with wired button
 
 Start a bullet with `Important: ` when the person must know or do something before or right after updating (a button to press, a setting to redo). The console shows those first, with an Important label, when Setup offers the update. Do not use it for new features.
 
+### 0.8.0 — 2026-09-30
+
+- A toggle switch can now toggle the lights on every flip, whichever way the lever moves, when you choose "Each flip toggles the lights" in the console. The lever can no longer disagree with the lights after they were changed from the Hue app or another switch, and two switches can share one light, as on a staircase.
+- In that mode a quick flick and back recalls your scenes from either lever position. Without scenes, each flip toggles at once, with no wait.
+- The switch never toggles the lights by itself when it starts, reconnects or gets new settings, so lights that came back on after a power cut stay on.
+
 ### 0.7.1 — 2026-09-29
 
 - Hold to dim pauses for less time at full and at the lowest level before turning around.
