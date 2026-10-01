@@ -1,8 +1,17 @@
 name: USB installer
 
+# Docs-only and hardware-only pushes don't release. CHANGELOG.md still does: a re-upload
+# without a version bump updates that release's notes on the console. Skip any push by hand
+# with [skip ci].
 on:
   push:
     branches: [main]
+    paths:
+      - '**'
+      - '!**.md'
+      - '!docs/**'
+      - '!hardware/**'
+      - 'CHANGELOG.md'
   workflow_dispatch:
 
 permissions:
