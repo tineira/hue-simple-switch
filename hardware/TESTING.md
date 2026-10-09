@@ -7,8 +7,8 @@ side. Do them on every board, not one per batch.
 
 Sections 1 to 3 are done **without mains and without USB**. Section 4 is the
 first time the board is on mains; do it only when 1 to 3 pass. Do sections 1 to
-4 **before soldering the XIAO** (the readings are cleaner), then repeat
-section 2 and the short checks in section 3 with the XIAO soldered.
+4 **before soldering the XIAO** (the readings are cleaner), then section 5
+once the XIAO is soldered.
 
 All the through-hole parts (J1, J2, J3, F1, PS1) are on the bottom, so their
 solder joints are on the top (XIAO) side. Probe those joints, not the terminal
@@ -56,8 +56,20 @@ With a magnifier:
 
 ## 2. Isolation, mains to low voltage
 
-The most important section. Ω, highest range (20 MΩ). Every reading must be
-**OL**. Any finite value means the board must not go on mains.
+The most important section. Ω, highest range. Hold the probes by the plastic
+only and keep the board on a dry, insulating surface: fingers on both probes
+read a few MΩ by themselves.
+
+Every reading must **rise slowly and end at OL or tens of MΩ, the same on
+every point**. The points on the low-voltage side are joined to each other
+through kΩ resistors, so these are all one measurement: mains to the whole
+low-voltage side, across the HLK-PM01. On the first boards, with a Fluke 83,
+it rises for about a minute and ends near 24 MΩ, with or without the XIAO;
+that is the module, not the board.
+
+A reading that stops at a fixed value clearly lower than on other boards is a
+leak. Clean the board with isopropyl alcohol (90 % or more), let it dry for an
+hour, and measure again. A board with a leak does not go on mains.
 
 - J1 L to J3 GND
 - J1 N to J3 GND
@@ -90,8 +102,8 @@ does not read open: the module's own regulation circuit is across it.
 
 ## 4. First time on mains (without the XIAO, without USB)
 
-- Feed it through an incandescent lamp of 25 to 60 W in series (a "lamp
-  limiter"), from a socket behind an RCD. If something is shorted, the lamp
+- Recommended: feed it through an incandescent lamp of 25 to 60 W in series
+  (a "lamp limiter"), from a socket behind an RCD. If something is shorted, the lamp
   lights up fully and limits the current; on a good board it stays dark or
   barely glows.
 - Clip the meter leads on before plugging in. Do not touch the board while it
@@ -103,18 +115,47 @@ does not read open: the module's own regulation circuit is across it.
 | PS1 +Vo to −Vo | V DC, 20 V range | ≈ 5.0 V | 0 V, or above 5.5 V |
 | D1 cathode to PS1 −Vo | V DC, 20 V range | 4.7 to 5.0 V. With no XIAO almost no current flows through D1, so it drops almost nothing; with the XIAO running it reads about 4.7 V | 0 V |
 
+## 5. With the XIAO soldered
+
+1. Clean the flux off the XIAO pads with isopropyl alcohol (90 % or more) and
+   a toothbrush, without soaking the board. Let it dry for at least 30 minutes
+   before any mains check.
+2. Look again with a magnifier, above all between the U1 5V, GND and 3V3 pads,
+   which sit next to each other.
+3. Repeat section 2 completely, adding J1 L and J1 N to the USB-C shell. Same
+   result as before.
+4. The short checks below, without mains and without USB. The readings are
+   lower than in section 3 now that the meter also sees the XIAO.
+5. On mains, without USB: the XIAO starts, joins Wi-Fi and shows in the
+   console's Devices list within seconds (if it was provisioned over USB
+   first). The firmware does not use the XIAO's LEDs.
+
+**Never connect USB while the board is on mains.**
+
+| Check | Meter mode | Expected | Fault |
+| --- | --- | --- | --- |
+| U1 5V to U1 GND | Continuity, then Ω | No beep; settles at kΩ or more | Beeps |
+| U1 3V3 to U1 GND | Continuity, then Ω | No beep; above about 100 Ω | Beeps |
+| U1 5V to U1 3V3 | Continuity | No beep | Beeps: solder bridge |
+| Each input terminal to its own U1 pad | Ω, 2 kΩ range | About 1 kΩ | Open |
+| Each input terminal to J3 GND, and to its neighbour | Continuity | No beep | Beeps: solder bridge |
+| On mains: D1 cathode to U1 GND | V DC, 20 V range | 4.6 to 4.9 V | 0 V |
+| On mains: U1 3V3 to U1 GND | V DC, 20 V range | About 3.3 V | 0 V |
+
 ## Reference: first board
 
-Board 1 of the first JLCPCB batch, 2026-10, XIAO not soldered.
+Board 1 of the first JLCPCB batch, 2026-10, measured with a Fluke 83.
 
 | Check | Reading |
 | --- | --- |
 | J1 L to J1 N | Open, no beep |
+| Isolation, every point in section 2 | Rises for about a minute, ends near 24 MΩ (same on a second board) |
 | PS1 +Vo to −Vo | 1.6 kΩ |
-| U1 5V to U1 GND | 2.5 MΩ (starts high, settles); probes swapped 38 kΩ |
+| U1 5V to U1 GND, no XIAO | 2.5 MΩ (starts high, settles); probes swapped 38 kΩ |
 | Input terminal to its own U1 pad | 1 kΩ |
-| PS1 +Vo on mains | 5.0 V |
-| D1 cathode on mains | 5.0 V |
+| PS1 +Vo on mains, no XIAO | 5.0 V |
+| D1 cathode on mains, no XIAO | 5.0 V |
+| Section 5, XIAO soldered | Every check as expected; runs on mains and shows in the console |
 
 If another board reads very differently from these, compare it with a third
 one before deciding which is wrong.
