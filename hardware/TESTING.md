@@ -16,8 +16,10 @@ screws: a loose clamp can read open.
 
 ## Finding the test points
 
-Seen from the top (XIAO side), USB-C at the left edge, as in
-[`images/board-top.png`](images/board-top.png):
+Seen from the top (XIAO side), USB-C at the left edge. The shaded area is the
+mains side.
+
+![Test points, top side](images/board-test-points.png)
 
 | Point | Where |
 | --- | --- |
