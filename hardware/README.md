@@ -14,9 +14,9 @@ is the same `hue-simple-switch`, with a different way to power and wire it.
 > Build and install it at your own risk.
 >
 > - **Status: experimental.** The first boards came back from JLCPCB in
->   October 2026. One passed the checks in [TESTING.md](TESTING.md) without
->   the XIAO, including its first time on mains. None has run with the XIAO
->   or been installed in a wall yet. Expect mistakes.
+>   October 2026. One passed the checks in [TESTING.md](TESTING.md) and runs
+>   on mains with the XIAO, showing in the console. None has been installed
+>   in a wall yet. Expect mistakes.
 > - The maintainer is not an electrical engineer. This is a hobby design.
 > - Rules and wire colors differ by country and with the age of the wiring.
 >   Identify every conductor by testing it, never by its color. In some
