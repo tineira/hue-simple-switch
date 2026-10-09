@@ -13,7 +13,10 @@ is the same `hue-simple-switch`, with a different way to power and wire it.
 > breaker before opening the box, and check it is dead with a tester.
 > Build and install it at your own risk.
 >
-> - **Status: experimental.** Designed, never built and installed. Expect mistakes.
+> - **Status: experimental.** The first boards came back from JLCPCB in
+>   October 2026. One passed the checks in [TESTING.md](TESTING.md) without
+>   the XIAO, including its first time on mains. None has run with the XIAO
+>   or been installed in a wall yet. Expect mistakes.
 > - The maintainer is not an electrical engineer. This is a hobby design.
 > - Rules and wire colors differ by country and with the age of the wiring.
 >   Identify every conductor by testing it, never by its color. In some
@@ -147,6 +150,14 @@ When the panels arrive, snap the boards out at the mouse bites (bend each tab
 towards the side without parts, or cut it with side cutters) and file the stubs
 flush. Keep them clear of the mains parts: the tabs are at least 1 mm from any
 mains copper.
+
+## Check the board
+
+Before the XIAO goes on and before the board sees mains, check it with a
+multimeter: continuity on the mains side, isolation between mains and the
+low-voltage side, the input resistors, and a first power-up through a lamp in
+series. The steps, the expected readings and the readings from the first board
+are in [TESTING.md](TESTING.md).
 
 ## Solder the XIAO
 
