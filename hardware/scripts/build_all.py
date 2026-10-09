@@ -5,7 +5,7 @@ Run with KiCad's bundled Python (it has pcbnew), from the repo root:
     "%LOCALAPPDATA%\\Programs\\KiCad\\10.0\\bin\\python.exe" hardware\\scripts\\build_all.py
 
 Steps: schematic -> ERC -> PCB -> zone refill + DRC (with schematic parity)
--> Gerbers/drill zip, BOM, CPL, PDFs, STEP, renders -> enclosure STLs (if
+-> Gerbers/drill zip, BOM, CPL, PDFs, STEP, renders, test-point map -> enclosure STLs (if
 OpenSCAD is installed). Fails if ERC or DRC reports an error.
 """
 import csv
@@ -23,6 +23,7 @@ import build_sch  # noqa: E402
 import design  # noqa: E402
 import build_panel  # noqa: E402
 import footprints  # noqa: E402
+import test_points  # noqa: E402
 
 HW = os.path.normpath(os.path.join(HERE, ".."))
 KICAD = os.path.join(HW, "kicad")
@@ -118,6 +119,7 @@ def main():
         run(*args, PCB)
     run(CLI, "pcb", "render", "--side", "top", "--width", "1600", "--height", "900", "--quality", "high",
         "--background", "opaque", "--zoom", "1.6", "-o", os.path.join(img, "panel-top.png"), PANEL)
+    test_points.main()                       # callouts on board-top.png, for TESTING.md
 
     # 7. enclosure STLs
     if OPENSCAD:
