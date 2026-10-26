@@ -37,7 +37,7 @@ To power the switch from the mains inside a wall box, behind the existing switch
 
 **BOOT** (GPIO9) and **RST** (CHIP_PU) are **buttons**, not LEDs. The board has two lights:
 
-The orange LED's alphabet is **implemented** in firmware 0.2.7: `docs/specs/finished/led-status.md`.
+The orange LED's alphabet (firmware 0.2.7 and later) is below. Design history: [`docs/archive/specs/led-status.md`](docs/archive/specs/led-status.md).
 
 | Light | Where | Driven by |
 | --- | --- | --- |
@@ -67,7 +67,7 @@ Burst (#2–#4): 100 ms on, 200 ms between flashes, 1400 ms pause. The armed fla
 | Blinking | LiPo battery connected and charging over USB. |
 | Off with USB and battery | Charge complete (or no charge cycle). |
 
-Contract: `hue-switch-console/docs/definitions.md` and `docs/device-api.md`.
+Contract: `hue-switch-console/docs/definitions.md`, `docs/device-api.md` and `docs/usb-protocol.md`.
 
 ## Setup
 
@@ -91,7 +91,7 @@ A push to `main` **is a release**. `.github/workflows/firmware.yml` builds the p
 
 - `FIRMWARE_VERSION` in `console.h` is the version the console shows. Bump it for any change a board should pick up, and add its entry to `CHANGELOG.md` in the same commit. A push without a bump re-sends the notes only (`409 version_exists` warning).
 - `THIRD_PARTY.json` lists the open-source components linked into the image (the core, ESP-IDF, and every library pinned in `sketch.yaml`), with version, SPDX license and a link to the license at that version. CI sends it as the release `credits` for the console's Credits page, and fails if any `platform:` or `libraries:` entry in `sketch.yaml` is missing from it or has a different version (`scripts/check-credits.py`, run on every pull request too). Update it in the same commit as any core or library bump.
-- Update over Wi-Fi (0.6.0+, console `docs/specs/ota.md`): when the owner presses Update, the next poll's `200` carries `ota` (version, path, sha256, size). After the poll's connection is closed, the console task downloads `firmware.bin` from the console URL in NVS, writes it to the inactive app slot while hashing it, checks length and sha256, and restarts into it. It waits for the next poll while an input is pressed or a Hue call is queued or running. The new image confirms itself after its first `200`/`204` poll; a restart before that makes the bootloader go back to the old one, which reports `ota_error=boot`. A failure is reported once as `ota_error` and retried at most hourly (a download cut off by a power cut or restart counts, reported as `size` at the next boot, since 0.6.1) (`size`/`sha` from a bad image: not until reboot). NVS is never erased. Boards before 0.6.0 need one USB update first.
+- Update over Wi-Fi (0.6.0+; wire: console `docs/device-api.md`, design history: console `docs/archive/specs/ota.md`): when the owner presses Update, the next poll's `200` carries `ota` (version, path, sha256, size). After the poll's connection is closed, the console task downloads `firmware.bin` from the console URL in NVS, writes it to the inactive app slot while hashing it, checks length and sha256, and restarts into it. It waits for the next poll while an input is pressed or a Hue call is queued or running. The new image confirms itself after its first `200`/`204` poll; a restart before that makes the bootloader go back to the old one, which reports `ota_error=boot`. A failure is reported once as `ota_error` and retried at most hourly (a download cut off by a power cut or restart counts, reported as `size` at the next boot, since 0.6.1) (`size`/`sha` from a bad image: not until reboot). NVS is never erased. Boards before 0.6.0 need one USB update first.
 - Image layout and offsets: [`docs/firmware-artifacts.md`](docs/firmware-artifacts.md).
 - The pipeline needs the `FIRMWARE_UPLOAD_TOKEN` secret in this repo. Setup and troubleshooting: the console repo's `README.md`, "Firmware release pipeline".
 

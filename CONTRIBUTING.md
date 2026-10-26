@@ -5,12 +5,14 @@ Thanks for helping. This is the firmware for the **Simple** switch (XIAO ESP32-C
 - [`hue-switch-console`](https://github.com/tineira/hue-switch-console) is the hub. It owns the contract every switch implements, and its [CONTRIBUTING.md](https://github.com/tineira/hue-switch-console/blob/main/CONTRIBUTING.md) has the project-wide rules.
 - [`hue-round-switch`](https://github.com/tineira/hue-round-switch) is the other switch. It shares the contract with this one, not the code.
 
+Open work: GitHub issues.
+
 Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md). Report problems to [conduct@tineira.com](mailto:conduct@tineira.com).
 
 ## Ground rules
 
 - **English everywhere:** code comments, docs, commit messages, issues.
-- **The console owns the contract.** What this firmware sends to and expects from the console (endpoints, JSON fields, error handling, the NVS keys the console writes over USB) follows the console's `docs/device-api.md` and `docs/definitions.md`. If your change needs a protocol change, open a "Contract change" issue in the console repo first. Do not invent one here.
+- **The console owns the contract.** What this firmware sends to and expects from the console (endpoints, JSON fields, error handling, the NVS keys the console writes over USB) follows the console's [`docs/device-api.md`](https://github.com/tineira/hue-switch-console/blob/main/docs/device-api.md), [`docs/usb-protocol.md`](https://github.com/tineira/hue-switch-console/blob/main/docs/usb-protocol.md) and [`docs/definitions.md`](https://github.com/tineira/hue-switch-console/blob/main/docs/definitions.md). If your change needs a protocol change, open a "Contract change" issue in the console repo first. Do not invent one here.
 - **Never break the console contract for boards already on the wall.** The console ships a change first and stays backward compatible.
 - **No secrets in the tree.** `config.h` is gitignored and holds only `SERIAL_DEBUG`. Wi-Fi, the console URL and the device token are written over USB by the console, never compiled in.
 
