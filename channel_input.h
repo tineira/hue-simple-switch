@@ -30,7 +30,7 @@ struct ChannelRuntime {
 // Flip set (the lever sets on or off): closed = on; opened = off after the window; opened and
 // closed again inside the window = double_click (on when there is no double_click recipe).
 //
-// Flip toggle (each flip toggles; console docs/specs/toggle-on-flip.md): the lever position
+// Flip toggle (each flip toggles; console docs/archive/specs/toggle-on-flip.md): the lever position
 // means nothing. A flip posts its event (closed -> on, open -> off; the console maps both to
 // toggle) at once when there is no double_click recipe. With one, a flip either way starts the
 // window: a second flip inside it is double_click, and an expired window posts the first flip.

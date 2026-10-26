@@ -21,7 +21,7 @@
 //     none may be merged). One that waited more than kHueJobStaleMs for the Bridge is dropped.
 //   - Release: queued after the hold it ends, so a dim stop always follows its start. It has a
 //     slot of its own and never expires.
-// Hold to dim cycle (console docs/specs/simple-dim-cycle.md): the hold job reads the target
+// Hold to dim cycle (console docs/archive/specs/simple-dim-cycle.md): the hold job reads the target
 // once and starts the first leg; gDim records when the next leg is due. The task waits for its
 // next job or for the earliest due turn-around, whichever comes first, and runs a due
 // turn-around as one PUT between jobs, so a cycle never blocks other channels and they delay it

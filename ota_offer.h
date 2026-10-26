@@ -1,6 +1,6 @@
 #pragma once
 
-// The `ota` block of a config poll's 200 body (console docs/specs/ota.md): parsed into gOtaOffer.
+// The `ota` block of a config poll's 200 body (console docs/device-api.md, `ota`): parsed into gOtaOffer.
 // No device includes, so test/host builds it; the download and install are in ota.h. LOG and
 // LOGLN come from the includer (log.h on the board).
 

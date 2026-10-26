@@ -208,7 +208,7 @@ inline bool hueSetOn(const HueCreds &c, const char *rtype, const char *rid, bool
 
 // Hold to dim: the Bridge runs each leg (dimming_delta over dynamics.duration); the switch
 // starts the legs, turns around at the ends while the button is held, and stops on release
-// (console docs/specs/simple-dim-cycle.md). Tunable after testing on the wall.
+// (console docs/archive/specs/simple-dim-cycle.md). Tunable after testing on the wall.
 static const unsigned long kDimSweepMs = 3000;    // full sweep, minimum -> 100 %
 static const unsigned long kDimMinLegMs = 150;    // shortest leg, however little distance is left
 static const unsigned long kDimDwellMs = 250;     // pause at each end before turning around

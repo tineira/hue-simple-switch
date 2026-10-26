@@ -1,6 +1,6 @@
 #pragma once
 
-// Update over Wi-Fi (console docs/specs/ota.md §4). Console task only, except otaBootCheck (setup).
+// Update over Wi-Fi (console docs/archive/specs/ota.md §4). Console task only, except otaBootCheck (setup).
 //
 // A poll's 200 body may carry `ota` { version, url, sha256, size }. The console task parses it
 // before the rev check (the body is dropped first), then, after the poll's connection is closed,

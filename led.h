@@ -6,7 +6,7 @@
 #include "usb.h"
 
 // Orange LED (GPIO15), active low: cathode on the pin, anode to 3.3 V.
-// LOW = on, HIGH = off. Spec: docs/specs/finished/led-status.md.
+// LOW = on, HIGH = off. Behavior: README "Orange LED"; history: docs/archive/specs/led-status.md.
 // The 50 ms timer calls ledTick while hueHttp blocks the loop.
 
 static const unsigned long PULSE_ON = 100;
