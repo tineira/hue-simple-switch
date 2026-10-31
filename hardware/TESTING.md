@@ -1,8 +1,15 @@
 # Check a board before it goes on mains
 
+> [!WARNING]
+> **Passing these checks does not show that a board is safe.** A multimeter did
+> not find the known defect: GND copper 1.5 mm from mains copper instead of the
+> intended 6 mm. Boards of the current design must not go on mains, so sections
+> 4 and 5 do not apply to them. See the [hardware README](README.md). This
+> procedure will be revised for the revised board.
+
 Checks for an assembled carrier board, done with a multimeter, before it is
 connected to mains. They find assembly faults (a short, a missing part, a
-reversed diode) and confirm the mains side is isolated from the low-voltage
+reversed diode) and hard shorts between the mains side and the low-voltage
 side. Do them on every board, not one per batch.
 
 Sections 1 to 3 are done **without mains and without USB**. Section 4 is the
@@ -62,12 +69,12 @@ The most important section. Ω, highest range. Hold the probes by the plastic
 only and keep the board on a dry, insulating surface: fingers on both probes
 read a few MΩ by themselves.
 
-Every reading must **rise slowly and end at OL or tens of MΩ, the same on
-every point**. The points on the low-voltage side are joined to each other
-through kΩ resistors, so these are all one measurement: mains to the whole
-low-voltage side, across the HLK-PM01. On the first boards, with a Fluke 83,
-it rises for about a minute and ends near 24 MΩ, with or without the XIAO;
-that is the module, not the board.
+Every reading must **rise slowly and end high, the same on every point**. The
+points on the low-voltage side are joined to each other through kΩ resistors,
+so these are all one measurement: mains to the whole low-voltage side. On the
+first board, with a Fluke 83, it rose for about a minute and ended near 24 MΩ,
+with or without the XIAO. That is a recorded reading, not a pass value: its
+source is unknown, and the HLK-PM01's datasheet gives over 100 MΩ at 500 V DC.
 
 A reading that stops at a fixed value clearly lower than on other boards is a
 leak. Clean the board with isopropyl alcohol (90 % or more), let it dry for an
@@ -144,23 +151,25 @@ does not read open: the module's own regulation circuit is across it.
 | On mains: D1 cathode to U1 GND | V DC, 20 V range | 4.6 to 4.9 V | 0 V |
 | On mains: U1 3V3 to U1 GND | V DC, 20 V range | About 3.3 V | 0 V |
 
+The on-mains voltages above are expected values only. None were recorded on the
+first board.
+
 ## Reference: first board
 
-Board 1 of the first JLCPCB batch, 2026-10, measured with a Fluke 83.
+Board 1 of the first JLCPCB batch, 2026-10, measured with a Fluke 83. This board
+later failed; the cause is not proven. These are one board's readings, not pass
+values.
 
 | Check | Reading |
 | --- | --- |
 | J1 L to J1 N | Open, no beep |
-| Isolation, every point in section 2 | Rises for about a minute, ends near 24 MΩ (same on a second board) |
+| Isolation, every point in section 2 | Rises for about a minute, ends near 24 MΩ (not a pass value, see section 2) |
 | PS1 +Vo to −Vo | 1.6 kΩ |
 | U1 5V to U1 GND, no XIAO | 2.5 MΩ (starts high, settles); probes swapped 38 kΩ |
 | Input terminal to its own U1 pad | 1 kΩ |
 | PS1 +Vo on mains, no XIAO | 5.0 V |
 | D1 cathode on mains, no XIAO | 5.0 V |
-| Section 5, XIAO soldered | Every check as expected; runs on mains and shows in the console |
-
-If another board reads very differently from these, compare it with a third
-one before deciding which is wrong.
+| Section 5, XIAO soldered | Voltages not recorded. Ran on mains and showed in the console, then later failed |
 
 ## Mistakes that look like faults
 

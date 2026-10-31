@@ -5,3 +5,13 @@ fp-info-cache
 _autosave-*
 ~*.lck
 __pycache__/
+
+# Withdrawn order files: isolation defect, revised board pending. build_all
+# still writes them; do not commit them.
+fab/hue-simple-switch-mains-gerbers.zip
+fab/hue-simple-switch-mains-bom.csv
+fab/hue-simple-switch-mains-cpl.csv
+fab/jlcpcb/hue-simple-switch-mains-panel-gerbers.zip
+fab/jlcpcb/hue-simple-switch-mains-panel-bom.csv
+fab/jlcpcb/hue-simple-switch-mains-panel-cpl.csv
+fab/jlcpcb/hue-simple-switch-mains-single-bom.csv

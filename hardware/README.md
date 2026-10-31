@@ -13,10 +13,13 @@ is the same `hue-simple-switch`, with a different way to power and wire it.
 > breaker before opening the box, and check it is dead with a tester.
 > Build and install it at your own risk.
 >
+> - **Known isolation defect: do not build this board.** GND copper sits
+>   1.5 mm from mains copper on both layers, not the intended 6 mm. The order
+>   files are withdrawn and a revised board is pending.
 > - **Status: experimental.** The first boards came back from JLCPCB in
->   October 2026. One passed the checks in [TESTING.md](TESTING.md) and runs
->   on mains with the XIAO, showing in the console. None has been installed
->   in a wall yet. Expect mistakes.
+>   October 2026. One passed the checks in [TESTING.md](TESTING.md) and ran
+>   on mains with the XIAO, showing in the console. That board later failed.
+>   The cause is not proven. None has been installed in a wall.
 > - The maintainer is not an electrical engineer. This is a hobby design.
 > - Rules and wire colors differ by country and with the age of the wiring.
 >   Identify every conductor by testing it, never by its color. In some
@@ -51,10 +54,11 @@ The pin map is the firmware's (see the repo [README](../README.md) and
 with the Hue Bridge) and RESET are the XIAO's own buttons, reachable through the
 window in the lid.
 
-Isolation: everything connected to L or N is kept at least **6 mm** (clearance
-and creepage, checked by DRC) from everything else. A routed slot under the
-power module separates its AC pins from the XIAO. The only link between the two
-sides is the HLK-PM01 itself.
+Isolation: the design target is at least **6 mm** of clearance and creepage from
+everything connected to L or N to everything else. **The current board does not
+meet it:** the GND pour is 1.5 mm from mains copper on both layers, and DRC did
+not report this. A routed slot under the power module separates its AC pins from
+the XIAO. The HLK-PM01 is the only intended link between the two sides.
 
 The console's build guide has a short "can I use it?" check, a before-and-after wiring drawing and the installation order to show your electrician: [hue.tineira.com/how-to](https://hue.tineira.com/how-to?product=simple#in-wall).
 
@@ -96,60 +100,14 @@ metal box, Wi-Fi range drops a lot; plastic boxes are better.
 
 ## Order assembled boards (JLCPCB)
 
-JLCPCB assembles everything except the XIAO, on a panel of three boards.
-All SMD parts are on the XIAO side (one-sided assembly); the power module, fuse
-and terminals are through-hole on the other side.
+> [!CAUTION]
+> **Do not order this board.** The Gerbers, BOM and placement files were
+> withdrawn because of the isolation defect described under [What is on the
+> board](#what-is-on-the-board). A revised board is pending. Do not generate
+> new order files from `kicad/`: they would carry the same defect.
 
-![3-board panel](images/panel-top.png)
-
-1. At jlcpcb.com, upload
-   [`fab/jlcpcb/hue-simple-switch-mains-panel-gerbers.zip`](fab/jlcpcb/hue-simple-switch-mains-panel-gerbers.zip).
-   The panel is 144 × 71 mm (three boards, a frame with fiducials and tooling
-   holes; each board held on six tabs with mouse bites: two on each round end
-   and one on each straight side, so the row stays stiff during assembly). Defaults: 2 layers, 1.6 mm FR-4,
-   1 oz copper, HASL. Choose **Panel by customer** (the frame is already there,
-   so no edge rails or panelizing by JLCPCB) and quantity **5** = 15 boards.
-2. Turn on PCB Assembly, top side, and upload
-   [`fab/jlcpcb/hue-simple-switch-mains-panel-bom.csv`](fab/jlcpcb/hue-simple-switch-mains-panel-bom.csv)
-   and [`fab/jlcpcb/hue-simple-switch-mains-panel-cpl.csv`](fab/jlcpcb/hue-simple-switch-mains-panel-cpl.csv).
-   Designators end in the board number (`R1_1`, `R1_2`, `R1_3`). The XIAO (U1)
-   is not in them. Add through-hole assembly for PS1, F1 and J1-J3.
-3. In the preview, check the parts listed under [Check in JLCPCB's
-   preview](#check-in-jlcpcbs-preview). The CPL gives each part's centre (the
-   middle of its pads), so parts should sit on their pads; rotate any that do not.
-4. Small SMD parts need a few spares for machine loss (attrition). JLCPCB takes
-   the basic resistors and capacitors from its stock; for the varistor (an
-   extended part) have a couple more than 15 in your parts inventory.
-
-To have JLCPCB assemble single boards instead of the panel, upload
-[`fab/hue-simple-switch-mains-gerbers.zip`](fab/hue-simple-switch-mains-gerbers.zip),
-[`fab/jlcpcb/hue-simple-switch-mains-single-bom.csv`](fab/jlcpcb/hue-simple-switch-mains-single-bom.csv)
-(no XIAO) and [`fab/hue-simple-switch-mains-cpl.csv`](fab/hue-simple-switch-mains-cpl.csv).
-The board is under JLCPCB's 70 × 70 mm minimum, so they add edge rails at extra cost.
-
-For hand assembly, the single board is in
-[`fab/hue-simple-switch-mains-gerbers.zip`](fab/hue-simple-switch-mains-gerbers.zip)
-with [`fab/hue-simple-switch-mains-bom.csv`](fab/hue-simple-switch-mains-bom.csv)
-and [`fab/hue-simple-switch-mains-cpl.csv`](fab/hue-simple-switch-mains-cpl.csv).
-
-### Check in JLCPCB's preview
-
-Parts with a polarity or a direction that matters:
-
-| Part | What must be right |
-| --- | --- |
-| D1, SS34 diode (top) | Cathode band towards pad 1, the left pad (towards C2 and the board's left edge). Reversed, the XIAO gets no power |
-| PS1, HLK-PM01 (bottom) | The two pins 5 mm apart (AC) at the mains end, next to the fuse and RV1; the two pins 15.4 mm apart (DC) at the other end. The pin pattern only fits one way, so if the preview shows pins off the holes, rotate it until all four land |
-| J1, J2, J3, screw terminals (bottom) | The wire openings face the board edge: J1 and J2 towards the straight right edge, J3 towards the round end. Turned 180° they still fit the holes but face inwards, so check this one by eye (tilt the 3D view: the side you see from the middle of the board must be the back, not the metal clamps). JLCPCB's models for J2 and J3 are drawn the other way round from KiCad's, so the CPL already adds 180° to those two |
-| U1, XIAO (you solder it) | Component side up, USB-C over the left board edge |
-
-Not polarised: every resistor, the 10 nF and 22 µF ceramic capacitors, the
-varistor RV1 and the fuse F1. They only need to sit on their pads.
-
-When the panels arrive, snap the boards out at the mouse bites (bend each tab
-towards the side without parts, or cut it with side cutters) and file the stubs
-flush. Keep them clear of the mains parts: the tabs are at least 1 mm from any
-mains copper.
+Boards already made from the withdrawn files carry the same defect. Do not put
+them on mains.
 
 ## Check the board
 
@@ -157,7 +115,8 @@ Before the XIAO goes on and before the board sees mains, check it with a
 multimeter: continuity on the mains side, isolation between mains and the
 low-voltage side, the input resistors, and a first power-up through a lamp in
 series. The steps, the expected readings and the readings from the first board
-are in [TESTING.md](TESTING.md).
+are in [TESTING.md](TESTING.md). Passing them does not show that a board is safe:
+a multimeter did not find the 1.5 mm gap.
 
 ## Solder the XIAO
 
@@ -265,8 +224,11 @@ Gerber zip, BOM, CPL, PDFs, STEP, renders, builds the 3-board panel
 ([`scripts/build_panel.py`](scripts/build_panel.py)) and checks it with DRC
 too, exports its JLCPCB files into `fab/jlcpcb/`, and, when OpenSCAD is
 installed, the STLs. Reports: `fab/erc.rpt`, `fab/drc.rpt` (the remaining warnings are
-silkscreen clipped at the board edge, which the fab trims anyway). The custom
-6 mm rule is in `kicad/hue-simple-switch-mains.kicad_dru`.
+silkscreen clipped at the board edge, which the fab trims anyway). The 6 mm
+rules are in `kicad/hue-simple-switch-mains.kicad_dru`. The rules that the
+withdrawn files were built with did not apply to copper pours, so a clean DRC
+from them says nothing about the GND gap. The Gerbers, BOMs and CPLs are
+gitignored until the revised board is released.
 
 You can also open `kicad/hue-simple-switch-mains.kicad_pro` in KiCad 10 to look
 around; changes made there are lost at the next regeneration.
