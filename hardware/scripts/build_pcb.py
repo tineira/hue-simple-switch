@@ -280,11 +280,11 @@ DRU = """(version 1)
 # pollution degree 2, with margin. The switch wires on J2/J3 are touchable.
 (rule "Mains to low voltage clearance"
   (constraint clearance (min 6.0mm))
-  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains' && B.Pad_Type != 'NPTH, mechanical'"))
+  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains' && (B.Type != 'Pad' || B.Pad_Type != 'NPTH, mechanical')"))
 
 (rule "Mains to low voltage creepage"
   (constraint creepage (min 6.0mm))
-  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains' && B.Pad_Type != 'NPTH, mechanical'"))
+  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains' && (B.Type != 'Pad' || B.Pad_Type != 'NPTH, mechanical')"))
 
 # Unplated holes (the panel's mouse bites) become board edge once the boards
 # are snapped out: same margin as the edge.
