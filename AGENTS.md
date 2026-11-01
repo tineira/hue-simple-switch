@@ -89,6 +89,8 @@ Changelog: when `FIRMWARE_VERSION` changes, add a `### X.Y.Z — YYYY-MM-DD` hea
 
 Mains carrier board (XIAO + Hi-Link HLK-PM01 in a wall box) and its printable enclosure. See `hardware/README.md`.
 
+`hardware/v2-fit/` is the revised board, with its own generators (`build.py`, then `panel.py`, with KiCad 10's Python) and no schematic. Prototypes were ordered on 2026-11-01; it is untested, so the console's guide keeps its "do not build" warning until they pass. The rules below describe v1: `design.py`, `layout.py` and `build_all.py` still build the withdrawn board, which stops on its known copper defect.
+
 - Everything in `hardware/kicad`, `hardware/fab`, `hardware/images` and the STLs is generated. Edit `hardware/scripts/design.py` (parts, nets, LCSC numbers) and `hardware/scripts/layout.py` (placement, copper), or `hardware/enclosure/enclosure.scad`, then run `build_all.py` with KiCad 10's Python (`%LOCALAPPDATA%/Programs/KiCad/10.0/bin/python.exe hardware/scripts/build_all.py`). It stops on any ERC or DRC error (DRC runs with schematic parity).
 - Footprints come from the manufacturer's datasheet, never from a distributor's package label (LCSC listed the 8 x 6.3 mm TDK CU3225 varistor as "3.2x2.5mm"). Parts without a matching KiCad footprint are drawn in `hardware/scripts/footprints.py`, with the datasheet numbers quoted there.
 - JLCPCB assembly uses the 3-board panel (`hardware/scripts/build_panel.py`, files in `hardware/fab/jlcpcb/`). Keep every SMD part on the top (XIAO) side. The CPL gives each part's pad centre, not the footprint origin (KiCad puts through-hole origins on pin 1).
