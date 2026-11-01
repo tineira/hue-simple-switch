@@ -16,6 +16,9 @@ is the same `hue-simple-switch`, with a different way to power and wire it.
 > - **Known isolation defect: do not build this board.** GND copper sits
 >   1.5 mm from mains copper on both layers, not the intended 6 mm. The order
 >   files are withdrawn and a revised board is pending.
+> - **Revised board, untested: do not build it yet.** [`v2-fit/`](v2-fit/REPORT.md)
+>   holds the revised design and its order files. Prototypes were ordered on
+>   2026-11-01 and none has been assembled or tested.
 > - **Status: experimental.** The first boards came back from JLCPCB in
 >   October 2026. One passed the checks in [TESTING.md](TESTING.md) and ran
 >   on mains with the XIAO, showing in the console. That board later failed.
@@ -104,7 +107,9 @@ metal box, Wi-Fi range drops a lot; plastic boxes are better.
 > **Do not order this board.** The Gerbers, BOM and placement files were
 > withdrawn because of the isolation defect described under [What is on the
 > board](#what-is-on-the-board). A revised board is pending. Do not generate
-> new order files from `kicad/`: they would carry the same defect.
+> new order files from `kicad/`: they would carry the same defect. The revised
+> board in [`v2-fit/`](v2-fit/REPORT.md) is untested: its order files are there
+> for the record, not for you to order yet.
 
 Boards already made from the withdrawn files carry the same defect. Do not put
 them on mains.

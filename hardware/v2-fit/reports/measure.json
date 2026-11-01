@@ -1,0 +1,156 @@
+{
+ "smallest_copper": [
+  [
+   6.135,
+   "F1.1",
+   "J2.MP",
+   "same layer"
+  ],
+  [
+   6.15,
+   "RV1.1",
+   "J2.MP",
+   "same layer"
+  ],
+  [
+   7.135,
+   "F1.1",
+   "J2.1",
+   "same layer"
+  ],
+  [
+   7.135,
+   "F1.2",
+   "J2.5",
+   "same layer"
+  ],
+  [
+   7.135,
+   "F1.2",
+   "J2.6",
+   "same layer"
+  ],
+  [
+   7.137,
+   "F1.2",
+   "J2.4",
+   "same layer"
+  ],
+  [
+   7.15,
+   "track AC_L F",
+   "J2.MP",
+   "same layer"
+  ],
+  [
+   7.164,
+   "F1.2",
+   "J2.MP",
+   "same layer"
+  ],
+  [
+   7.198,
+   "F1.1",
+   "J2.2",
+   "same layer"
+  ],
+  [
+   7.312,
+   "F1.2",
+   "J2.7",
+   "same layer"
+  ],
+  [
+   7.452,
+   "F1.2",
+   "J2.3",
+   "same layer"
+  ],
+  [
+   7.496,
+   "RV1.1",
+   "J2.7",
+   "same layer"
+  ],
+  [
+   7.721,
+   "F1.1",
+   "J2.3",
+   "same layer"
+  ],
+  [
+   8.245,
+   "track AC_L F",
+   "J2.7",
+   "same layer"
+  ]
+ ],
+ "mains_to_edge": [
+  [
+   1.0,
+   "F1.1"
+  ],
+  [
+   1.0,
+   "F1.1"
+  ],
+  [
+   1.0,
+   "F1.1"
+  ]
+ ],
+ "mains_to_slot": [
+  [
+   1.035,
+   "F1.1"
+  ],
+  [
+   1.035,
+   "F1.1"
+  ],
+  [
+   1.035,
+   "F1.1"
+  ]
+ ],
+ "d3": {
+  "F1 body to XIAO board": 9.196,
+  "F1 body to USB-C": 21.136,
+  "F1 body to socket D0-D5": 10.534,
+  "F1 body to socket 5V GND": 18.33,
+  "RV1 body to XIAO board": 8.307,
+  "RV1 body to USB-C": 21.338,
+  "RV1 body to socket D0-D5": 9.08,
+  "RV1 body to socket 5V GND": 22.059,
+  "J2 body to socket D0-D5, plan": [
+   0,
+   0.3249999999999993
+  ],
+  "J2 body to socket 5V GND, plan": [
+   8.040000000000001,
+   0
+  ],
+  "room between mated J2 and XIAO": 2.8,
+  "J2 wire entry to XIAO left edge, plan": 3.79,
+  "J2 wire entry to XIAO lower edge, plan": 5.96,
+  "USB margin": 3.7,
+  "mains copper on the board to XIAO underside": 12.031
+ },
+ "stack": {
+  "ps1_bottom": 0.0,
+  "ps1_top": 15.0,
+  "board_bottom": 15.0,
+  "board_top": 16.6,
+  "j2_top": 25.200000000000003,
+  "f1_top": 19.720000000000002,
+  "rv1_top": 21.3,
+  "socket_top": 25.5,
+  "xiao_bottom": 28.0,
+  "xiao_top": 29.0,
+  "header_tail_top": 30.0,
+  "usb_top": 32.3,
+  "box_top": 36.0,
+  "tail_gap_to_ps1": null,
+  "ps1_pin_above_top": 3.4
+ }
+}

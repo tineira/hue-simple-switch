@@ -1,0 +1,24 @@
+{
+ "scratch": {
+  "violations": {
+   "items_not_allowed": 6,
+   "creepage": 6,
+   "clearance": 9,
+   "hole_clearance": 6,
+   "npth_inside_courtyard": 45,
+   "courtyards_overlap": 36,
+   "copper_edge_clearance": 6,
+   "track_dangling": 12,
+   "lib_footprint_issues": 66
+  },
+  "unconnected": 12,
+  "parity": 0
+ },
+ "rule_hits": {
+  "Mains to low voltage clearance": 9,
+  "Mains to low voltage creepage": 6,
+  "Mains to board edge and slot": 6,
+  "No low voltage copper in the mains area": 6,
+  "Mains to unplated holes": 6
+ }
+}

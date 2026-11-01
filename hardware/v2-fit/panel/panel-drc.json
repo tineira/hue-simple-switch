@@ -1,0 +1,2891 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-01T08:24:57",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "v2-fit-panel.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB61",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 117.15
+                    },
+                    "uuid": "07f584a0-9e92-4628-a584-e21d81da2767"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R11_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 82.45
+                    },
+                    "uuid": "0a7d9077-3014-4dae-8b14-8abf06a59828"
+                },
+                {
+                    "description": "Footprint C11_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 82.45
+                    },
+                    "uuid": "280c4026-aaf0-44d9-ab7a-ba963b732c88"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R11_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 82.45
+                    },
+                    "uuid": "0a7d9077-3014-4dae-8b14-8abf06a59828"
+                },
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "f309bc57-a65a-4244-a8c3-06517d2e66ec"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB46",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 108.5
+                    },
+                    "uuid": "13637b68-e860-4303-915c-3b62789dcdbe"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB37",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 91.5
+                    },
+                    "uuid": "7802c11a-cb8b-4c69-b8fb-87f8f4f5bbb2"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB38",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 92.5
+                    },
+                    "uuid": "39c28742-a1f1-4f11-8447-b1c50bb07bd7"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB44",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 106.5
+                    },
+                    "uuid": "eecdf92f-9a2b-4ead-943f-d449bf041667"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB42",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 96.5
+                    },
+                    "uuid": "53f0e09a-8714-4813-bf67-5bb8872ac21f"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB40",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 94.5
+                    },
+                    "uuid": "10c232c7-e335-4ea8-bbe0-36d107bd2df6"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB41",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 95.5
+                    },
+                    "uuid": "547c323a-f026-4929-802d-286f73bc570e"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB45",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 107.5
+                    },
+                    "uuid": "3a66588d-c271-47f5-836a-d84669283ebb"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB39",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 93.5
+                    },
+                    "uuid": "c72f2e6e-1a32-41df-8f74-9fb047bd53e8"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB43",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 105.5
+                    },
+                    "uuid": "0d3cb3a3-99bf-4071-a347-009aad66c6ed"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB21",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 81.85
+                    },
+                    "uuid": "9f60f38c-1e8e-47c4-91ad-abea2895d131"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C11_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 82.45
+                    },
+                    "uuid": "280c4026-aaf0-44d9-ab7a-ba963b732c88"
+                },
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "7746dfce-9d36-4095-bb04-b07d9cfdc5fe"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 80.45
+                    },
+                    "uuid": "29271194-0ab8-4c8c-95e9-13ef3deeaac4"
+                },
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "7746dfce-9d36-4095-bb04-b07d9cfdc5fe"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 80.45
+                    },
+                    "uuid": "29271194-0ab8-4c8c-95e9-13ef3deeaac4"
+                },
+                {
+                    "description": "Footprint R12_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 80.45
+                    },
+                    "uuid": "9c86022f-b6a2-46f7-90d7-5a69c2b66a84"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C16_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 98.1
+                    },
+                    "uuid": "2d007a8c-13c1-491c-a0e2-354e1168f892"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "dcab5083-c94b-470a-a263-8a038a1f5050"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "30e46641-e801-4824-b5a1-e6eae559238b"
+                },
+                {
+                    "description": "Footprint R11_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 108.1
+                    },
+                    "uuid": "5ba6139f-16f6-4841-bc26-992b73396726"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "30e46641-e801-4824-b5a1-e6eae559238b"
+                },
+                {
+                    "description": "Footprint R12_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 106.1
+                    },
+                    "uuid": "ae55efa2-2f01-42e5-aaae-2a2ddcb83f92"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "30e46641-e801-4824-b5a1-e6eae559238b"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "dcab5083-c94b-470a-a263-8a038a1f5050"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "30e46641-e801-4824-b5a1-e6eae559238b"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "eb4cbde8-ab66-4965-ae57-91e064b8bb0d"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R11_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 133.75
+                    },
+                    "uuid": "3f42b1da-379b-4c1c-87f9-ccd54934bc59"
+                },
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "54fce267-5848-4d6d-8e68-f95fa2ab0bfe"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R11_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 133.75
+                    },
+                    "uuid": "3f42b1da-379b-4c1c-87f9-ccd54934bc59"
+                },
+                {
+                    "description": "Footprint C11_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 133.75
+                    },
+                    "uuid": "857e850f-1c57-46f0-986e-a7ccf75ed465"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 131.75
+                    },
+                    "uuid": "3ff76d9a-74f5-4daa-8415-9410afa5cc52"
+                },
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "768bdd5f-e221-4e5d-a8d4-e7ace0cc81e2"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 131.75
+                    },
+                    "uuid": "3ff76d9a-74f5-4daa-8415-9410afa5cc52"
+                },
+                {
+                    "description": "Footprint R12_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 131.75
+                    },
+                    "uuid": "acbf1d2d-0309-4213-a059-2958215e4669"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB38",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 92.5
+                    },
+                    "uuid": "39c28742-a1f1-4f11-8447-b1c50bb07bd7"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "eb4cbde8-ab66-4965-ae57-91e064b8bb0d"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB42",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 96.5
+                    },
+                    "uuid": "53f0e09a-8714-4813-bf67-5bb8872ac21f"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "eb4cbde8-ab66-4965-ae57-91e064b8bb0d"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB69",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 133.15
+                    },
+                    "uuid": "9c80deca-6a3e-4941-8e03-9411ff13cad2"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB65",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 121.15
+                    },
+                    "uuid": "a2e661d2-4fe7-444a-93a9-f4dd5464a4f4"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "89ba7778-f0d4-4deb-b84e-7d9b897edb27"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB65",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 121.15
+                    },
+                    "uuid": "a2e661d2-4fe7-444a-93a9-f4dd5464a4f4"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB70",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 134.15
+                    },
+                    "uuid": "2f4ab70b-b0a4-4985-b3e0-2dc45061f3a8"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB68",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 132.15
+                    },
+                    "uuid": "3284732e-9279-40d9-99ef-9e6b649cddc7"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB16",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 68.85
+                    },
+                    "uuid": "7d1374c4-86f7-4377-826c-9dc243c4c023"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "a52a2391-8f62-401c-82af-0786dd31a063"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB16",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 68.85
+                    },
+                    "uuid": "7d1374c4-86f7-4377-826c-9dc243c4c023"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C11_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 108.1
+                    },
+                    "uuid": "53d38304-05ec-41d0-922a-19d8f7738a53"
+                },
+                {
+                    "description": "Footprint R11_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 108.1
+                    },
+                    "uuid": "5ba6139f-16f6-4841-bc26-992b73396726"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C11_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 108.1
+                    },
+                    "uuid": "53d38304-05ec-41d0-922a-19d8f7738a53"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "dcab5083-c94b-470a-a263-8a038a1f5050"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "54fce267-5848-4d6d-8e68-f95fa2ab0bfe"
+                },
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "768bdd5f-e221-4e5d-a8d4-e7ace0cc81e2"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "54fce267-5848-4d6d-8e68-f95fa2ab0bfe"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "89ba7778-f0d4-4deb-b84e-7d9b897edb27"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "54fce267-5848-4d6d-8e68-f95fa2ab0bfe"
+                },
+                {
+                    "description": "Footprint R12_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 131.75
+                    },
+                    "uuid": "acbf1d2d-0309-4213-a059-2958215e4669"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C15_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 125.75
+                    },
+                    "uuid": "590ecd3b-9470-4fd7-a185-d968d6530cd6"
+                },
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "768bdd5f-e221-4e5d-a8d4-e7ace0cc81e2"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB40",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 94.5
+                    },
+                    "uuid": "10c232c7-e335-4ea8-bbe0-36d107bd2df6"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "eb4cbde8-ab66-4965-ae57-91e064b8bb0d"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB66",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 122.15
+                    },
+                    "uuid": "b420c38b-c033-4293-ba09-aa318a050815"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "89ba7778-f0d4-4deb-b84e-7d9b897edb27"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB66",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 122.15
+                    },
+                    "uuid": "b420c38b-c033-4293-ba09-aa318a050815"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB41",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 95.5
+                    },
+                    "uuid": "547c323a-f026-4929-802d-286f73bc570e"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "eb4cbde8-ab66-4965-ae57-91e064b8bb0d"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 106.1
+                    },
+                    "uuid": "7098a11e-3f8c-42bc-b1e6-e044ebb43caa"
+                },
+                {
+                    "description": "Footprint R12_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 106.1
+                    },
+                    "uuid": "ae55efa2-2f01-42e5-aaae-2a2ddcb83f92"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 106.1
+                    },
+                    "uuid": "7098a11e-3f8c-42bc-b1e6-e044ebb43caa"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "dcab5083-c94b-470a-a263-8a038a1f5050"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C15_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 74.45
+                    },
+                    "uuid": "74108e2a-7f34-4e9f-930c-281ca882243c"
+                },
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "7746dfce-9d36-4095-bb04-b07d9cfdc5fe"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "768bdd5f-e221-4e5d-a8d4-e7ace0cc81e2"
+                },
+                {
+                    "description": "Footprint C11_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 133.75
+                    },
+                    "uuid": "857e850f-1c57-46f0-986e-a7ccf75ed465"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "768bdd5f-e221-4e5d-a8d4-e7ace0cc81e2"
+                },
+                {
+                    "description": "Footprint C13_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 129.75
+                    },
+                    "uuid": "c0b860cd-8b48-4314-bd4a-41438c77a423"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "768bdd5f-e221-4e5d-a8d4-e7ace0cc81e2"
+                },
+                {
+                    "description": "Footprint C16_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 123.75
+                    },
+                    "uuid": "df45d73e-6a75-4db1-8614-8166a95e354d"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "768bdd5f-e221-4e5d-a8d4-e7ace0cc81e2"
+                },
+                {
+                    "description": "Footprint C14_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 127.75
+                    },
+                    "uuid": "fa0a1ddd-68f4-4038-8f4c-602eaaf1952f"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "7746dfce-9d36-4095-bb04-b07d9cfdc5fe"
+                },
+                {
+                    "description": "Footprint C14_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 76.45
+                    },
+                    "uuid": "98f5526b-5536-46bd-8f36-982d539fc789"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "7746dfce-9d36-4095-bb04-b07d9cfdc5fe"
+                },
+                {
+                    "description": "Footprint C13_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 78.45
+                    },
+                    "uuid": "9b8cc6b8-1d7f-4cd5-a87a-af86edeca30b"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "7746dfce-9d36-4095-bb04-b07d9cfdc5fe"
+                },
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "f309bc57-a65a-4244-a8c3-06517d2e66ec"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "7746dfce-9d36-4095-bb04-b07d9cfdc5fe"
+                },
+                {
+                    "description": "Footprint C16_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 72.45
+                    },
+                    "uuid": "fe4808d7-7976-4b84-bd0a-606c1396c0fa"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB67",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 131.15
+                    },
+                    "uuid": "1ccb8c70-3d1c-4655-9900-048ccb31dea0"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB20",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 80.85
+                    },
+                    "uuid": "6594565d-24c4-4e4a-9d18-d0620e50a49d"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C14_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 102.1
+                    },
+                    "uuid": "846f536d-701c-4a12-b44d-47362116a15b"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "dcab5083-c94b-470a-a263-8a038a1f5050"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB14",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 66.849999
+                    },
+                    "uuid": "c6da92ec-5b8d-4648-b0bb-b919d5d13070"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "a52a2391-8f62-401c-82af-0786dd31a063"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB14",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 66.849999
+                    },
+                    "uuid": "c6da92ec-5b8d-4648-b0bb-b919d5d13070"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB64",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 120.15
+                    },
+                    "uuid": "7b2e39cf-69ef-4b5e-aa0f-808dd2381716"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "89ba7778-f0d4-4deb-b84e-7d9b897edb27"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB62",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 118.15
+                    },
+                    "uuid": "e8680d75-e8b9-485a-bcd9-caff565d21ee"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "89ba7778-f0d4-4deb-b84e-7d9b897edb27"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB63",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 119.15
+                    },
+                    "uuid": "b982c720-85dc-4067-9fa0-1f1a8e454fc3"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "89ba7778-f0d4-4deb-b84e-7d9b897edb27"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB15",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 67.85
+                    },
+                    "uuid": "905c3e6e-8b49-4785-9330-fe9a3f978e9a"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "a52a2391-8f62-401c-82af-0786dd31a063"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB15",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 67.85
+                    },
+                    "uuid": "905c3e6e-8b49-4785-9330-fe9a3f978e9a"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB22",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 82.85
+                    },
+                    "uuid": "b2c7cdfa-32a2-489e-a6e3-cf81c87b81dc"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB13",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 65.849999
+                    },
+                    "uuid": "8ba3f181-8d63-41cc-ac8f-ac449042ef86"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB64",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 120.15
+                    },
+                    "uuid": "7b2e39cf-69ef-4b5e-aa0f-808dd2381716"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB62",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 118.15
+                    },
+                    "uuid": "e8680d75-e8b9-485a-bcd9-caff565d21ee"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R12_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 80.45
+                    },
+                    "uuid": "9c86022f-b6a2-46f7-90d7-5a69c2b66a84"
+                },
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "f309bc57-a65a-4244-a8c3-06517d2e66ec"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB17",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 69.85
+                    },
+                    "uuid": "80a2c434-8905-4902-b09a-7549f2f43e24"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "a52a2391-8f62-401c-82af-0786dd31a063"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB18",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 70.85
+                    },
+                    "uuid": "760a52b3-7294-4688-a22c-5506336f7b54"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "a52a2391-8f62-401c-82af-0786dd31a063"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "a52a2391-8f62-401c-82af-0786dd31a063"
+                },
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "f309bc57-a65a-4244-a8c3-06517d2e66ec"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB17",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 69.85
+                    },
+                    "uuid": "80a2c434-8905-4902-b09a-7549f2f43e24"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB18",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 70.85
+                    },
+                    "uuid": "760a52b3-7294-4688-a22c-5506336f7b54"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB19",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 79.85
+                    },
+                    "uuid": "44aae03a-dfef-4e68-b317-5bc6de5850d5"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB63",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 119.15
+                    },
+                    "uuid": "b982c720-85dc-4067-9fa0-1f1a8e454fc3"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C13_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 104.1
+                    },
+                    "uuid": "d69c04a8-b9c9-42ac-a5df-74aa925e59db"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "dcab5083-c94b-470a-a263-8a038a1f5050"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C15_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 100.1
+                    },
+                    "uuid": "d8565c39-82f0-4f0e-a4ce-b9e217f828ca"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "dcab5083-c94b-470a-a263-8a038a1f5050"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB39",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 93.5
+                    },
+                    "uuid": "c72f2e6e-1a32-41df-8f74-9fb047bd53e8"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "eb4cbde8-ab66-4965-ae57-91e064b8bb0d"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint F1_1",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 78.85
+                    },
+                    "uuid": "01680d1e-a1d6-4947-a042-b3e1a19348f9"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R11_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 82.45
+                    },
+                    "uuid": "0a7d9077-3014-4dae-8b14-8abf06a59828"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint RV1_1",
+                    "pos": {
+                        "x": 137.15,
+                        "y": 65.95
+                    },
+                    "uuid": "0fcc2ec6-9e6b-4de9-bbb3-9a3694ad8d9d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R14_1",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 76.45
+                    },
+                    "uuid": "17617745-fbdf-4fc7-bc35-9961b807cc17"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R13_2",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 104.1
+                    },
+                    "uuid": "22acdcbe-be05-47f0-8764-61345718eaef"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C11_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 82.45
+                    },
+                    "uuid": "280c4026-aaf0-44d9-ab7a-ba963b732c88"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C12_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 80.45
+                    },
+                    "uuid": "29271194-0ab8-4c8c-95e9-13ef3deeaac4"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R13_1",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 78.45
+                    },
+                    "uuid": "2c93d6aa-5f6d-4e5a-8e2c-b830258c9585"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C16_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 98.1
+                    },
+                    "uuid": "2d007a8c-13c1-491c-a0e2-354e1168f892"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "30e46641-e801-4824-b5a1-e6eae559238b"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R16_1",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 72.45
+                    },
+                    "uuid": "32f8fb0e-f39a-4bdf-bc2d-2a498b8e4465"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R14_3",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 127.75
+                    },
+                    "uuid": "3bc27fc3-2a47-46e3-b2c0-1b069bf55671"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R11_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 133.75
+                    },
+                    "uuid": "3f42b1da-379b-4c1c-87f9-ccd54934bc59"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C12_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 131.75
+                    },
+                    "uuid": "3ff76d9a-74f5-4daa-8415-9410afa5cc52"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint RV1_2",
+                    "pos": {
+                        "x": 137.15,
+                        "y": 91.6
+                    },
+                    "uuid": "436d03ae-1735-409f-85bd-f71b5f5bc58d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C1_2",
+                    "pos": {
+                        "x": 163.2,
+                        "y": 96.6
+                    },
+                    "uuid": "48f0a212-b935-44f5-a8e6-8e907dad3138"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R15_3",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 125.75
+                    },
+                    "uuid": "4e22b701-2c43-442e-bb92-f266f990bbb5"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R16_3",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 123.75
+                    },
+                    "uuid": "4fd20415-6b43-4cbc-9d08-f95b6dfa32af"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R15_1",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 74.45
+                    },
+                    "uuid": "53281b9c-7ff1-425b-a1bd-2a646516960d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C11_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 108.1
+                    },
+                    "uuid": "53d38304-05ec-41d0-922a-19d8f7738a53"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "54fce267-5848-4d6d-8e68-f95fa2ab0bfe"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C2_2",
+                    "pos": {
+                        "x": 166.8,
+                        "y": 101.6
+                    },
+                    "uuid": "556d1fc3-08bd-45df-b724-fa7069da6aa0"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C15_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 125.75
+                    },
+                    "uuid": "590ecd3b-9470-4fd7-a185-d968d6530cd6"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R11_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 108.1
+                    },
+                    "uuid": "5ba6139f-16f6-4841-bc26-992b73396726"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WL_1",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 82.35
+                    },
+                    "uuid": "5ce4d4e1-f4c0-4cf6-bad2-b548782cad06"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R14_2",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 102.1
+                    },
+                    "uuid": "6627b208-d8cb-4b90-960a-36a5c14cb647"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C12_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 106.1
+                    },
+                    "uuid": "7098a11e-3f8c-42bc-b1e6-e044ebb43caa"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C15_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 74.45
+                    },
+                    "uuid": "74108e2a-7f34-4e9f-930c-281ca882243c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint RV1_3",
+                    "pos": {
+                        "x": 137.15,
+                        "y": 117.25
+                    },
+                    "uuid": "764a97c5-f265-4863-8ccc-c8a923eaee98"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "768bdd5f-e221-4e5d-a8d4-e7ace0cc81e2"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "7746dfce-9d36-4095-bb04-b07d9cfdc5fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint F1_3",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 130.15
+                    },
+                    "uuid": "83179e77-c827-4858-a561-e1efac9720ea"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C14_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 102.1
+                    },
+                    "uuid": "846f536d-701c-4a12-b44d-47362116a15b"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C11_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 133.75
+                    },
+                    "uuid": "857e850f-1c57-46f0-986e-a7ccf75ed465"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "89ba7778-f0d4-4deb-b84e-7d9b897edb27"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint F1_2",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 104.5
+                    },
+                    "uuid": "908d5aa8-0500-4753-b96a-9c14a5fed0be"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WN_2",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 103.0
+                    },
+                    "uuid": "930a3330-90c2-4397-98b9-e995e539a9a6"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C2_1",
+                    "pos": {
+                        "x": 166.8,
+                        "y": 75.95
+                    },
+                    "uuid": "9439ec7b-2f8a-4bf8-a8f4-5dcdab9c2d7d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C14_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 76.45
+                    },
+                    "uuid": "98f5526b-5536-46bd-8f36-982d539fc789"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WL_2",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 108.0
+                    },
+                    "uuid": "99e7dbab-ac46-4dc3-926e-1535f0b982fd"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C13_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 78.45
+                    },
+                    "uuid": "9b8cc6b8-1d7f-4cd5-a87a-af86edeca30b"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R12_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 80.45
+                    },
+                    "uuid": "9c86022f-b6a2-46f7-90d7-5a69c2b66a84"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R15_2",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 100.1
+                    },
+                    "uuid": "9fad6ff2-a4fd-44f5-9246-687395be6935"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "a52a2391-8f62-401c-82af-0786dd31a063"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R13_3",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 129.75
+                    },
+                    "uuid": "aaee2cab-b247-4704-ba49-478211edf84b"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WL_3",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 133.65
+                    },
+                    "uuid": "abd5aba6-e5c6-4fb3-9303-fc24a219e0cc"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R12_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 131.75
+                    },
+                    "uuid": "acbf1d2d-0309-4213-a059-2958215e4669"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R12_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 106.1
+                    },
+                    "uuid": "ae55efa2-2f01-42e5-aaae-2a2ddcb83f92"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WN_3",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 128.65
+                    },
+                    "uuid": "b06fe6b0-d91b-49c6-8675-8f81c119d6aa"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C1_3",
+                    "pos": {
+                        "x": 163.2,
+                        "y": 122.25
+                    },
+                    "uuid": "b2a513c7-7753-42f6-a003-7c78401df1cb"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WN_1",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 77.35
+                    },
+                    "uuid": "b5693898-d7b4-4653-ac66-b9e7da101fe2"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C2_3",
+                    "pos": {
+                        "x": 166.8,
+                        "y": 127.25
+                    },
+                    "uuid": "b7a9b320-b1cc-41a2-9aa6-0d8806a3186c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C1_1",
+                    "pos": {
+                        "x": 163.2,
+                        "y": 70.95
+                    },
+                    "uuid": "bbe5c80d-0459-40ba-94dc-2f8e0f07302a"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R16_2",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 98.1
+                    },
+                    "uuid": "bf226a10-77c2-44a3-acb0-baae7e73ea58"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C13_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 129.75
+                    },
+                    "uuid": "c0b860cd-8b48-4314-bd4a-41438c77a423"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C13_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 104.1
+                    },
+                    "uuid": "d69c04a8-b9c9-42ac-a5df-74aa925e59db"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C15_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 100.1
+                    },
+                    "uuid": "d8565c39-82f0-4f0e-a4ce-b9e217f828ca"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "dcab5083-c94b-470a-a263-8a038a1f5050"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C16_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 123.75
+                    },
+                    "uuid": "df45d73e-6a75-4db1-8614-8166a95e354d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "eb4cbde8-ab66-4965-ae57-91e064b8bb0d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "f309bc57-a65a-4244-a8c3-06517d2e66ec"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C14_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 127.75
+                    },
+                    "uuid": "fa0a1ddd-68f4-4038-8f4c-602eaaf1952f"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C16_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 72.45
+                    },
+                    "uuid": "fe4808d7-7976-4b84-bd0a-606c1396c0fa"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "1f5d9290-48b9-4bd6-afb5-385521285d4a"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "b454b099-95ff-4c60-9405-c8de9c2aa915"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c86f6a69-858b-41cb-8ee4-fcbb09f592c6"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        }
+    ]
+}

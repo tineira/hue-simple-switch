@@ -1,0 +1,644 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-01T08:24:12",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "v2-fit.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C16",
+                    "pos": {
+                        "x": 106.4,
+                        "y": 98.1
+                    },
+                    "uuid": "09a748d9-2416-479c-a5e5-4b8b561a6000"
+                },
+                {
+                    "description": "Footprint J2",
+                    "pos": {
+                        "x": 101.6,
+                        "y": 102.1
+                    },
+                    "uuid": "e3d02dd1-83f7-452d-ba96-657a0c280df4"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint D1",
+                    "pos": {
+                        "x": 117.4,
+                        "y": 96.2
+                    },
+                    "uuid": "36bb36f3-307f-414e-bb6e-0d655c8e9883"
+                },
+                {
+                    "description": "Footprint U1",
+                    "pos": {
+                        "x": 106.58,
+                        "y": 99.17
+                    },
+                    "uuid": "8d5a2ab1-c571-4538-82ba-4bd4af241d0e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C15",
+                    "pos": {
+                        "x": 106.4,
+                        "y": 100.1
+                    },
+                    "uuid": "652c8099-da2c-4c54-9163-4bcf9909d052"
+                },
+                {
+                    "description": "Footprint J2",
+                    "pos": {
+                        "x": 101.6,
+                        "y": 102.1
+                    },
+                    "uuid": "e3d02dd1-83f7-452d-ba96-657a0c280df4"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C11",
+                    "pos": {
+                        "x": 106.1,
+                        "y": 108.1
+                    },
+                    "uuid": "69a7139c-18cb-4cea-a4d9-614acedbea75"
+                },
+                {
+                    "description": "Footprint R11",
+                    "pos": {
+                        "x": 108.85,
+                        "y": 108.1
+                    },
+                    "uuid": "8aab78e8-8ccc-4c76-b3b6-e58e0e7334a0"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C11",
+                    "pos": {
+                        "x": 106.1,
+                        "y": 108.1
+                    },
+                    "uuid": "69a7139c-18cb-4cea-a4d9-614acedbea75"
+                },
+                {
+                    "description": "Footprint J2",
+                    "pos": {
+                        "x": 101.6,
+                        "y": 102.1
+                    },
+                    "uuid": "e3d02dd1-83f7-452d-ba96-657a0c280df4"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R11",
+                    "pos": {
+                        "x": 108.85,
+                        "y": 108.1
+                    },
+                    "uuid": "8aab78e8-8ccc-4c76-b3b6-e58e0e7334a0"
+                },
+                {
+                    "description": "Footprint U1",
+                    "pos": {
+                        "x": 106.58,
+                        "y": 99.17
+                    },
+                    "uuid": "8d5a2ab1-c571-4538-82ba-4bd4af241d0e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1",
+                    "pos": {
+                        "x": 106.58,
+                        "y": 99.17
+                    },
+                    "uuid": "8d5a2ab1-c571-4538-82ba-4bd4af241d0e"
+                },
+                {
+                    "description": "Footprint J2",
+                    "pos": {
+                        "x": 101.6,
+                        "y": 102.1
+                    },
+                    "uuid": "e3d02dd1-83f7-452d-ba96-657a0c280df4"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1",
+                    "pos": {
+                        "x": 106.58,
+                        "y": 99.17
+                    },
+                    "uuid": "8d5a2ab1-c571-4538-82ba-4bd4af241d0e"
+                },
+                {
+                    "description": "Footprint R12",
+                    "pos": {
+                        "x": 108.85,
+                        "y": 106.1
+                    },
+                    "uuid": "f87fb564-f466-4670-9740-2b2bfbb33a7e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12",
+                    "pos": {
+                        "x": 106.1,
+                        "y": 106.1
+                    },
+                    "uuid": "9d25c4bb-e0a9-46ce-886d-8d0d18c9ce97"
+                },
+                {
+                    "description": "Footprint J2",
+                    "pos": {
+                        "x": 101.6,
+                        "y": 102.1
+                    },
+                    "uuid": "e3d02dd1-83f7-452d-ba96-657a0c280df4"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12",
+                    "pos": {
+                        "x": 106.1,
+                        "y": 106.1
+                    },
+                    "uuid": "9d25c4bb-e0a9-46ce-886d-8d0d18c9ce97"
+                },
+                {
+                    "description": "Footprint R12",
+                    "pos": {
+                        "x": 108.85,
+                        "y": 106.1
+                    },
+                    "uuid": "f87fb564-f466-4670-9740-2b2bfbb33a7e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C14",
+                    "pos": {
+                        "x": 106.4,
+                        "y": 102.1
+                    },
+                    "uuid": "b57da74e-0f1c-4f34-bd03-43bf9ca76b14"
+                },
+                {
+                    "description": "Footprint J2",
+                    "pos": {
+                        "x": 101.6,
+                        "y": 102.1
+                    },
+                    "uuid": "e3d02dd1-83f7-452d-ba96-657a0c280df4"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C13",
+                    "pos": {
+                        "x": 106.4,
+                        "y": 104.1
+                    },
+                    "uuid": "e07f241c-38b8-4dd9-8d58-6787e80bcb92"
+                },
+                {
+                    "description": "Footprint J2",
+                    "pos": {
+                        "x": 101.6,
+                        "y": 102.1
+                    },
+                    "uuid": "e3d02dd1-83f7-452d-ba96-657a0c280df4"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Footprint 'C_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C16",
+                    "pos": {
+                        "x": 106.4,
+                        "y": 98.1
+                    },
+                    "uuid": "09a748d9-2416-479c-a5e5-4b8b561a6000"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'R_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R13",
+                    "pos": {
+                        "x": 109.5,
+                        "y": 104.1
+                    },
+                    "uuid": "0ac0efc0-393a-4b3a-9afc-0014a8d3b7ab"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'R_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R15",
+                    "pos": {
+                        "x": 109.5,
+                        "y": 100.1
+                    },
+                    "uuid": "0f4aed81-a702-47ad-8172-9de24639831d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'R_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R14",
+                    "pos": {
+                        "x": 109.5,
+                        "y": 102.1
+                    },
+                    "uuid": "2ada0d37-ef35-4d93-add9-140cf1d10d42"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'D_SMA' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint D1",
+                    "pos": {
+                        "x": 117.4,
+                        "y": 96.2
+                    },
+                    "uuid": "36bb36f3-307f-414e-bb6e-0d655c8e9883"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'C_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C15",
+                    "pos": {
+                        "x": 106.4,
+                        "y": 100.1
+                    },
+                    "uuid": "652c8099-da2c-4c54-9163-4bcf9909d052"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'C_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C11",
+                    "pos": {
+                        "x": 106.1,
+                        "y": 108.1
+                    },
+                    "uuid": "69a7139c-18cb-4cea-a4d9-614acedbea75"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'R_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R16",
+                    "pos": {
+                        "x": 109.5,
+                        "y": 98.1
+                    },
+                    "uuid": "76b624ac-fe18-41ae-bf8e-50db7efcf028"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'Fuse_Littelfuse_461' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint F1",
+                    "pos": {
+                        "x": 90.5,
+                        "y": 104.5
+                    },
+                    "uuid": "7e910e7c-297f-4d1e-aadb-fbb371154928"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'R_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R11",
+                    "pos": {
+                        "x": 108.85,
+                        "y": 108.1
+                    },
+                    "uuid": "8aab78e8-8ccc-4c76-b3b6-e58e0e7334a0"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'XIAO_socket_6+2' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint U1",
+                    "pos": {
+                        "x": 106.58,
+                        "y": 99.17
+                    },
+                    "uuid": "8d5a2ab1-c571-4538-82ba-4bd4af241d0e"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'C_0805_2012Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C2",
+                    "pos": {
+                        "x": 116.8,
+                        "y": 101.6
+                    },
+                    "uuid": "9c489625-eec6-4e36-a99f-a4238cdfb2df"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'C_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C12",
+                    "pos": {
+                        "x": 106.1,
+                        "y": 106.1
+                    },
+                    "uuid": "9d25c4bb-e0a9-46ce-886d-8d0d18c9ce97"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'RV_TDK_SIOV_CU3225' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint RV1",
+                    "pos": {
+                        "x": 87.15,
+                        "y": 91.6
+                    },
+                    "uuid": "ac7fa116-74d6-431e-9f7d-3eb580103b5a"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'C_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C14",
+                    "pos": {
+                        "x": 106.4,
+                        "y": 102.1
+                    },
+                    "uuid": "b57da74e-0f1c-4f34-bd03-43bf9ca76b14"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'Wire_0.75mm2' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WL",
+                    "pos": {
+                        "x": 83.4,
+                        "y": 108.0
+                    },
+                    "uuid": "b9e53f88-9650-45f8-881d-b6ca525ce632"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'C_0805_2012Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C1",
+                    "pos": {
+                        "x": 113.2,
+                        "y": 96.6
+                    },
+                    "uuid": "c0c87b5e-1436-43a5-a60b-a9919fa0d353"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'C_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C13",
+                    "pos": {
+                        "x": 106.4,
+                        "y": 104.1
+                    },
+                    "uuid": "e07f241c-38b8-4dd9-8d58-6787e80bcb92"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'JST_PH_B7B-PH-SM4-TB_1x07-1MP_P2.00mm_Vertical' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint J2",
+                    "pos": {
+                        "x": 101.6,
+                        "y": 102.1
+                    },
+                    "uuid": "e3d02dd1-83f7-452d-ba96-657a0c280df4"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'Wire_0.75mm2' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WN",
+                    "pos": {
+                        "x": 83.4,
+                        "y": 103.0
+                    },
+                    "uuid": "f3b603d2-c994-4acf-b583-5837d32ac11a"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'R_0603_1608Metric' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R12",
+                    "pos": {
+                        "x": 108.85,
+                        "y": 106.1
+                    },
+                    "uuid": "f87fb564-f466-4670-9740-2b2bfbb33a7e"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint 'HiLink_HLK-PM01_lifted' does not match copy in library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint PS1",
+                    "pos": {
+                        "x": 87.3,
+                        "y": 100.65
+                    },
+                    "uuid": "819c4cec-bd95-4eba-9e23-5e610f061328"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        }
+    ]
+}

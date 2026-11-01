@@ -1,0 +1,13 @@
+(footprint "XIAO_seated"
+  (version 20241229)
+  (generator "v2fit")
+  (layer "F.Cu")
+  (property "Reference" "REF**" (at 0 0 0) (layer "F.Fab") (hide yes)
+    (effects (font (size 1 1) (thickness 0.15))))
+  (property "Value" "XIAO_seated" (at 0 0 0) (layer "F.Fab") (hide yes)
+    (effects (font (size 1 1) (thickness 0.15))))
+  (property "Description" "XIAO ESP32-C6 seated in the socket, header on the used pins only" (at 0 0 0) (layer "F.Fab") (hide yes)
+    (effects (font (size 1 1) (thickness 0.15))))
+  (attr exclude_from_pos_files exclude_from_bom allow_missing_courtyard)
+  (model "${KIPRJMOD}/lib/3d/XIAO_seated_box.step" (offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))
+)
