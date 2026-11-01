@@ -1,6 +1,6 @@
 # Mains board v2: routed, soldered wires, all SMD but PS1
 
-**Do not build this yet.** Prototypes were ordered on 2026-11-01 and none has been assembled or tested.
+**Do not build this yet.** Prototypes were ordered on 2026-11-01 and none has been assembled or tested. They were ordered from the files in `panel/`, unchanged since commit 32dfc4e (Gerber zip sha256 begins b4a389465dc5f92d).
 
 **Routed and connected. Mains isolation passes on the design files and on the copper Gerbers.** A 3-up panel exists in `panel/`, but no part below has been tested. Uncertified, AI-assisted mains design. Nothing here is proof of safety. Tags: **M** measured from the files, **D** datasheet or distributor, **A** assumed.
 
