@@ -184,6 +184,15 @@ def board_art(b, T):
     # seen only with the XIAO out
     text(b, T, "HI :)", (13.5, 0.5), 1.2)
 
+    # how the XIAO goes in: the USB end, the two power pins and where its corners land
+    text(b, T, "USB", (12.1, 2.4), bold=True)
+    path(b, T, [(13.8, 2.4), (15.6, 2.4)])
+    path(b, T, [(15.0, 1.85), (15.6, 2.4), (15.0, 2.95)])
+    text(b, T, "5V", (14.2, 4.65), bold=True)
+    text(b, T, "GND", (11.66, 8.95), bold=True)
+    path(b, T, [(15.9, 8.06), (17.1, 8.06), (17.1, 7.3)])
+    path(b, T, [(17.1, -8.15), (17.1, -7.35)])     # PS1's +5V pin sits on the corner itself
+
     # bottom: the strip beside PS1, the only marking left once the rails are off
     path(b, T, [(-14.7, 8.35), (-7.0, 8.35)], B)
     path(b, T, [(-5.5, 8.35), (18.7, 8.35)], B)

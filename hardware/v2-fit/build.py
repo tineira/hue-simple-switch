@@ -429,7 +429,13 @@ def build_board():
     board.Save(PCB)
 
 
-DRU_TEXT = v1.DRU + """
+# KiCad 10 hands rule areas and unplated holes to the creepage rule whatever the pad clause says.
+# They have no net, so this skips them. Copper with no net stays under the clearance rule. Do not
+# narrow these conditions to pads: that is how v1's GND pour passed DRC, and proof.py checks it.
+CREEPAGE_IF = """(constraint creepage (min 6.0mm))
+  (condition "A.NetClass == 'Mains' && B.NetClass != 'Mains' && (B.Type != 'Pad' || B.Pad_Type != 'NPTH, mechanical')"""
+assert CREEPAGE_IF in v1.DRU
+DRU_TEXT = v1.DRU.replace(CREEPAGE_IF, CREEPAGE_IF + """ && B.NetName != ''""") + """
 # v2 fit study: the keepout, for copper the rule area itself cannot name by net class.
 (rule "No low voltage copper in the mains area"
   (constraint disallow track via)
@@ -458,6 +464,22 @@ def run(*args):
         print(r.stdout, r.stderr)
         raise SystemExit("failed: %s %s" % (args[0], args[1:3]))
     return r.stdout
+
+
+# kicad-cli exits 0 with violations, so nothing stops a bad board unless this does
+BLOCKING = {"clearance", "creepage", "copper_edge_clearance", "hole_clearance", "items_not_allowed",
+            "shorting_items", "tracks_crossing"}
+
+
+def check_drc(path):
+    with open(path, encoding="utf8") as f:
+        d = json.load(f)
+    bad = [v for v in d["violations"] if v["type"] in BLOCKING]
+    for v in bad:
+        print(v["type"], v["description"], [i["description"] for i in v["items"]])
+    open_items = len(d.get("unconnected_items", []))
+    if bad or open_items:
+        raise SystemExit("DRC failed: %d blocking, %d unconnected, %s" % (len(bad), open_items, path))
 
 
 def render(pcb, out, *extra, width=1600, height=1200):
@@ -500,6 +522,7 @@ def main():
     write_project()
     drc = os.path.join(REPORTS, "drc.json")
     run(CLI, "pcb", "drc", "--refill-zones", "--save-board", "--severity-all", "--format", "json", "-o", drc, PCB)
+    check_drc(drc)
     run(CLI, "pcb", "export", "step", "--force", "--subst-models", "-o", os.path.join(HERE, NAME + ".step"), PCB)
     renders()
     import measure

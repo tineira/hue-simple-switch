@@ -3,78 +3,19 @@
   "violations": {
    "items_not_allowed": 2,
    "creepage": 2,
-   "clearance": 3,
+   "clearance": 2,
    "courtyards_overlap": 12,
-   "track_dangling": 2,
+   "copper_edge_clearance": 1,
+   "track_dangling": 3,
    "lib_footprint_issues": 24
   },
-  "unconnected": 2,
+  "unconnected": 3,
   "parity": 0
  },
- "base": {
-  "violations": {
-   "courtyards_overlap": 12,
-   "lib_footprint_mismatch": 22
-  },
-  "unconnected": 0,
-  "parity": 0
- },
- "hits": [
-  {
-   "type": "items_not_allowed",
-   "description": "Items not allowed (rule 'No low voltage copper in the mains area')",
-   "items": [
-    "Track [GND] on F.Cu, length 4,0000 mm"
-   ]
-  },
-  {
-   "type": "items_not_allowed",
-   "description": "Items not allowed (rule 'No low voltage copper in the mains area')",
-   "items": [
-    "Track [GND] on B.Cu, length 3,5000 mm"
-   ]
-  },
-  {
-   "type": "creepage",
-   "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 3,8882 mm)",
-   "items": [
-    "PTH pad 1 [AC_L] of PS1",
-    "Track [GND] on B.Cu, length 3,5000 mm"
-   ]
-  },
-  {
-   "type": "creepage",
-   "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 3,0750 mm)",
-   "items": [
-    "PTH pad 2 [AC_N] of PS1",
-    "Track [GND] on B.Cu, length 3,5000 mm"
-   ]
-  },
-  {
-   "type": "clearance",
-   "description": "Clearance violation (rule 'Mains to low voltage clearance' clearance 6,0000 mm; actual 5,0750 mm)",
-   "items": [
-    "Track [AC_L] on F.Cu, length 2,2000 mm",
-    "Track [GND] on F.Cu, length 4,0000 mm"
-   ]
-  },
-  {
-   "type": "clearance",
-   "description": "Clearance violation (rule 'Mains to low voltage clearance' clearance 6,0000 mm; actual 3,8882 mm)",
-   "items": [
-    "PTH pad 1 [AC_L] of PS1",
-    "Track [GND] on B.Cu, length 3,5000 mm"
-   ]
-  },
-  {
-   "type": "clearance",
-   "description": "Clearance violation (rule 'Mains to low voltage clearance' clearance 6,0000 mm; actual 4,0782 mm)",
-   "items": [
-    "Track [AC_L] on F.Cu, length 6,4819 mm",
-    "Track [GND] on F.Cu, length 4,0000 mm"
-   ]
-  }
- ],
- "on_top": 2,
- "on_bottom": 3
+ "rule_hits": {
+  "Mains to low voltage clearance": 2,
+  "Mains to low voltage creepage": 2,
+  "Mains to board edge and slot": 1,
+  "No low voltage copper in the mains area": 2
+ }
 }

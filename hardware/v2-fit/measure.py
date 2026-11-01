@@ -75,7 +75,7 @@ def main():
     board = pcbnew.LoadBoard(build.PCB)
     items = shapes(board)
     mains = [i for i in items if i[1].startswith("AC_")]
-    others = [i for i in items if not i[1].startswith("AC_") and i[1]]
+    others = [i for i in items if not i[1].startswith("AC_")]     # copper with no net counts: J2's tabs
     rows = []
     for m, o in itertools.product(mains, others):
         same = set(m[3]) & set(o[3])

@@ -21,6 +21,8 @@ sys.dont_write_bytecode = True
 import build_pcb  # noqa: E402
 import design  # noqa: E402
 sys.path.insert(0, HERE)
+import build as single  # noqa: E402
+import proof  # noqa: E402
 import silk  # noqa: E402
 
 OUT = os.path.join(HERE, "panel")
@@ -267,8 +269,12 @@ def write_bom_cpl(suffix, rows, groups, org):
 
 
 def export():
-    subprocess.call([CLI, "pcb", "drc", "--refill-zones", "--save-board", "--severity-all", "--format", "json",
-                     "-o", os.path.join(OUT, "panel-drc.json"), PCB])
+    drc = os.path.join(OUT, "panel-drc.json")
+    subprocess.check_call([CLI, "pcb", "drc", "--refill-zones", "--save-board", "--severity-all", "--format", "json",
+                           "-o", drc, PCB])
+    single.check_drc(drc)
+    proof.prove(PCB, [(0.0, oy, "_b%d" % (i + 1)) for i, (_, oy) in enumerate(centres())], (CX, CY), True,
+                os.path.join(OUT, "panel-proof.json"))
     subprocess.check_call([CLI, "pcb", "render", "--side", "top", "--quality", "high", "--width", "1200", "--height", "1500",
                            "-o", os.path.join(OUT, "panel-top.png"), PCB])
     g = os.path.join(OUT, "g") + os.sep
