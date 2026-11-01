@@ -23,6 +23,9 @@ Board 37.9 x 23.65 lying flat. PS1 sits flat against its underside, with no spac
 | Header | 2.54 male header, as XFCN PZ254V-11-07P, C492406, cut to 6 and 2 | Plastic 2.5, post 6, tail 3. D. Not placed by JLCPCB |
 | PS1 | HLK-PM01, reused | Flat on the board, pins 3.4 proud of the top |
 
+## Silkscreen
+`silk.py` draws all of it, in the look of hue.tineira.com: J2 pin labels (D0 to D5, G), plain references with no panel suffix, a mains warning, the ring logo, and on the bottom strip beside PS1 the 220 V and uncertified marks, so they stay on the board once the rails are off. The rails carry the grid, a ruler, the three setup steps, a 1:3 side view and the order text. Footprint silk is removed and redrawn clear of pads and vias, which is why DRC lists `lib_footprint_mismatch` 22. With the XIAO in place it hides the right edge of the J2 labels; they are meant to be read with it out, when the wires go in.
+
 ## Isolation, measured two ways
 | What | Design files | Copper Gerbers (10 um raster) |
 | --- | --- | --- |

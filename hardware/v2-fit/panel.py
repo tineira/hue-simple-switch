@@ -20,6 +20,8 @@ sys.path.insert(0, os.path.join(HERE, "..", "scripts"))
 sys.dont_write_bytecode = True
 import build_pcb  # noqa: E402
 import design  # noqa: E402
+sys.path.insert(0, HERE)
+import silk  # noqa: E402
 
 OUT = os.path.join(HERE, "panel")
 NAME = "v2-fit-panel"
@@ -213,6 +215,7 @@ def build():
     t.SetTextThickness(mm(0.18))
     t.SetTextAngleDegrees(90)
     b.Add(t)
+    silk.frame_art(b, lambda x, y: P(x, y), 35.0, OUT_Y, IN_X, IN_Y, rx, OUT_Y - 12, OUT_Y - 4, [y for _, y in centres()])
     org = P(-35.0, OUT_Y)
     b.GetDesignSettings().SetAuxOrigin(org)
     pcbnew.SaveBoard(PCB, b)

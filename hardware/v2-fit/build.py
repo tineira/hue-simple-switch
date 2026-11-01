@@ -27,6 +27,8 @@ V1 = os.path.normpath(os.path.join(HERE, "..", "scripts"))
 sys.path.insert(0, V1)
 import build_pcb as v1  # noqa: E402  (read only: helpers for tracks, zones, text)
 import footprints as fpw  # noqa: E402
+sys.path.insert(0, HERE)
+import silk  # noqa: E402
 
 NAME = "v2-fit"
 PCB = os.path.join(HERE, NAME + ".kicad_pcb")
@@ -416,8 +418,7 @@ def build_board():
     v1.text(board, "L N WIRES", (-18.4, 0), pcbnew.F_Fab, 0.9, rot=90)
     v1.text(board, "SWITCH WIRES BEND OUT FROM UNDER THE XIAO", (0, 12.8), pcbnew.F_Fab, 0.9)
     v1.text(board, "NO WIRES ON THIS SIDE", (0, -12.8), pcbnew.F_Fab, 0.9)
-    v1.text(board, "L", (-16.6, 10.3), pcbnew.F_SilkS, 1.0, bold=True)
-    v1.text(board, "N", (-16.6, 0.8), pcbnew.F_SilkS, 1.0, bold=True)
+    silk.board_art(board, v1.pt)
 
     # check the pin positions the design depends on
     assert abs(n_pin[1] - (PS1_C[1] - 2.5)) < 1e-6 and abs(n_pin[0] - l_p[0]) < 1e-6, n_pin
