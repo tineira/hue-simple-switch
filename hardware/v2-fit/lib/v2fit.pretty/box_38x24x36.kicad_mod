@@ -1,0 +1,13 @@
+(footprint "box_38x24x36"
+  (version 20241229)
+  (generator "v2fit")
+  (layer "F.Cu")
+  (property "Reference" "REF**" (at 0 0 0) (layer "F.Fab") (hide yes)
+    (effects (font (size 1 1) (thickness 0.15))))
+  (property "Value" "box_38x24x36" (at 0 0 0) (layer "F.Fab") (hide yes)
+    (effects (font (size 1 1) (thickness 0.15))))
+  (property "Description" "Free interior of the box, 12 bars, no pads" (at 0 0 0) (layer "F.Fab") (hide yes)
+    (effects (font (size 1 1) (thickness 0.15))))
+  (attr exclude_from_pos_files exclude_from_bom allow_missing_courtyard)
+  (model "${KIPRJMOD}/lib/3d/box_38x24x36_frame.step" (offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))
+)

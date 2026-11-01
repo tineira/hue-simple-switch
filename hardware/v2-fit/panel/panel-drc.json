@@ -1,0 +1,5651 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-31T21:58:12",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "v2-fit-panel.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 1,0000 mm)",
+            "items": [
+                {
+                    "description": "Pad 2 [AC_N_b2] of RV1_2 on F.Cu",
+                    "pos": {
+                        "x": 133.5,
+                        "y": 91.6
+                    },
+                    "uuid": "9ff8b933-e661-4950-a0aa-e7984515b0a1"
+                },
+                {
+                    "description": "NPTH pad of MB34",
+                    "pos": {
+                        "x": 130.85,
+                        "y": 91.5
+                    },
+                    "uuid": "e05ab7d1-2ec8-4783-89ef-633999c107b1"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 2,0971 mm)",
+            "items": [
+                {
+                    "description": "PTH pad 1 [AC_N_b2] of WN_2",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 103.0
+                    },
+                    "uuid": "23c0026a-f629-4d51-aea5-fce7f0061ad4"
+                },
+                {
+                    "description": "Rule area 'MAINS_AREA' on F.Cu and B.Cu",
+                    "pos": {
+                        "x": 148.588307,
+                        "y": 88.850464
+                    },
+                    "uuid": "c7cf50c4-b6d0-4b98-b8bf-b8bbe29be8c3"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 3,1418 mm)",
+            "items": [
+                {
+                    "description": "PTH pad 1 [AC_L_IN_b1] of WL_1",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 82.35
+                    },
+                    "uuid": "d6c3cf3a-da9a-4cea-9e17-78a7a7d71756"
+                },
+                {
+                    "description": "Rule area 'MAINS_AREA' on F.Cu and B.Cu",
+                    "pos": {
+                        "x": 148.588307,
+                        "y": 63.200464
+                    },
+                    "uuid": "aa29ddc5-58c8-40d1-8fab-01d6496c9a75"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 5,1000 mm)",
+            "items": [
+                {
+                    "description": "PTH pad 1 [AC_L_b1] of PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "922cd489-9b34-490d-96c7-b4186d4edab5"
+                },
+                {
+                    "description": "NPTH pad of MB6",
+                    "pos": {
+                        "x": 130.85,
+                        "y": 74.85
+                    },
+                    "uuid": "98ea70a1-c0eb-4022-9e67-d00ea4cd9aa7"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 3,1418 mm)",
+            "items": [
+                {
+                    "description": "PTH pad 1 [AC_L_IN_b3] of WL_3",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 133.65
+                    },
+                    "uuid": "3cf5e4d0-a806-4b89-9514-2c0a24f8369e"
+                },
+                {
+                    "description": "Rule area 'MAINS_AREA' on F.Cu and B.Cu",
+                    "pos": {
+                        "x": 148.588307,
+                        "y": 114.500464
+                    },
+                    "uuid": "6e771950-9b2b-44eb-979c-611d87fcea4b"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 1,0000 mm)",
+            "items": [
+                {
+                    "description": "Pad 2 [AC_N_b1] of RV1_1 on F.Cu",
+                    "pos": {
+                        "x": 133.5,
+                        "y": 65.95
+                    },
+                    "uuid": "94feb935-7957-4eba-8355-0807b5f07463"
+                },
+                {
+                    "description": "NPTH pad of MB11",
+                    "pos": {
+                        "x": 130.85,
+                        "y": 66.849999
+                    },
+                    "uuid": "97400136-5cef-48b3-90f5-e307d5e79005"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 2,0971 mm)",
+            "items": [
+                {
+                    "description": "PTH pad 1 [AC_N_b1] of WN_1",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 77.35
+                    },
+                    "uuid": "1495db12-e278-4b9e-aad1-09f289f0c0b4"
+                },
+                {
+                    "description": "NPTH pad of MB6",
+                    "pos": {
+                        "x": 130.85,
+                        "y": 74.85
+                    },
+                    "uuid": "98ea70a1-c0eb-4022-9e67-d00ea4cd9aa7"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 1,0000 mm)",
+            "items": [
+                {
+                    "description": "Pad 2 [AC_N_b3] of RV1_3 on F.Cu",
+                    "pos": {
+                        "x": 133.5,
+                        "y": 117.25
+                    },
+                    "uuid": "6dc066b7-5251-4e4f-8bd1-51d55a8a3ed9"
+                },
+                {
+                    "description": "NPTH pad of MB59",
+                    "pos": {
+                        "x": 130.85,
+                        "y": 118.15
+                    },
+                    "uuid": "6ca7c8c9-7151-484a-a030-4c81c0909b42"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 2,0971 mm)",
+            "items": [
+                {
+                    "description": "PTH pad 1 [AC_N_b3] of WN_3",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 128.65
+                    },
+                    "uuid": "23820235-fb99-46cb-a1a2-372de0dd48db"
+                },
+                {
+                    "description": "NPTH pad of MB54",
+                    "pos": {
+                        "x": 130.85,
+                        "y": 126.15
+                    },
+                    "uuid": "b230601b-5484-4bf8-9fdb-9d3f661ad6ec"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 5,1000 mm)",
+            "items": [
+                {
+                    "description": "PTH pad 1 [AC_L_b3] of PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "c01f254e-0dc2-4ce5-b30f-f3420c7b397d"
+                },
+                {
+                    "description": "NPTH pad of MB54",
+                    "pos": {
+                        "x": 130.85,
+                        "y": 126.15
+                    },
+                    "uuid": "b230601b-5484-4bf8-9fdb-9d3f661ad6ec"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 5,1000 mm)",
+            "items": [
+                {
+                    "description": "PTH pad 1 [AC_L_b2] of PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e31d8271-1bfa-4e7d-856b-6a251135b598"
+                },
+                {
+                    "description": "NPTH pad of MB30",
+                    "pos": {
+                        "x": 130.85,
+                        "y": 100.5
+                    },
+                    "uuid": "76dc20d9-cb00-46d9-9b42-06581f993c6a"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Creepage violation (rule 'Mains to low voltage creepage' creepage 6,0000 mm; actual 3,1418 mm)",
+            "items": [
+                {
+                    "description": "PTH pad 1 [AC_L_IN_b2] of WL_2",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 108.0
+                    },
+                    "uuid": "b4eb50fb-30d8-4230-a3a9-68a96004f3bb"
+                },
+                {
+                    "description": "Rule area 'MAINS_AREA' on F.Cu and B.Cu",
+                    "pos": {
+                        "x": 148.588307,
+                        "y": 88.850464
+                    },
+                    "uuid": "c7cf50c4-b6d0-4b98-b8bf-b8bbe29be8c3"
+                }
+            ],
+            "severity": "error",
+            "type": "creepage"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C11_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 108.1
+                    },
+                    "uuid": "11b92402-70af-4963-a557-38063d5f4ff0"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "5cb45829-1807-4bb7-abd9-92a74819bfdd"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C11_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 108.1
+                    },
+                    "uuid": "11b92402-70af-4963-a557-38063d5f4ff0"
+                },
+                {
+                    "description": "Footprint R11_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 108.1
+                    },
+                    "uuid": "69b2a4c7-2cef-4284-8db3-bc26e74fa6ea"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB14",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 66.849999
+                    },
+                    "uuid": "cef1bb33-e442-495b-9b6a-a8a35c6883e9"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "44621269-984e-4945-8c8d-91388ec17aea"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB14",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 66.849999
+                    },
+                    "uuid": "cef1bb33-e442-495b-9b6a-a8a35c6883e9"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C15_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 74.45
+                    },
+                    "uuid": "1366e7d3-d4ae-45d7-a3f2-2d3e634b1c82"
+                },
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "44b4fc56-b884-4a13-b0ef-984b3b378285"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "1b00122f-ced7-470c-82f9-6fc6177f6664"
+                },
+                {
+                    "description": "Footprint C16_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 123.75
+                    },
+                    "uuid": "3467dd08-9dca-479e-8e28-03b01faeca10"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "1b00122f-ced7-470c-82f9-6fc6177f6664"
+                },
+                {
+                    "description": "Footprint C11_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 133.75
+                    },
+                    "uuid": "357dd350-fe51-43ab-b1a3-d486b569f42a"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "1b00122f-ced7-470c-82f9-6fc6177f6664"
+                },
+                {
+                    "description": "Footprint C15_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 125.75
+                    },
+                    "uuid": "620a4df5-8af2-4130-905d-521a71eab347"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "1b00122f-ced7-470c-82f9-6fc6177f6664"
+                },
+                {
+                    "description": "Footprint C12_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 131.75
+                    },
+                    "uuid": "7c99aadb-3607-4c59-ad59-3471aff9766a"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "1b00122f-ced7-470c-82f9-6fc6177f6664"
+                },
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "9be7a3c6-c47b-4ff5-bc3f-91e9e9c7e1e3"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "1b00122f-ced7-470c-82f9-6fc6177f6664"
+                },
+                {
+                    "description": "Footprint C14_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 127.75
+                    },
+                    "uuid": "ad6c2142-2fac-44c7-a131-c68d54125100"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "1b00122f-ced7-470c-82f9-6fc6177f6664"
+                },
+                {
+                    "description": "Footprint C13_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 129.75
+                    },
+                    "uuid": "cfd742cf-1130-4afa-8bed-aad785215081"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB40",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 94.5
+                    },
+                    "uuid": "1f120f2f-cd28-4fba-99c0-953d5d2ef6bb"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "2333479d-2765-46f0-a62a-94bc7ee68be6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB41",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 95.5
+                    },
+                    "uuid": "5cad7b67-6303-4ccd-ba3b-ddd08d079768"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "2333479d-2765-46f0-a62a-94bc7ee68be6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB42",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 96.5
+                    },
+                    "uuid": "88ac9cc8-49ba-47ff-bc69-910e979ccea8"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "2333479d-2765-46f0-a62a-94bc7ee68be6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB39",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 93.5
+                    },
+                    "uuid": "6eabdeb4-aeac-4bc9-8d53-71a5f1890961"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "2333479d-2765-46f0-a62a-94bc7ee68be6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "2333479d-2765-46f0-a62a-94bc7ee68be6"
+                },
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "cf2ad73c-afcc-4aee-b42c-84ed4972449c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB38",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 92.5
+                    },
+                    "uuid": "21eb57bb-af59-4efe-b203-4b93a6498566"
+                },
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "2333479d-2765-46f0-a62a-94bc7ee68be6"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB65",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 121.15
+                    },
+                    "uuid": "ddd17f6a-70fe-46e7-8dbc-1b1510ac186e"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "2430c6ef-8216-4047-8922-b31b2ca54303"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB66",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 122.15
+                    },
+                    "uuid": "55c2aa53-07de-48cd-a009-ce633c837099"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "2430c6ef-8216-4047-8922-b31b2ca54303"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB62",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 118.15
+                    },
+                    "uuid": "76074111-9aba-4708-94d5-4953433c084b"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "2430c6ef-8216-4047-8922-b31b2ca54303"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "2430c6ef-8216-4047-8922-b31b2ca54303"
+                },
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "9be7a3c6-c47b-4ff5-bc3f-91e9e9c7e1e3"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB63",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 119.15
+                    },
+                    "uuid": "51455390-bb23-4d6d-9f3f-5e7e02ff7052"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "2430c6ef-8216-4047-8922-b31b2ca54303"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB64",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 120.15
+                    },
+                    "uuid": "b8921a61-57d9-4f89-a574-ef97b4b50077"
+                },
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "2430c6ef-8216-4047-8922-b31b2ca54303"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB19",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 79.85
+                    },
+                    "uuid": "1e1146bc-fdfc-475a-bb40-741f79f1f99f"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB67",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 131.15
+                    },
+                    "uuid": "34efa569-8094-4b15-b412-023cb134a508"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB20",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 80.85
+                    },
+                    "uuid": "d2553b9b-0625-40ac-bfae-59aeb70f93a0"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB65",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 121.15
+                    },
+                    "uuid": "ddd17f6a-70fe-46e7-8dbc-1b1510ac186e"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C13_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 104.1
+                    },
+                    "uuid": "34b54c2e-714e-45b5-b4e0-68f06317a591"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "5cb45829-1807-4bb7-abd9-92a74819bfdd"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C11_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 133.75
+                    },
+                    "uuid": "357dd350-fe51-43ab-b1a3-d486b569f42a"
+                },
+                {
+                    "description": "Footprint R11_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 133.75
+                    },
+                    "uuid": "b7cb3476-7bfc-4a1c-9844-013adbfc4a4c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB40",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 94.5
+                    },
+                    "uuid": "1f120f2f-cd28-4fba-99c0-953d5d2ef6bb"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C14_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 76.45
+                    },
+                    "uuid": "39628c6e-b160-4960-b1fa-e0e635280cfa"
+                },
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "44b4fc56-b884-4a13-b0ef-984b3b378285"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB41",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 95.5
+                    },
+                    "uuid": "5cad7b67-6303-4ccd-ba3b-ddd08d079768"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 80.45
+                    },
+                    "uuid": "4351c6dd-7eec-458d-8e6e-72abe9622927"
+                },
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "44b4fc56-b884-4a13-b0ef-984b3b378285"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 80.45
+                    },
+                    "uuid": "4351c6dd-7eec-458d-8e6e-72abe9622927"
+                },
+                {
+                    "description": "Footprint R12_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 80.45
+                    },
+                    "uuid": "4c30b9d1-3aee-44f6-9d84-11e1c520c115"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C16_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 98.1
+                    },
+                    "uuid": "43ae5cf5-8336-4510-bcd8-445f71ae69f5"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "5cb45829-1807-4bb7-abd9-92a74819bfdd"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB15",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 67.85
+                    },
+                    "uuid": "eeff942f-132e-4df8-84c1-aa9b4c4c5654"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "44621269-984e-4945-8c8d-91388ec17aea"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "44621269-984e-4945-8c8d-91388ec17aea"
+                },
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "7ce999b7-9b50-4d60-8525-d423f24b72db"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB18",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 70.85
+                    },
+                    "uuid": "f18d4a5b-06e5-412a-876b-262aacf8e910"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "44621269-984e-4945-8c8d-91388ec17aea"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB17",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 69.85
+                    },
+                    "uuid": "01e82246-a87f-4646-984b-b11f61c3a213"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "44621269-984e-4945-8c8d-91388ec17aea"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB16",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 68.85
+                    },
+                    "uuid": "ed917a49-2b5b-48cd-b113-2cd0e78bf345"
+                },
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "44621269-984e-4945-8c8d-91388ec17aea"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "44b4fc56-b884-4a13-b0ef-984b3b378285"
+                },
+                {
+                    "description": "Footprint C13_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 78.45
+                    },
+                    "uuid": "5335b0da-4e57-4e38-b0d1-f32ec3fcaa44"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "44b4fc56-b884-4a13-b0ef-984b3b378285"
+                },
+                {
+                    "description": "Footprint C16_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 72.45
+                    },
+                    "uuid": "6f4f7785-8416-48b6-b6a4-9d9251940a59"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "44b4fc56-b884-4a13-b0ef-984b3b378285"
+                },
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "7ce999b7-9b50-4d60-8525-d423f24b72db"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "44b4fc56-b884-4a13-b0ef-984b3b378285"
+                },
+                {
+                    "description": "Footprint C11_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 82.45
+                    },
+                    "uuid": "8512d20f-4c3f-47f3-b616-0ed31704d7da"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 106.1
+                    },
+                    "uuid": "45887633-1514-4365-9bc3-9730633cbaf8"
+                },
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "5cb45829-1807-4bb7-abd9-92a74819bfdd"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C12_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 106.1
+                    },
+                    "uuid": "45887633-1514-4365-9bc3-9730633cbaf8"
+                },
+                {
+                    "description": "Footprint R12_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 106.1
+                    },
+                    "uuid": "e50f3ef9-64d3-4a1b-bf24-6804df2c7fde"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB21",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 81.85
+                    },
+                    "uuid": "5115aa4d-7fe9-4f39-865d-bf9e62f41156"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R12_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 80.45
+                    },
+                    "uuid": "4c30b9d1-3aee-44f6-9d84-11e1c520c115"
+                },
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "7ce999b7-9b50-4d60-8525-d423f24b72db"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB15",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 67.85
+                    },
+                    "uuid": "eeff942f-132e-4df8-84c1-aa9b4c4c5654"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB45",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 107.5
+                    },
+                    "uuid": "dd6d0a85-3892-49d0-8f7a-c0c6db1c0a3a"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB22",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 82.85
+                    },
+                    "uuid": "d5032e5f-a789-4973-881a-1ecad29f8261"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB18",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 70.85
+                    },
+                    "uuid": "f18d4a5b-06e5-412a-876b-262aacf8e910"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB17",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 69.85
+                    },
+                    "uuid": "01e82246-a87f-4646-984b-b11f61c3a213"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB16",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 68.85
+                    },
+                    "uuid": "ed917a49-2b5b-48cd-b113-2cd0e78bf345"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB13",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 65.849999
+                    },
+                    "uuid": "9a7b38a7-a4c8-49c9-9fd3-442d1cc9db15"
+                },
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "5cb45829-1807-4bb7-abd9-92a74819bfdd"
+                },
+                {
+                    "description": "Footprint C14_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 102.1
+                    },
+                    "uuid": "afb77f5b-bc61-43c4-a7b7-ba70ff38d06e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "5cb45829-1807-4bb7-abd9-92a74819bfdd"
+                },
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "cf2ad73c-afcc-4aee-b42c-84ed4972449c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "5cb45829-1807-4bb7-abd9-92a74819bfdd"
+                },
+                {
+                    "description": "Footprint C15_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 100.1
+                    },
+                    "uuid": "f85cee3e-ad87-484a-9f28-4a707859092e"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB42",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 96.5
+                    },
+                    "uuid": "88ac9cc8-49ba-47ff-bc69-910e979ccea8"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R12_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 131.75
+                    },
+                    "uuid": "66c5f65a-efb4-4cab-9d22-839d511a0a72"
+                },
+                {
+                    "description": "Footprint C12_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 131.75
+                    },
+                    "uuid": "7c99aadb-3607-4c59-ad59-3471aff9766a"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R12_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 131.75
+                    },
+                    "uuid": "66c5f65a-efb4-4cab-9d22-839d511a0a72"
+                },
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "9be7a3c6-c47b-4ff5-bc3f-91e9e9c7e1e3"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint R11_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 108.1
+                    },
+                    "uuid": "69b2a4c7-2cef-4284-8db3-bc26e74fa6ea"
+                },
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "cf2ad73c-afcc-4aee-b42c-84ed4972449c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB43",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 105.5
+                    },
+                    "uuid": "f713afbd-9448-4137-89f6-2ff52cb74fd3"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "7ce999b7-9b50-4d60-8525-d423f24b72db"
+                },
+                {
+                    "description": "Footprint R11_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 82.45
+                    },
+                    "uuid": "e3866d20-57d2-42af-a4dd-020cd1e30977"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint C11_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 82.45
+                    },
+                    "uuid": "8512d20f-4c3f-47f3-b616-0ed31704d7da"
+                },
+                {
+                    "description": "Footprint R11_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 82.45
+                    },
+                    "uuid": "e3866d20-57d2-42af-a4dd-020cd1e30977"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB70",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 134.15
+                    },
+                    "uuid": "dcae2afc-ad07-4e0e-af1f-7eee824e3cac"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB66",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 122.15
+                    },
+                    "uuid": "55c2aa53-07de-48cd-a009-ce633c837099"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB62",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 118.15
+                    },
+                    "uuid": "76074111-9aba-4708-94d5-4953433c084b"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "9be7a3c6-c47b-4ff5-bc3f-91e9e9c7e1e3"
+                },
+                {
+                    "description": "Footprint R11_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 133.75
+                    },
+                    "uuid": "b7cb3476-7bfc-4a1c-9844-013adbfc4a4c"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB69",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 133.15
+                    },
+                    "uuid": "8b88edf5-8f77-4430-a7d5-3efe2e68f127"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB63",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 119.15
+                    },
+                    "uuid": "51455390-bb23-4d6d-9f3f-5e7e02ff7052"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB68",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 132.15
+                    },
+                    "uuid": "4301c9cd-39bf-4c69-a2cf-fdb7db233273"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB64",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 120.15
+                    },
+                    "uuid": "b8921a61-57d9-4f89-a574-ef97b4b50077"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB61",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 117.15
+                    },
+                    "uuid": "6d60e680-2877-4018-b28f-c7a72c464df9"
+                },
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB44",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 106.5
+                    },
+                    "uuid": "e479a8bf-1431-4cb1-9f85-de35ddac0223"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB39",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 93.5
+                    },
+                    "uuid": "6eabdeb4-aeac-4bc9-8d53-71a5f1890961"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB46",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 108.5
+                    },
+                    "uuid": "c2c52e2f-0fa1-44ce-8b92-9c665c551afa"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "cf2ad73c-afcc-4aee-b42c-84ed4972449c"
+                },
+                {
+                    "description": "Footprint R12_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 106.1
+                    },
+                    "uuid": "e50f3ef9-64d3-4a1b-bf24-6804df2c7fde"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB37",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 91.5
+                    },
+                    "uuid": "17aac8cb-2f68-432d-9966-13aa33addce1"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "items": [
+                {
+                    "description": "NPTH pad of MB38",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 92.5
+                    },
+                    "uuid": "21eb57bb-af59-4efe-b203-4b93a6498566"
+                },
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "error",
+            "type": "npth_inside_courtyard"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 169.0,
+                        "y": 96.5
+                    },
+                    "uuid": "24bd5b76-7845-415d-bf8a-e79e95c8a8c6"
+                },
+                {
+                    "description": "Segment of D1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 165.75,
+                        "y": 99.71
+                    },
+                    "uuid": "6aca6e1c-5e49-4a0a-9f79-a5414f58fc5a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 169.0,
+                        "y": 96.5
+                    },
+                    "uuid": "24bd5b76-7845-415d-bf8a-e79e95c8a8c6"
+                },
+                {
+                    "description": "Segment of D1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 99.71
+                    },
+                    "uuid": "9eb59e61-1238-4721-ac94-9c0c875f3d8e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 169.0,
+                        "y": 122.15
+                    },
+                    "uuid": "d3a371b7-7089-4899-94f9-8dfa090d405a"
+                },
+                {
+                    "description": "Segment of D1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 165.75,
+                        "y": 125.36
+                    },
+                    "uuid": "21796b3a-baa5-450e-baa2-71cf49f618d6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 169.0,
+                        "y": 122.15
+                    },
+                    "uuid": "d3a371b7-7089-4899-94f9-8dfa090d405a"
+                },
+                {
+                    "description": "Segment of D1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 125.36
+                    },
+                    "uuid": "75b14f66-9562-4764-a672-34afdec61192"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 169.0,
+                        "y": 70.85
+                    },
+                    "uuid": "385ab426-b512-4b27-8b5b-ca3e8296426d"
+                },
+                {
+                    "description": "Segment of D1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 165.75,
+                        "y": 74.06
+                    },
+                    "uuid": "7890d36c-9c36-4bf0-8338-9fc6318f543d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 169.0,
+                        "y": 70.85
+                    },
+                    "uuid": "385ab426-b512-4b27-8b5b-ca3e8296426d"
+                },
+                {
+                    "description": "Segment of D1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 74.06
+                    },
+                    "uuid": "d5be0383-1f76-45c0-9793-3fdcb28823ec"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 131.1,
+                        "y": 62.5
+                    },
+                    "uuid": "325f3a62-27f5-4ab1-adfc-9c550f1419c1"
+                },
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 143.25,
+                        "y": 134.65
+                    },
+                    "uuid": "e65e80ab-82cb-4c0e-a500-83a0c02f374a"
+                },
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 143.25,
+                        "y": 109.0
+                    },
+                    "uuid": "a0c99a61-e9b0-4c22-985b-3f2ab240719a"
+                },
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C11_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 108.1
+                    },
+                    "uuid": "11b92402-70af-4963-a557-38063d5f4ff0"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C15_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 74.45
+                    },
+                    "uuid": "1366e7d3-d4ae-45d7-a3f2-2d3e634b1c82"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint J2_3",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 127.75
+                    },
+                    "uuid": "1b00122f-ced7-470c-82f9-6fc6177f6664"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WN_2",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 103.0
+                    },
+                    "uuid": "1f5ec7e8-ffc0-4966-aff4-06669976d904"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint D1_2",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 96.2
+                    },
+                    "uuid": "2333479d-2765-46f0-a62a-94bc7ee68be6"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint D1_3",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 121.85
+                    },
+                    "uuid": "2430c6ef-8216-4047-8922-b31b2ca54303"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R14_2",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 102.1
+                    },
+                    "uuid": "2badc692-c5a8-4a78-bd4c-e5ed6a61616c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C16_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 123.75
+                    },
+                    "uuid": "3467dd08-9dca-479e-8e28-03b01faeca10"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C13_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 104.1
+                    },
+                    "uuid": "34b54c2e-714e-45b5-b4e0-68f06317a591"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C11_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 133.75
+                    },
+                    "uuid": "357dd350-fe51-43ab-b1a3-d486b569f42a"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C14_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 76.45
+                    },
+                    "uuid": "39628c6e-b160-4960-b1fa-e0e635280cfa"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R16_2",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 98.1
+                    },
+                    "uuid": "405fb785-70e2-4205-b682-e288fc7fd013"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R14_3",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 127.75
+                    },
+                    "uuid": "41f15d81-54cc-4a5a-b638-46c5ff6c9ee8"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C12_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 80.45
+                    },
+                    "uuid": "4351c6dd-7eec-458d-8e6e-72abe9622927"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C16_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 98.1
+                    },
+                    "uuid": "43ae5cf5-8336-4510-bcd8-445f71ae69f5"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint D1_1",
+                    "pos": {
+                        "x": 167.4,
+                        "y": 70.55
+                    },
+                    "uuid": "44621269-984e-4945-8c8d-91388ec17aea"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint F1_1",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 78.85
+                    },
+                    "uuid": "44a838da-688c-4789-aec2-ccb5bdbe5489"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint J2_1",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 76.45
+                    },
+                    "uuid": "44b4fc56-b884-4a13-b0ef-984b3b378285"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C12_2",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 106.1
+                    },
+                    "uuid": "45887633-1514-4365-9bc3-9730633cbaf8"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C2_1",
+                    "pos": {
+                        "x": 166.8,
+                        "y": 75.95
+                    },
+                    "uuid": "4ae1e5a5-4021-4e25-ae91-b3959e12ebcc"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R12_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 80.45
+                    },
+                    "uuid": "4c30b9d1-3aee-44f6-9d84-11e1c520c115"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R15_1",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 74.45
+                    },
+                    "uuid": "4d7df277-3fc1-4e2e-8958-342230ba0149"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C13_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 78.45
+                    },
+                    "uuid": "5335b0da-4e57-4e38-b0d1-f32ec3fcaa44"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R16_3",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 123.75
+                    },
+                    "uuid": "57b3e622-f5ce-42a4-80e0-942fadfc5c0d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint J2_2",
+                    "pos": {
+                        "x": 151.6,
+                        "y": 102.1
+                    },
+                    "uuid": "5cb45829-1807-4bb7-abd9-92a74819bfdd"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R15_3",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 125.75
+                    },
+                    "uuid": "5fa3afc9-fa48-48ed-ae5d-d25affa63e6d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C15_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 125.75
+                    },
+                    "uuid": "620a4df5-8af2-4130-905d-521a71eab347"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WL_3",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 133.65
+                    },
+                    "uuid": "65649c8a-d7b4-4ae8-ab9e-21ebd0e6f47c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R16_1",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 72.45
+                    },
+                    "uuid": "660c413f-d3b6-4b93-9b99-fd7b2a0fbc1f"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R12_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 131.75
+                    },
+                    "uuid": "66c5f65a-efb4-4cab-9d22-839d511a0a72"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R13_1",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 78.45
+                    },
+                    "uuid": "66cf4d6c-2812-4af5-bcbf-729ed9d68afd"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R11_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 108.1
+                    },
+                    "uuid": "69b2a4c7-2cef-4284-8db3-bc26e74fa6ea"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C16_1",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 72.45
+                    },
+                    "uuid": "6f4f7785-8416-48b6-b6a4-9d9251940a59"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WN_1",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 77.35
+                    },
+                    "uuid": "76d426c7-c52c-4da5-a6cf-29c197f87c00"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WL_1",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 82.35
+                    },
+                    "uuid": "77b0690c-1316-49e0-b5cd-efa22d990df9"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WN_3",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 128.65
+                    },
+                    "uuid": "7a11cbc9-2959-43e8-99b9-6c7be7fa858f"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C12_3",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 131.75
+                    },
+                    "uuid": "7c99aadb-3607-4c59-ad59-3471aff9766a"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 73.52
+                    },
+                    "uuid": "7ce999b7-9b50-4d60-8525-d423f24b72db"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C11_1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 82.45
+                    },
+                    "uuid": "8512d20f-4c3f-47f3-b616-0ed31704d7da"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R13_3",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 129.75
+                    },
+                    "uuid": "8a0ab499-1d93-4c2d-bda9-7f92ea1fcbf2"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint RV1_3",
+                    "pos": {
+                        "x": 137.15,
+                        "y": 117.25
+                    },
+                    "uuid": "902740e6-6f4b-421b-a85d-31810b5f02b6"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C2_2",
+                    "pos": {
+                        "x": 166.8,
+                        "y": 101.6
+                    },
+                    "uuid": "92725b3b-9b2c-49d5-9b6e-6e9e79b2d4c3"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint F1_3",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 130.15
+                    },
+                    "uuid": "9515989e-8864-43bd-9dd1-5387c399947d"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint RV1_2",
+                    "pos": {
+                        "x": 137.15,
+                        "y": 91.6
+                    },
+                    "uuid": "96f10779-3554-487f-8166-cac274fb796b"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 124.82
+                    },
+                    "uuid": "9be7a3c6-c47b-4ff5-bc3f-91e9e9c7e1e3"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R15_2",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 100.1
+                    },
+                    "uuid": "a821d1b4-a45f-4023-8bf0-c1708d654236"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint RV1_1",
+                    "pos": {
+                        "x": 137.15,
+                        "y": 65.95
+                    },
+                    "uuid": "a9eebe75-2fd4-4d71-aa5f-bc724633ba18"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C14_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 127.75
+                    },
+                    "uuid": "ad6c2142-2fac-44c7-a131-c68d54125100"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint F1_2",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 104.5
+                    },
+                    "uuid": "ade2470a-a41b-40a8-acfe-9d15d9067fe9"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C14_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 102.1
+                    },
+                    "uuid": "afb77f5b-bc61-43c4-a7b7-ba70ff38d06e"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R11_3",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 133.75
+                    },
+                    "uuid": "b7cb3476-7bfc-4a1c-9844-013adbfc4a4c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R14_1",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 76.45
+                    },
+                    "uuid": "b94adb44-3c6d-435f-a67a-92638946f48b"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C1_3",
+                    "pos": {
+                        "x": 163.2,
+                        "y": 122.25
+                    },
+                    "uuid": "c12aab9a-c64d-4690-a711-4a660367254a"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C1_1",
+                    "pos": {
+                        "x": 163.2,
+                        "y": 70.95
+                    },
+                    "uuid": "cec15fb8-8805-47c4-9bba-b0004f2225bc"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 99.17
+                    },
+                    "uuid": "cf2ad73c-afcc-4aee-b42c-84ed4972449c"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C13_3",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 129.75
+                    },
+                    "uuid": "cfd742cf-1130-4afa-8bed-aad785215081"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R11_1",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 82.45
+                    },
+                    "uuid": "e3866d20-57d2-42af-a4dd-020cd1e30977"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R12_2",
+                    "pos": {
+                        "x": 158.85,
+                        "y": 106.1
+                    },
+                    "uuid": "e50f3ef9-64d3-4a1b-bf24-6804df2c7fde"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C2_3",
+                    "pos": {
+                        "x": 166.8,
+                        "y": 127.25
+                    },
+                    "uuid": "eaa44cc7-662f-4ef7-acd8-3421405a47a6"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint R13_2",
+                    "pos": {
+                        "x": 159.5,
+                        "y": 104.1
+                    },
+                    "uuid": "f5934aa1-ac6f-471d-8025-1162ab846f1b"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C15_2",
+                    "pos": {
+                        "x": 156.4,
+                        "y": 100.1
+                    },
+                    "uuid": "f85cee3e-ad87-484a-9f28-4a707859092e"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint C1_2",
+                    "pos": {
+                        "x": 163.2,
+                        "y": 96.6
+                    },
+                    "uuid": "fb93432c-78bf-4867-be4e-115070fb7530"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint WL_2",
+                    "pos": {
+                        "x": 133.4,
+                        "y": 108.0
+                    },
+                    "uuid": "fefb5575-77e0-47e7-9818-09681690e853"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 75.0
+                    },
+                    "uuid": "5b507240-5ea2-4054-af73-8216f02c1f8a"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 126.3
+                    },
+                    "uuid": "a9d2a1a9-4df6-434e-85b8-be812d1dc5f2"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "The current configuration does not include the footprint library 'v2fit'",
+            "items": [
+                {
+                    "description": "Footprint PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 100.65
+                    },
+                    "uuid": "e5c0fa63-947d-4926-946e-4a8f8df7cdbc"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_issues"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C13_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 156.25942,
+                        "y": 104.61
+                    },
+                    "uuid": "13b185f4-d179-489c-a6f2-68ae3aac7b3a"
+                },
+                {
+                    "description": "Reference field of U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 104.59
+                    },
+                    "uuid": "8e0feaf8-17f7-4e6a-a40a-bf097271a301"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 78.94
+                    },
+                    "uuid": "4b9095df-f631-4d92-a9d3-141d532a42fb"
+                },
+                {
+                    "description": "Segment of C13_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 156.25942,
+                        "y": 78.96
+                    },
+                    "uuid": "91afe887-d163-481a-aec1-1072430f1f17"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C13_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 156.25942,
+                        "y": 130.26
+                    },
+                    "uuid": "5c20465c-5aeb-4d0f-96ed-8905ff7f9810"
+                },
+                {
+                    "description": "Reference field of U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 130.24
+                    },
+                    "uuid": "c85eb31d-0477-4a0a-a0a1-1b807432ee37"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 90.3
+                    },
+                    "uuid": "60bdb2b7-21f6-48c6-8e8a-47db307a23d3"
+                },
+                {
+                    "description": "PTH pad 4 [+5V_PSU_b2] of PS1_2",
+                    "pos": {
+                        "x": 166.7,
+                        "y": 90.45
+                    },
+                    "uuid": "677c7f42-06ce-412f-a390-7b3b007eb0ea"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of D1_2",
+                    "pos": {
+                        "x": 164.9,
+                        "y": 96.2
+                    },
+                    "uuid": "120d0555-a3a2-451d-85b8-9a5394eb9761"
+                },
+                {
+                    "description": "Pad 1 [+5V_PSU_b2] of C1_2 on F.Cu",
+                    "pos": {
+                        "x": 164.15,
+                        "y": 96.6
+                    },
+                    "uuid": "16cc75d2-e863-4543-9291-aaab7f4d1dad"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of D1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 99.71
+                    },
+                    "uuid": "9eb59e61-1238-4721-ac94-9c0c875f3d8e"
+                },
+                {
+                    "description": "NPTH pad of MB40",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 94.5
+                    },
+                    "uuid": "1f120f2f-cd28-4fba-99c0-953d5d2ef6bb"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of D1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 99.71
+                    },
+                    "uuid": "9eb59e61-1238-4721-ac94-9c0c875f3d8e"
+                },
+                {
+                    "description": "NPTH pad of MB41",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 95.5
+                    },
+                    "uuid": "5cad7b67-6303-4ccd-ba3b-ddd08d079768"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of D1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 99.71
+                    },
+                    "uuid": "9eb59e61-1238-4721-ac94-9c0c875f3d8e"
+                },
+                {
+                    "description": "NPTH pad of MB42",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 96.5
+                    },
+                    "uuid": "88ac9cc8-49ba-47ff-bc69-910e979ccea8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 160.14,
+                        "y": 105.54
+                    },
+                    "uuid": "df59d998-86ab-407d-97fb-134f422ef451"
+                },
+                {
+                    "description": "PTH pad 3 [GND_b2] of PS1_2",
+                    "pos": {
+                        "x": 166.7,
+                        "y": 105.85
+                    },
+                    "uuid": "0d3c226d-d591-4e2f-b563-aaf7fb2bffd2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of F1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 138.82,
+                        "y": 109.67
+                    },
+                    "uuid": "62aa923f-00a1-4400-89c6-d4264a9dc1af"
+                },
+                {
+                    "description": "Pad 1 [AC_L_IN_b2] of F1_2 on F.Cu",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 109.175
+                    },
+                    "uuid": "b5ddc85f-4322-4629-8fc2-89344c318473"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of F1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 138.82,
+                        "y": 109.67
+                    },
+                    "uuid": "62aa923f-00a1-4400-89c6-d4264a9dc1af"
+                },
+                {
+                    "description": "Pad 2 [AC_L_b2] of F1_2 on F.Cu",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 99.825
+                    },
+                    "uuid": "679f3d72-70fd-4d00-88c8-e7af224dd5d2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 104.59
+                    },
+                    "uuid": "8e0feaf8-17f7-4e6a-a40a-bf097271a301"
+                },
+                {
+                    "description": "Pad 1 [IN_D2_b2] of C13_2 on F.Cu",
+                    "pos": {
+                        "x": 155.625,
+                        "y": 104.1
+                    },
+                    "uuid": "8f5799e0-d006-47da-b7cc-483d05562867"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1_2",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 104.59
+                    },
+                    "uuid": "8e0feaf8-17f7-4e6a-a40a-bf097271a301"
+                },
+                {
+                    "description": "Pad 2 [GND_b2] of C13_2 on F.Cu",
+                    "pos": {
+                        "x": 157.175,
+                        "y": 104.1
+                    },
+                    "uuid": "5e8e6336-c21d-447e-836f-e327fd2cb2fd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 160.14,
+                        "y": 79.89
+                    },
+                    "uuid": "0432f770-fbe1-471d-8013-8424d3a9b42e"
+                },
+                {
+                    "description": "Pad GND [GND_b1] of U1_1 on F.Cu",
+                    "pos": {
+                        "x": 161.66,
+                        "y": 79.64
+                    },
+                    "uuid": "ebfd2159-a2c4-46e7-9cc5-e97e4ff47f94"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 160.14,
+                        "y": 79.89
+                    },
+                    "uuid": "0432f770-fbe1-471d-8013-8424d3a9b42e"
+                },
+                {
+                    "description": "PTH pad 3 [GND_b1] of PS1_1",
+                    "pos": {
+                        "x": 166.7,
+                        "y": 80.2
+                    },
+                    "uuid": "2b8cfc96-2db5-44e5-95a5-c435307a49f6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 160.14,
+                        "y": 79.89
+                    },
+                    "uuid": "0432f770-fbe1-471d-8013-8424d3a9b42e"
+                },
+                {
+                    "description": "Pad 5V [+5V_b1] of U1_1 on F.Cu",
+                    "pos": {
+                        "x": 164.2,
+                        "y": 82.64
+                    },
+                    "uuid": "f554cd2b-032b-44a8-96ec-ddd43d802f7b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 78.94
+                    },
+                    "uuid": "4b9095df-f631-4d92-a9d3-141d532a42fb"
+                },
+                {
+                    "description": "Pad 2 [GND_b1] of C13_1 on F.Cu",
+                    "pos": {
+                        "x": 157.175,
+                        "y": 78.45
+                    },
+                    "uuid": "f5ff0999-22ae-40d1-b51f-d1e405cc880a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1_1",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 78.94
+                    },
+                    "uuid": "4b9095df-f631-4d92-a9d3-141d532a42fb"
+                },
+                {
+                    "description": "Pad 1 [IN_D2_b1] of C13_1 on F.Cu",
+                    "pos": {
+                        "x": 155.625,
+                        "y": 78.45
+                    },
+                    "uuid": "b7ca9bad-4202-4671-a977-1a4d161595b9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of D1_1",
+                    "pos": {
+                        "x": 164.9,
+                        "y": 70.55
+                    },
+                    "uuid": "95384cce-2f7c-41c3-af9e-60c1a4a606bc"
+                },
+                {
+                    "description": "Pad 1 [+5V_PSU_b1] of C1_1 on F.Cu",
+                    "pos": {
+                        "x": 164.15,
+                        "y": 70.95
+                    },
+                    "uuid": "177f97a0-3636-4cb9-8d5c-3bca7425ff8d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of D1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 74.06
+                    },
+                    "uuid": "d5be0383-1f76-45c0-9793-3fdcb28823ec"
+                },
+                {
+                    "description": "NPTH pad of MB16",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 68.85
+                    },
+                    "uuid": "ed917a49-2b5b-48cd-b113-2cd0e78bf345"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of D1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 74.06
+                    },
+                    "uuid": "d5be0383-1f76-45c0-9793-3fdcb28823ec"
+                },
+                {
+                    "description": "NPTH pad of MB18",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 70.85
+                    },
+                    "uuid": "f18d4a5b-06e5-412a-876b-262aacf8e910"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of D1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 74.06
+                    },
+                    "uuid": "d5be0383-1f76-45c0-9793-3fdcb28823ec"
+                },
+                {
+                    "description": "NPTH pad of MB17",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 69.85
+                    },
+                    "uuid": "01e82246-a87f-4646-984b-b11f61c3a213"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 64.65
+                    },
+                    "uuid": "b845f8bf-40d3-442c-a2fd-5af664f680d1"
+                },
+                {
+                    "description": "PTH pad 4 [+5V_PSU_b1] of PS1_1",
+                    "pos": {
+                        "x": 166.7,
+                        "y": 64.8
+                    },
+                    "uuid": "07dc5ccd-c13f-42f8-9561-77729ae36f4b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 64.65
+                    },
+                    "uuid": "b845f8bf-40d3-442c-a2fd-5af664f680d1"
+                },
+                {
+                    "description": "Pad D1 [D1_b1] of U1_1 on F.Cu",
+                    "pos": {
+                        "x": 161.66,
+                        "y": 64.4
+                    },
+                    "uuid": "0bec7df5-cdce-4557-8193-19b41e85c7ec"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 64.65
+                    },
+                    "uuid": "b845f8bf-40d3-442c-a2fd-5af664f680d1"
+                },
+                {
+                    "description": "Pad D3 [D3_b1] of U1_1 on F.Cu",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 64.4
+                    },
+                    "uuid": "6042e189-b882-4022-b29c-db84130c3f31"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 64.65
+                    },
+                    "uuid": "b845f8bf-40d3-442c-a2fd-5af664f680d1"
+                },
+                {
+                    "description": "Pad D5 [D5_b1] of U1_1 on F.Cu",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 64.4
+                    },
+                    "uuid": "63d19660-dee2-4c83-8a97-2a9d8d2c2254"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 64.65
+                    },
+                    "uuid": "b845f8bf-40d3-442c-a2fd-5af664f680d1"
+                },
+                {
+                    "description": "Pad D0 [D0_b1] of U1_1 on F.Cu",
+                    "pos": {
+                        "x": 164.2,
+                        "y": 67.4
+                    },
+                    "uuid": "e4d2d262-6dbe-4ad5-998a-ac7a84f4fe4a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 64.65
+                    },
+                    "uuid": "b845f8bf-40d3-442c-a2fd-5af664f680d1"
+                },
+                {
+                    "description": "Pad D2 [D2_b1] of U1_1 on F.Cu",
+                    "pos": {
+                        "x": 159.12,
+                        "y": 67.4
+                    },
+                    "uuid": "0cadbf9d-ec05-4105-a967-7a8a29b305cb"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 64.65
+                    },
+                    "uuid": "b845f8bf-40d3-442c-a2fd-5af664f680d1"
+                },
+                {
+                    "description": "Pad D4 [D4_b1] of U1_1 on F.Cu",
+                    "pos": {
+                        "x": 154.04,
+                        "y": 67.4
+                    },
+                    "uuid": "5d08d9df-bed8-46a1-a82e-f1f03108ab87"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of RV1_3",
+                    "pos": {
+                        "x": 137.15,
+                        "y": 121.9
+                    },
+                    "uuid": "39da25e3-85a4-4ff9-99ba-c49b4e843f41"
+                },
+                {
+                    "description": "PTH pad 2 [AC_N_b3] of PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 121.3
+                    },
+                    "uuid": "f5616a9e-bb04-46b0-a4db-deffb96b38e9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of RV1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 120.52
+                    },
+                    "uuid": "a1f4d461-68ac-492f-a01b-8558ec7ee85f"
+                },
+                {
+                    "description": "PTH pad 2 [AC_N_b3] of PS1_3",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 121.3
+                    },
+                    "uuid": "f5616a9e-bb04-46b0-a4db-deffb96b38e9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of RV1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 120.52
+                    },
+                    "uuid": "a1f4d461-68ac-492f-a01b-8558ec7ee85f"
+                },
+                {
+                    "description": "Pad 2 [AC_N_b3] of RV1_3 on F.Cu",
+                    "pos": {
+                        "x": 133.5,
+                        "y": 117.25
+                    },
+                    "uuid": "6dc066b7-5251-4e4f-8bd1-51d55a8a3ed9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of RV1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 120.52
+                    },
+                    "uuid": "a1f4d461-68ac-492f-a01b-8558ec7ee85f"
+                },
+                {
+                    "description": "Pad 1 [AC_L_b3] of RV1_3 on F.Cu",
+                    "pos": {
+                        "x": 140.8,
+                        "y": 117.25
+                    },
+                    "uuid": "18b957af-3b27-444b-8221-947ffbab2d1a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of F1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 138.82,
+                        "y": 135.32
+                    },
+                    "uuid": "52be0baf-58a2-4391-a611-9dcb80a215b1"
+                },
+                {
+                    "description": "Pad 1 [AC_L_IN_b3] of F1_3 on F.Cu",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 134.825
+                    },
+                    "uuid": "eee99935-2beb-4b67-911d-7bd7fb5944d9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of F1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 138.82,
+                        "y": 135.32
+                    },
+                    "uuid": "52be0baf-58a2-4391-a611-9dcb80a215b1"
+                },
+                {
+                    "description": "Pad 2 [AC_L_b3] of F1_3 on F.Cu",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 125.475
+                    },
+                    "uuid": "21e503d3-4739-4139-8c94-a765d0f880b7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 130.24
+                    },
+                    "uuid": "c85eb31d-0477-4a0a-a0a1-1b807432ee37"
+                },
+                {
+                    "description": "Pad 1 [IN_D2_b3] of C13_3 on F.Cu",
+                    "pos": {
+                        "x": 155.625,
+                        "y": 129.75
+                    },
+                    "uuid": "b35457bd-dcb1-4e56-aef5-184af4ff1600"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1_3",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 130.24
+                    },
+                    "uuid": "c85eb31d-0477-4a0a-a0a1-1b807432ee37"
+                },
+                {
+                    "description": "Pad 2 [GND_b3] of C13_3 on F.Cu",
+                    "pos": {
+                        "x": 157.175,
+                        "y": 129.75
+                    },
+                    "uuid": "74876998-6386-498a-8fdd-7bb6aa7c964d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of RV1_1",
+                    "pos": {
+                        "x": 137.15,
+                        "y": 70.6
+                    },
+                    "uuid": "840a72ac-6c73-4fe5-bbcd-158014658e4f"
+                },
+                {
+                    "description": "PTH pad 2 [AC_N_b1] of PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 70.0
+                    },
+                    "uuid": "bbd2cf80-c40f-4197-8950-46db0077a1b6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of RV1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 69.22
+                    },
+                    "uuid": "4fe83cf0-33a5-4fa4-9129-7839951e40bc"
+                },
+                {
+                    "description": "PTH pad 2 [AC_N_b1] of PS1_1",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 70.0
+                    },
+                    "uuid": "bbd2cf80-c40f-4197-8950-46db0077a1b6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of RV1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 69.22
+                    },
+                    "uuid": "4fe83cf0-33a5-4fa4-9129-7839951e40bc"
+                },
+                {
+                    "description": "Pad 2 [AC_N_b1] of RV1_1 on F.Cu",
+                    "pos": {
+                        "x": 133.5,
+                        "y": 65.95
+                    },
+                    "uuid": "94feb935-7957-4eba-8355-0807b5f07463"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of RV1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 69.22
+                    },
+                    "uuid": "4fe83cf0-33a5-4fa4-9129-7839951e40bc"
+                },
+                {
+                    "description": "Pad 1 [AC_L_b1] of RV1_1 on F.Cu",
+                    "pos": {
+                        "x": 140.8,
+                        "y": 65.95
+                    },
+                    "uuid": "812f94f8-85eb-4ca0-a05c-f7aa16604c55"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 90.3
+                    },
+                    "uuid": "60bdb2b7-21f6-48c6-8e8a-47db307a23d3"
+                },
+                {
+                    "description": "Pad D1 [D1_b2] of U1_2 on F.Cu",
+                    "pos": {
+                        "x": 161.66,
+                        "y": 90.05
+                    },
+                    "uuid": "1cfa08bd-90b8-47d6-9175-58edbaa90b1d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 90.3
+                    },
+                    "uuid": "60bdb2b7-21f6-48c6-8e8a-47db307a23d3"
+                },
+                {
+                    "description": "Pad D3 [D3_b2] of U1_2 on F.Cu",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 90.05
+                    },
+                    "uuid": "2a4b7b58-2683-4c95-a05a-b16bc18b5a58"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 90.3
+                    },
+                    "uuid": "60bdb2b7-21f6-48c6-8e8a-47db307a23d3"
+                },
+                {
+                    "description": "Pad D5 [D5_b2] of U1_2 on F.Cu",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 90.05
+                    },
+                    "uuid": "09100060-30a6-4000-8a81-001f24f98ce9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 90.3
+                    },
+                    "uuid": "60bdb2b7-21f6-48c6-8e8a-47db307a23d3"
+                },
+                {
+                    "description": "Pad D0 [D0_b2] of U1_2 on F.Cu",
+                    "pos": {
+                        "x": 164.2,
+                        "y": 93.05
+                    },
+                    "uuid": "4bcf26a5-1c77-4c08-a379-f26c84ff4844"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 90.3
+                    },
+                    "uuid": "60bdb2b7-21f6-48c6-8e8a-47db307a23d3"
+                },
+                {
+                    "description": "Pad D2 [D2_b2] of U1_2 on F.Cu",
+                    "pos": {
+                        "x": 159.12,
+                        "y": 93.05
+                    },
+                    "uuid": "d553e6b6-4d27-4849-9ef7-63f49a8f080d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 90.3
+                    },
+                    "uuid": "60bdb2b7-21f6-48c6-8e8a-47db307a23d3"
+                },
+                {
+                    "description": "Pad D4 [D4_b2] of U1_2 on F.Cu",
+                    "pos": {
+                        "x": 154.04,
+                        "y": 93.05
+                    },
+                    "uuid": "182ff37f-840d-4d1f-997e-73b517e56a77"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of RV1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 94.87
+                    },
+                    "uuid": "95e14dc6-e37e-4384-8c8a-b4407ecdc991"
+                },
+                {
+                    "description": "Pad 2 [AC_N_b2] of RV1_2 on F.Cu",
+                    "pos": {
+                        "x": 133.5,
+                        "y": 91.6
+                    },
+                    "uuid": "9ff8b933-e661-4950-a0aa-e7984515b0a1"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of RV1_2",
+                    "pos": {
+                        "x": 137.15,
+                        "y": 96.25
+                    },
+                    "uuid": "59e0b517-cec6-4148-9424-84ac4fdf6743"
+                },
+                {
+                    "description": "PTH pad 2 [AC_N_b2] of PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 95.65
+                    },
+                    "uuid": "0cf3165e-1f59-4dc5-a736-a044c6275fa9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of RV1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 94.87
+                    },
+                    "uuid": "95e14dc6-e37e-4384-8c8a-b4407ecdc991"
+                },
+                {
+                    "description": "PTH pad 2 [AC_N_b2] of PS1_2",
+                    "pos": {
+                        "x": 137.3,
+                        "y": 95.65
+                    },
+                    "uuid": "0cf3165e-1f59-4dc5-a736-a044c6275fa9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of RV1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 141.27,
+                        "y": 94.87
+                    },
+                    "uuid": "95e14dc6-e37e-4384-8c8a-b4407ecdc991"
+                },
+                {
+                    "description": "Pad 1 [AC_L_b2] of RV1_2 on F.Cu",
+                    "pos": {
+                        "x": 140.8,
+                        "y": 91.6
+                    },
+                    "uuid": "c160e2cb-f284-4264-bb8f-8a99d16a661f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of F1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 138.82,
+                        "y": 84.02
+                    },
+                    "uuid": "25fe0deb-c816-4fec-954b-1b62a9788bb7"
+                },
+                {
+                    "description": "Pad 1 [AC_L_IN_b1] of F1_1 on F.Cu",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 83.525
+                    },
+                    "uuid": "a98f413a-34ee-45f0-98a9-e7702cf0396d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of F1_1 on F.Silkscreen",
+                    "pos": {
+                        "x": 138.82,
+                        "y": 84.02
+                    },
+                    "uuid": "25fe0deb-c816-4fec-954b-1b62a9788bb7"
+                },
+                {
+                    "description": "Pad 2 [AC_L_b1] of F1_1 on F.Cu",
+                    "pos": {
+                        "x": 140.5,
+                        "y": 74.175
+                    },
+                    "uuid": "d73cb0a6-b5fe-48af-9de7-6b3fd6c4d1a9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 115.95
+                    },
+                    "uuid": "62eefefd-6b8e-4532-ab81-786dad00c960"
+                },
+                {
+                    "description": "Pad D5 [D5_b3] of U1_3 on F.Cu",
+                    "pos": {
+                        "x": 151.5,
+                        "y": 115.7
+                    },
+                    "uuid": "d5d72475-5e51-475e-b3d8-b4336d32922f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 115.95
+                    },
+                    "uuid": "62eefefd-6b8e-4532-ab81-786dad00c960"
+                },
+                {
+                    "description": "Pad D3 [D3_b3] of U1_3 on F.Cu",
+                    "pos": {
+                        "x": 156.58,
+                        "y": 115.7
+                    },
+                    "uuid": "d3a1f728-996d-4368-9134-4549d87c8dbc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 115.95
+                    },
+                    "uuid": "62eefefd-6b8e-4532-ab81-786dad00c960"
+                },
+                {
+                    "description": "Pad D1 [D1_b3] of U1_3 on F.Cu",
+                    "pos": {
+                        "x": 161.66,
+                        "y": 115.7
+                    },
+                    "uuid": "e353e881-8650-4510-84cf-88775681fe9f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 115.95
+                    },
+                    "uuid": "62eefefd-6b8e-4532-ab81-786dad00c960"
+                },
+                {
+                    "description": "PTH pad 4 [+5V_PSU_b3] of PS1_3",
+                    "pos": {
+                        "x": 166.7,
+                        "y": 116.1
+                    },
+                    "uuid": "7256b3d6-823a-4708-a8c0-518eb1fba070"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 115.95
+                    },
+                    "uuid": "62eefefd-6b8e-4532-ab81-786dad00c960"
+                },
+                {
+                    "description": "Pad D4 [D4_b3] of U1_3 on F.Cu",
+                    "pos": {
+                        "x": 154.04,
+                        "y": 118.7
+                    },
+                    "uuid": "cb0cad40-4617-447e-91cf-a2b060fcb393"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 115.95
+                    },
+                    "uuid": "62eefefd-6b8e-4532-ab81-786dad00c960"
+                },
+                {
+                    "description": "Pad D0 [D0_b3] of U1_3 on F.Cu",
+                    "pos": {
+                        "x": 164.2,
+                        "y": 118.7
+                    },
+                    "uuid": "8c82fbfa-adfd-4ce4-a500-77cec465ef7d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 149.98,
+                        "y": 115.95
+                    },
+                    "uuid": "62eefefd-6b8e-4532-ab81-786dad00c960"
+                },
+                {
+                    "description": "Pad D2 [D2_b3] of U1_3 on F.Cu",
+                    "pos": {
+                        "x": 159.12,
+                        "y": 118.7
+                    },
+                    "uuid": "62d318a1-e59d-4e6c-9e76-e30d81d59a0b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 160.14,
+                        "y": 105.54
+                    },
+                    "uuid": "df59d998-86ab-407d-97fb-134f422ef451"
+                },
+                {
+                    "description": "Pad GND [GND_b2] of U1_2 on F.Cu",
+                    "pos": {
+                        "x": 161.66,
+                        "y": 105.29
+                    },
+                    "uuid": "b8e0af67-945b-4589-a711-1e4572acfa3e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_2 on F.Silkscreen",
+                    "pos": {
+                        "x": 160.14,
+                        "y": 105.54
+                    },
+                    "uuid": "df59d998-86ab-407d-97fb-134f422ef451"
+                },
+                {
+                    "description": "Pad 5V [+5V_b2] of U1_2 on F.Cu",
+                    "pos": {
+                        "x": 164.2,
+                        "y": 108.29
+                    },
+                    "uuid": "f386552d-53ee-4db5-b872-f3ac294baddb"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of D1_3",
+                    "pos": {
+                        "x": 164.9,
+                        "y": 121.85
+                    },
+                    "uuid": "78a7af6d-d08a-4f58-b17e-e23f70f983d0"
+                },
+                {
+                    "description": "Pad 1 [+5V_PSU_b3] of C1_3 on F.Cu",
+                    "pos": {
+                        "x": 164.15,
+                        "y": 122.25
+                    },
+                    "uuid": "dd0842bd-498e-45a9-af76-6041dfa9b5cc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of D1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 125.36
+                    },
+                    "uuid": "75b14f66-9562-4764-a672-34afdec61192"
+                },
+                {
+                    "description": "NPTH pad of MB65",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 121.15
+                    },
+                    "uuid": "ddd17f6a-70fe-46e7-8dbc-1b1510ac186e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of D1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 125.36
+                    },
+                    "uuid": "75b14f66-9562-4764-a672-34afdec61192"
+                },
+                {
+                    "description": "NPTH pad of MB66",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 122.15
+                    },
+                    "uuid": "55c2aa53-07de-48cd-a009-ce633c837099"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of D1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 169.05,
+                        "y": 125.36
+                    },
+                    "uuid": "75b14f66-9562-4764-a672-34afdec61192"
+                },
+                {
+                    "description": "NPTH pad of MB64",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 120.15
+                    },
+                    "uuid": "b8921a61-57d9-4f89-a574-ef97b4b50077"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 160.14,
+                        "y": 131.19
+                    },
+                    "uuid": "56a33d00-755e-4346-b336-b0ffbb96ae0c"
+                },
+                {
+                    "description": "Pad GND [GND_b3] of U1_3 on F.Cu",
+                    "pos": {
+                        "x": 161.66,
+                        "y": 130.94
+                    },
+                    "uuid": "e6bb7453-1020-40b3-afe6-d6a9ae210817"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 160.14,
+                        "y": 131.19
+                    },
+                    "uuid": "56a33d00-755e-4346-b336-b0ffbb96ae0c"
+                },
+                {
+                    "description": "PTH pad 3 [GND_b3] of PS1_3",
+                    "pos": {
+                        "x": 166.7,
+                        "y": 131.5
+                    },
+                    "uuid": "d20c8a8f-bd42-4cab-bc6d-5a046180cdca"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of U1_3 on F.Silkscreen",
+                    "pos": {
+                        "x": 160.14,
+                        "y": 131.19
+                    },
+                    "uuid": "56a33d00-755e-4346-b336-b0ffbb96ae0c"
+                },
+                {
+                    "description": "Pad 5V [+5V_b3] of U1_3 on F.Cu",
+                    "pos": {
+                        "x": 164.2,
+                        "y": 133.94
+                    },
+                    "uuid": "43ae9314-bdec-4dce-a596-b82e706498e8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB22",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 82.85
+                    },
+                    "uuid": "d5032e5f-a789-4973-881a-1ecad29f8261"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB14",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 66.849999
+                    },
+                    "uuid": "cef1bb33-e442-495b-9b6a-a8a35c6883e9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB15",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 67.85
+                    },
+                    "uuid": "eeff942f-132e-4df8-84c1-aa9b4c4c5654"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB13",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 65.849999
+                    },
+                    "uuid": "9a7b38a7-a4c8-49c9-9fd3-442d1cc9db15"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB20",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 80.85
+                    },
+                    "uuid": "d2553b9b-0625-40ac-bfae-59aeb70f93a0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB21",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 81.85
+                    },
+                    "uuid": "5115aa4d-7fe9-4f39-865d-bf9e62f41156"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB19",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 79.85
+                    },
+                    "uuid": "1e1146bc-fdfc-475a-bb40-741f79f1f99f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB18",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 70.85
+                    },
+                    "uuid": "f18d4a5b-06e5-412a-876b-262aacf8e910"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB17",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 69.85
+                    },
+                    "uuid": "01e82246-a87f-4646-984b-b11f61c3a213"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_1 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 82.62
+                    },
+                    "uuid": "a1ffca70-80a2-4694-a71a-4a9018b92fdf"
+                },
+                {
+                    "description": "NPTH pad of MB16",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 68.85
+                    },
+                    "uuid": "ed917a49-2b5b-48cd-b113-2cd0e78bf345"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB70",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 134.15
+                    },
+                    "uuid": "dcae2afc-ad07-4e0e-af1f-7eee824e3cac"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB67",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 131.15
+                    },
+                    "uuid": "34efa569-8094-4b15-b412-023cb134a508"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB69",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 133.15
+                    },
+                    "uuid": "8b88edf5-8f77-4430-a7d5-3efe2e68f127"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB68",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 132.15
+                    },
+                    "uuid": "4301c9cd-39bf-4c69-a2cf-fdb7db233273"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB65",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 121.15
+                    },
+                    "uuid": "ddd17f6a-70fe-46e7-8dbc-1b1510ac186e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB66",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 122.15
+                    },
+                    "uuid": "55c2aa53-07de-48cd-a009-ce633c837099"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB64",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 120.15
+                    },
+                    "uuid": "b8921a61-57d9-4f89-a574-ef97b4b50077"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB62",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 118.15
+                    },
+                    "uuid": "76074111-9aba-4708-94d5-4953433c084b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB63",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 119.15
+                    },
+                    "uuid": "51455390-bb23-4d6d-9f3f-5e7e02ff7052"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_3 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 133.92
+                    },
+                    "uuid": "46cc2ebc-9ebd-483b-bf7c-da0c9ff5a8f5"
+                },
+                {
+                    "description": "NPTH pad of MB61",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 117.15
+                    },
+                    "uuid": "6d60e680-2877-4018-b28f-c7a72c464df9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB46",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 108.5
+                    },
+                    "uuid": "c2c52e2f-0fa1-44ce-8b92-9c665c551afa"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB40",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 94.5
+                    },
+                    "uuid": "1f120f2f-cd28-4fba-99c0-953d5d2ef6bb"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB41",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 95.5
+                    },
+                    "uuid": "5cad7b67-6303-4ccd-ba3b-ddd08d079768"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB42",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 96.5
+                    },
+                    "uuid": "88ac9cc8-49ba-47ff-bc69-910e979ccea8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB43",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 105.5
+                    },
+                    "uuid": "f713afbd-9448-4137-89f6-2ff52cb74fd3"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB44",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 106.5
+                    },
+                    "uuid": "e479a8bf-1431-4cb1-9f85-de35ddac0223"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB45",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 107.5
+                    },
+                    "uuid": "dd6d0a85-3892-49d0-8f7a-c0c6db1c0a3a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB39",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 93.5
+                    },
+                    "uuid": "6eabdeb4-aeac-4bc9-8d53-71a5f1890961"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB37",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 91.5
+                    },
+                    "uuid": "17aac8cb-2f68-432d-9966-13aa33addce1"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Rectangle of PS1_2 on B.Silkscreen",
+                    "pos": {
+                        "x": 134.88,
+                        "y": 108.27
+                    },
+                    "uuid": "a168ad2e-e4ed-4ae8-961f-8faefc0b6147"
+                },
+                {
+                    "description": "NPTH pad of MB38",
+                    "pos": {
+                        "x": 169.25,
+                        "y": 92.5
+                    },
+                    "uuid": "21eb57bb-af59-4efe-b203-4b93a6498566"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        }
+    ]
+}
